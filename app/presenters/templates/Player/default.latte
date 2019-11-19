@@ -1,0 +1,21 @@
+
+{block content}
+    <br>
+    <div>ID pisnicky: {$song_id}<div>
+    <div>Poradi v albu: {$song_meta->number}</div>
+    <div>Nazev pisnicky: {$song_meta->song_name}</div>
+    <div>Nazev alba: {$song_meta->album_name}</div>
+    <div>Nazev interpreta: {$song_meta->artist_name}</div>
+    <div>Delka pisnicky: {$song_meta->time/60%60}:{$song_meta->time%60 < 10 ? '0' . $song_meta->time%60 : $song_meta->time%60}</div>
+    <img src="{$thumb_url}">
+    <audio controls>
+      <source src="{$mp3_url}" type="audio/mpeg">
+    </audio>
+{/block}
+{block scripts}
+{include parent}
+{/block}
+
+
+{block head}
+{/block}

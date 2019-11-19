@@ -1,0 +1,64 @@
+{* This is the welcome page, you can delete it *}
+
+{block content}
+    <div>Název alba: {$album_name}
+    <img src="{$thumb_url}">
+    </div>
+    <table fav_list="{$fav_list}" class="table table-striped fav_list">
+        <thead>
+            <th><a n:href="default sortmode=>'number ASC',album_id=>$album_id">Číslo</a></th>
+            <th><a n:href="default sortmode=>'name ASC',album_id=>$album_id">Název Písně</a></th>
+            <th><a n:href="default sortmode=>'time ASC',album_id=>$album_id">Doba Trvání</a></th>
+            <th>Cesta k souboru</th>
+        </thead>
+        <tbody>
+    {foreach $songs_list as $song}
+        <tr>
+            <td>{$song->number}</td>
+            <td><span song_id="{$song->song_id}" favorite="{$song->favorite}" class="{$song->favorite ? 'glyphicon glyphicon-heart': 'glyphicon glyphicon-heart-empty'} favtoggle_song" aria-hidden="true"></span>&emsp;<a n:href="Player:default song_id=>$song->song_id">{$song->name}</a></td>
+            <td>{$song->time/60%60}:{$song->time%60 < 10 ? '0' . $song->time%60 : $song->time%60}</td>
+            <td>{$song->path}</td>
+        </tr>
+    {/foreach}
+        </tbody>
+    </table>
+    <script>
+$('.favtoggle_song').click(function(){
+    var song_id = $(this).attr("song_id");
+    var favorite = $(this).attr("favorite");
+    var fav_list = $(".fav_list").attr("fav_list");
+    $.post(
+        {link LikeChange},
+        {
+            song_id: song_id,
+            favorite: favorite,
+            fav_list: fav_list
+        },function(data){
+            if(data.response == 1){
+                //database function performed ok
+                if(favorite == 1){
+                    //removing favorite  
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').attr("favorite","0"); 
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').removeClass('glyphicon-heart');
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').addClass('glyphicon-heart-empty');
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').redraw();
+                }else{
+                    //adding favorite
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').attr("favorite","1");
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').removeClass('glyphicon-heart-empty');
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').addClass('glyphicon-heart');
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').redraw();    
+                }               
+            }
+        }
+    );
+});   
+</script>
+{/block}
+{block scripts}
+{include parent}
+{/block}
+
+
+{block head}
+{/block}

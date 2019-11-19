@@ -1,0 +1,62 @@
+{* This is the welcome page, you can delete it *}
+{block content}
+<br>
+<div>Název umělce: {$artists}<div>
+<table class="table table-striped">
+    <thead>
+        {*<th><a n:href="default sortmode=>'name ASC', artist_id=>$artist_id ">Název Album</a></th>*}
+        {*<th><a n:href="default sortmode=>'year ASC', artist_id=>$artist_id ">Rok vydání</a></th>*}
+        <th>Název Alba</th>
+        <th>Rok vydání</th>
+        <th>Thumbnail</th>
+    </thead>
+    <tbody>
+        {foreach $album_list_new as $album}
+        <tr>
+            <td><span album_id="{$album->album_id}" favorite="{$album->favorite}" class="{$album->favorite ? 'glyphicon glyphicon-heart': 'glyphicon glyphicon-heart-empty'} favtoggle_album" aria-hidden="true"></span>
+            <a n:href="Album:default $album->album_id">{$album->name}</a>&emsp;</td>
+            <td>{$album->year}</td>
+            <td><img src="{$album->thumb_url}" height="95" width="95"></td>
+        </tr>
+        {/foreach}
+    </tbody>
+</table>
+<script>
+$('.favtoggle_album').click(function(){
+    var album_id = $(this).attr("album_id");
+    var favorite = $(this).attr("favorite");
+    $.post(
+        {link LikeChange},
+        {
+            album_id: album_id,
+            favorite: favorite
+        },function(data){
+            if(data.response == 1){
+                //database function performed ok
+                if(favorite == 1){
+                    //removing favorite  
+                    $('.favtoggle_album[album_id*="'+album_id+'"]').attr("favorite","0"); 
+                    $('.favtoggle_album[album_id*="'+album_id+'"]').removeClass('glyphicon-heart');
+                    $('.favtoggle_album[album_id*="'+album_id+'"]').addClass('glyphicon-heart-empty');
+                    $('.favtoggle_album[album_id*="'+album_id+'"]').redraw();
+                }else{
+                    //adding favorite
+                    $('.favtoggle_album[album_id*="'+album_id+'"]').attr("favorite","1");
+                    $('.favtoggle_album[album_id*="'+album_id+'"]').removeClass('glyphicon-heart-empty');
+                    $('.favtoggle_album[album_id*="'+album_id+'"]').addClass('glyphicon-heart');
+                    $('.favtoggle_album[album_id*="'+album_id+'"]').redraw();    
+                }               
+            }
+        }
+    );
+});   
+</script>
+{/block}
+
+{block scripts}
+{include parent}
+{/block}
+
+
+{block head}
+{/block}

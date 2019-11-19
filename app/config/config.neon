@@ -1,0 +1,34 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
+parameters:
+
+
+php:
+	date.timezone: Europe/Prague
+
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+
+session:
+	expiration: 14 days
+
+
+services:
+	- App\Model\ArtistsManager
+	- App\Model\UserManager
+	- App\Model\AlbumsManager
+	- App\Model\HomepageManager
+	- App\Model\AlbumManager
+	- App\Model\PlayerManager	
+	- App\Forms\FormFactory
+	- App\Forms\SignInFormFactory
+	- App\Forms\SignUpFormFactory
+	router: App\RouterFactory::createRouter
+	cacheStorage:
+		factory: Nette\Caching\Storages\DevNullStorage
