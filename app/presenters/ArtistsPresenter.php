@@ -4,6 +4,7 @@ namespace App\Presenters;
 use Nette;
 use App\Model\ArtistsManager;
 use Nette\Security\Identity;
+use Nette\Security\User;
 use Nette\Application\Responses\JsonResponse;
 
 class ArtistsPresenter extends Nette\Application\UI\Presenter
@@ -20,6 +21,7 @@ class ArtistsPresenter extends Nette\Application\UI\Presenter
     public function renderDefault() {
         //$this->template->interpretList = $this->artistsManager->readAll($id);
         $this->template->interpretList = $this->artistsManager->readByLikes($this->user->getId());
+        $this->template->usernameIs = $this->artistsManager->username_readById($this->user->getId());
     }
 
     public function actionLikeChange($artist_id,$favorite) {

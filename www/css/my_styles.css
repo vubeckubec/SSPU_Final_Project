@@ -1,0 +1,175 @@
+.search { 
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+
+.searchTerm {
+    width: 100%;
+    height: 40px;
+    border: 3px solid #cccccc;
+    border-right: none;
+    padding: 5px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.searchTerm:focus{
+    color: #380136;
+}
+
+.searchButton {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #cccccc;
+    background: #cccccc;
+    text-align: center;
+    color: #eeeeee;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.wrap{
+    top: 50%;
+    left: 50%;
+    width: 35%;
+    transform: translate(-27%, -7%);
+    float: left;
+    padding-left: 200px;
+    padding-top: 40px;
+}
+    
+.sidenav {
+    height: 90%;
+    width: 205px;
+    position: fixed;
+    z-index: 1;
+    top: 113px;
+    left: 0;
+    background-color: #3377ff;
+    border: 2px solid black;
+    border-top-style: none;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#username {
+    padding: 6px 8px 0px 16px;
+    text-decoration: none;
+    font-size: 40px;
+    color: white;
+    display: block;
+}
+
+#mymusic {
+    padding: 6px 8px 0px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#sideblock1 {
+    padding: 6px 8px 0px 37px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#sideblock1:hover {
+    color: #bfbfbf;
+}
+
+#sideblock2 {
+    padding: 6px 8px 0px 37px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#sideblock2:hover {
+    color: #bfbfbf;
+}
+
+#logout {
+    padding: 6px 8px 0px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+    height: 10%;
+    width: 205px;
+    position: fixed;
+    top: 940px;
+    left: 0;
+    z-index: 1;
+    background-color: #3377ff;
+    border: 2px solid black;
+    border-top-style: none;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+#logout:hover {
+    color: #bfbfbf;
+}
+
+.sidenav a:hover {
+    color: #bfbfbf;
+}
+
+#logo_area {
+    text-align: center;
+    border: 2px solid black;
+    margin: 0px;
+    float: left;
+    width: 10%;
+    padding-top: 14px;
+    padding-bottom: 20px;
+    background-color: #3377ff;
+    color: white;
+    height: 113px;
+    position: fixed;
+    left: 0;
+}
+
+#functions_area {
+    border: 2px solid black;
+    margin: 0px;
+    float: left;
+    width: 90%;
+    border-left-style: none;
+    background-color: #3377ff;
+    height: 113px;
+    position: fixed;
+    right: 0;
+    z-index: 3;
+}
+
+#audio_control {
+    padding-top: 35px;
+}
+
+#queue_button {
+    margin-bottom: 31px;
+    margin-left: 70px; 
+    width: 100px; 
+    text-align: center;
+}
+
+#content_offset {
+    padding-top: 120px;
+    width: 1843px;
+    float: right;
+}

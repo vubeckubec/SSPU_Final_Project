@@ -26,6 +26,7 @@ services:
 	- App\Model\HomepageManager
 	- App\Model\AlbumManager
 	- App\Model\PlayerManager	
+	- App\Model\PlaylistsManager	
 	- App\Forms\FormFactory
 	- App\Forms\SignInFormFactory
 	- App\Forms\SignUpFormFactory

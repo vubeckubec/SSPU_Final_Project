@@ -22,6 +22,7 @@ class PlayerPresenter extends Nette\Application\UI\Presenter
 		if($this->template->song_meta) {
 			$this->template->mp3_url = $this->link('Player:datafile',['song_id'=>$song_id]);
 			$this->template->thumb_url = $this->link('Albums:thumbnail',['album_id'=>$this->template->song_meta->album_id]);
+			$this->template->usernameIs = $this->playerManager->username_readById($this->user->getId());
 		}else{
 			$this->template->song_meta = new \stdClass();
 			$this->template->song_meta->number = 0;

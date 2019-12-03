@@ -23,6 +23,6 @@ class UserPresenter extends BasePresenter {
 
     public function renderList() {
         $this->template->data = $this->userManager->getAll();
-    }
+    }   
 
 }

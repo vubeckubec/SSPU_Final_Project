@@ -26,6 +26,7 @@ class AlbumsPresenter extends Nette\Application\UI\Presenter
             $this->template->artists = $this->albumsManager->artistname_readByID($artist_id);        
             $this->template->album_list_old = $this->albumsManager->readAll($artist_id,$this->user->getId(),$sortmode);
             $this->template->album_list_new = array();
+            $this->template->usernameIs = $this->albumsManager->username_readById($this->user->getId());
             foreach($this->template->album_list_old as $album) {
                 $thumb_url = $this->link('Albums:thumbnail',['album_id'=>$album->album_id]);
                 $new_album = new \stdClass();

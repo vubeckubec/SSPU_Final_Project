@@ -30,4 +30,8 @@ class PlayerManager
                                        WHERE song_id = ?',$id);
         return $row;
     }
+
+    public function username_readById($user_id){
+		return $this->database->fetch('SELECT user.username FROM user WHERE iduser = ?',$user_id);
+	}
 }

@@ -69,4 +69,8 @@ class AlbumManager
         return $this->database->table('album')
                     ->get($id);
     }
+
+    public function username_readById($user_id){
+		return $this->database->fetch('SELECT user.username FROM user WHERE iduser = ?',$user_id);
+	}
 }

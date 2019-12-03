@@ -46,7 +46,7 @@ final class UserManager implements Nette\Security\IAuthenticator
 		}
 		$arr = $row->toArray();
 		unset($arr[self::COLUMN_PASSWORD]);
-		return new Nette\Security\Identity($row[self::COLUMN_IDUSER], $arr);
+		return new Nette\Security\Identity($row[self::COLUMN_IDUSER], $arr);	
 	}
 	/**
 	 * Adds new user.
@@ -66,7 +66,9 @@ final class UserManager implements Nette\Security\IAuthenticator
 	
     public function getUser($id){
         return $this->database->table(self::TABLE_NAME)->where('id = ?', $id)->fetch();
-    }
+	}
+	
+	
 }
 class DuplicateNameException extends \Exception
 {

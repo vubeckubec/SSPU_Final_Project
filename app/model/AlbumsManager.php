@@ -54,5 +54,9 @@ class AlbumsManager
 	public function insertLike($user_id,$album_id){
 		$this->database->query('INSERT INTO user_likes_album VALUES (?,?)',$user_id,$album_id);
 		return 1;
+    }
+    
+    public function username_readById($user_id){
+		return $this->database->fetch('SELECT user.username FROM user WHERE iduser = ?',$user_id);
 	}
 }

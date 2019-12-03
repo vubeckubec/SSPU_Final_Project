@@ -17,9 +17,7 @@ final class HomepagePresenter extends BasePresenter
         $this->signUpFactory = $signUpFactory;
         $this->setLayout('altLayout');
 	}
-	/**
-	 * Sign-in form factory.
-	 */
+	
 	protected function createComponentSignInForm(): Form
 	{
 		return $this->signInFactory->create(function (): void {
@@ -27,15 +25,14 @@ final class HomepagePresenter extends BasePresenter
 			$this->redirect('Artists:');
 		});
 	}
-	/**
-	 * Sign-up form factory.
-	 */
+	
 	protected function createComponentSignUpForm(): Form
 	{
 		return $this->signUpFactory->create(function (): void {
 			$this->redirect('Homepage:in');
 		});
 	}
+
 	public function actionOut(): void
 	{
 		$this->getUser()->logout();

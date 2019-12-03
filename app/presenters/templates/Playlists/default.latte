@@ -1,0 +1,24 @@
+{block content}
+    <table class="table table-striped">
+    <thead>
+        <th>Název Playlistu</th>
+    </thead>
+    <tbody>
+        {foreach $playlists_list as $playlist}
+        <tr>
+            <td>
+              <div>{$playlist->idplaylist}</div>
+              <div>{$playlist->name}</div>
+            </td>
+        </tr>
+        {/foreach}
+    </tbody>
+</table>
+{/block}
+{block scripts}
+{include parent}
+{/block}
+
+
+{block head}
+{/block}
