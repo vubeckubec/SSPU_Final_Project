@@ -14,7 +14,7 @@ class AlbumsPresenter extends Nette\Application\UI\Presenter
     
     public function __construct(AlbumsManager $albumsManager) {
         $this->albumsManager = $albumsManager;
-        $this->setLayout('altLayout');
+        $this->setLayout('empty');
     }
  
     public function renderDefault($artist_id,$sortmode) {

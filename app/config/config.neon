@@ -20,6 +20,7 @@ session:
 
 
 services:
+	- App\Model\BlankManager
 	- App\Model\ArtistsManager
 	- App\Model\UserManager
 	- App\Model\AlbumsManager

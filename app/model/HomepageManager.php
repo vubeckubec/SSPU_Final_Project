@@ -27,7 +27,7 @@ class HomepageManager
     public function readByID($id){
         return $this->database->table(self::TABLE_NAME)
                     ->get($id);
-    }
+	}
 }
 
 //SELECT * FROM `artist_has_album` JOIN artist ON artist.idartist = artist_has_album.artist_idartist JOIN album ON album.idalbum = artist_has_album.album_idalbum WHERE idartist = 1 

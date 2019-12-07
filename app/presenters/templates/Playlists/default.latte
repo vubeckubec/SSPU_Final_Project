@@ -1,15 +1,14 @@
 {block content}
     <table class="table table-striped">
     <thead>
+        <th>Číslo playlistu</th>
         <th>Název Playlistu</th>
     </thead>
     <tbody>
         {foreach $playlists_list as $playlist}
         <tr>
-            <td>
-              <div>{$playlist->idplaylist}</div>
-              <div>{$playlist->name}</div>
-            </td>
+            <td>{$playlist->idplaylist}</td>
+            <td>{$playlist->name}</td>
         </tr>
         {/foreach}
     </tbody>

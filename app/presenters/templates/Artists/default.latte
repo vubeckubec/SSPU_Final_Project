@@ -1,21 +1,23 @@
 {block content}
 <br>
-<table class="table table-striped">
-    <thead>
-        {*<th><a n:href="default '$interpret->artist_id->name ASC' ">Název Interpreta</a></th>*}
-        <th>Název Interpreta</th>
-    </thead>
-    <tbody>
-        {foreach $interpretList as $interpret}
-        <tr>
-            <td>
-            <span artist_id="{$interpret->artist_id}" favorite="{$interpret->favorite}" class="{$interpret->favorite ? 'glyphicon glyphicon-heart': 'glyphicon glyphicon-heart-empty'} favtoggle" aria-hidden="true"></span>
-            <a n:href="Albums:default artist_id=>$interpret->artist_id">{$interpret->name}</a>&emsp;
-            </td>
-        </tr>
-        {/foreach}
-    </tbody>
-</table>
+<div id="ajax_change">
+    <table class="table table-striped">
+        <thead>
+            {*<th><a n:href="default '$interpret->artist_id->name ASC' ">Název Interpreta</a></th>*}
+            <th>Název Interpreta</th>
+        </thead>
+        <tbody>
+            {foreach $interpretList as $interpret}
+            <tr>
+                <td>
+                <span artist_id="{$interpret->artist_id}" favorite="{$interpret->favorite}" class="{$interpret->favorite ? 'glyphicon glyphicon-heart': 'glyphicon glyphicon-heart-empty'} favtoggle" aria-hidden="true"></span>
+                <a n:href="Albums:default artist_id=>$interpret->artist_id" class="ajax_change">{$interpret->name}</a>&emsp;
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+</div>
 <script>
 $('.favtoggle').click(function(){
     var artist_id = $(this).attr("artist_id");
@@ -44,7 +46,7 @@ $('.favtoggle').click(function(){
             }
         }
     );
-});   
+}); 
 </script>
 {/block}
 
@@ -56,3 +58,4 @@ $('.favtoggle').click(function(){
 
 {block head}
 {/block}
+

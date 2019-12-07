@@ -14,7 +14,7 @@ class PlaylistsPresenter extends Nette\Application\UI\Presenter
     
     public function __construct(playlistsManager $playlistsManager) {
         $this->playlistsManager = $playlistsManager;
-        $this->setLayout('altLayout');
+        $this->setLayout('empty');
     }
  
     public function renderDefault($user_id) {

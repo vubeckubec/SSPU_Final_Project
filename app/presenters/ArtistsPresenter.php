@@ -15,12 +15,16 @@ class ArtistsPresenter extends Nette\Application\UI\Presenter
     
     public function __construct(ArtistsManager $artistsManager) {
         $this->artistsManager = $artistsManager;
-        $this->setLayout('altLayout');
+        $this->setLayout('empty');
     }
  
     public function renderDefault() {
         //$this->template->interpretList = $this->artistsManager->readAll($id);
         $this->template->interpretList = $this->artistsManager->readByLikes($this->user->getId());
+        $this->template->usernameIs = $this->artistsManager->username_readById($this->user->getId());
+    }
+
+    public function renderDummy() {
         $this->template->usernameIs = $this->artistsManager->username_readById($this->user->getId());
     }
 

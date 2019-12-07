@@ -21,39 +21,97 @@
     {block head}{/block}
   </head>
   <body>
-    <div id="logo_area">
-      <h1>Victrolla</h1>
-    </div>
-    <div id="functions_area">
-      <div class="wrap">
-          <div class="search">
-            <input type="text" class="searchTerm" placeholder="Type">
-            <button type="submit" class="searchButton">
-            <i class="fa fa-search"></i>
-            </button>
-          </div>
+    <div style="display: block;">
+      <div id="logo_area" style="display: inline-block;">
+        <h1><time>00:00:00</time></h1>
+      </div>
+      <div id="functions_area" style="display: inline-block;">
+        <div class="wrap">
+            <div class="search">
+              <input type="text" class="searchTerm" placeholder="Type">
+              <button type="submit" class="searchButton">
+              <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>  
+        <div>
+          <audio controls id="audio_control">
+            <source src="" type="audio/mpeg">
+          </audio>
+          <button type="button" class="btn btn-danger" id="queue_button">Queue</button>
+          <p id="demo" style="padding-bottom=20px;"></p>
         </div>  
-      <div>
-        <audio controls id="audio_control">
-          <source src="" type="audio/mpeg">
-        </audio>
-        <button type="button" class="btn btn-danger" id="queue_button">Queue</button>
-      </div>  
-    </div>
-    {if $user->loggedIn}
-    <div class="sidenav">
-        <div id="username">{$usernameIs->username}</div>
-        <a n:href="Artists:default">Browse</a>
-        <div id="mymusic">My Music</div>
-        <a id="sideblock1" href="#clients">Favorites</a>
-        <a id="sideblock2" n:href="Playlists:default">Playlists</a>
+      </div>
     </div>
     <div>
-      <a id="logout" n:href="Homepage:out">Logout</a>
+      {if $user->loggedIn}
+      <div class="sidenav" style="display: inline-block;">
+          <div id="username">{$usernameIs->username}</div>
+          <a n:href="Artists:default">Browse</a>
+          <div id="mymusic">My Music</div>
+          <a id="sideblock1" href="#clients">Favorites</a>
+          <a id="sideblock2" n:href="Playlists:default">Playlists</a>
+      </div>
+      <div>
+        <a id="logout" n:href="Homepage:out">Logout</a>
+      </div>
+      {elseif ifLoggedIn}
+        <div class="sidenav">
+            <div id="username"></div>
+            <a n:href="Artists:default">Browse</a>
+            <div id="mymusic">My Music</div>
+            <a id="sideblock1" href="#clients">Favorites</a>
+            <a id="sideblock2" n:href="Playlists:default">Playlists</a>
+        </div>
+        <div>Byli jste odhlaseni.Prosim prihlaste se znovu.</div>
+        <a n:href="Homepage:in">Login</a>
+      {/if}
+      <div id="content_offset" style="display: inline-block;">
+        {include content}
+      </div>
     </div>
-    {/if}
-    <div id="content_offset">
-      {include content}
-    </div>
+    <script>
+      var h1 = document.getElementsByTagName('h1')[0],
+          start = document.getElementById('start'),
+          stop = document.getElementById('stop'),
+          clear = document.getElementById('clear'),
+          seconds = 0, minutes = 0, hours = 0,
+          t;
+
+      function add() {
+          seconds++;
+          if (seconds >= 60) {
+              seconds = 0;
+              minutes++;
+              if (minutes >= 60) {
+                  minutes = 0;
+                  hours++;
+              }
+          }
+          
+          h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+          timer();
+      }
+      function timer() {
+          t = setTimeout(add, 1000);
+      }
+      timer();
+
+
+      /* Start button */
+      start.onclick = timer;
+
+      /* Stop button */
+      stop.onclick = function() {
+          clearTimeout(t);
+      }
+
+      /* Clear button */
+      clear.onclick = function() {
+          h1.textContent = "00:00:00";
+          seconds = 0; minutes = 0; hours = 0;
+      }
+</script>
   </body>
 </html>

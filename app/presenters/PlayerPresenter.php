@@ -13,7 +13,7 @@ class PlayerPresenter extends Nette\Application\UI\Presenter
    
     public function __construct(PlayerManager $playerManager) {
         $this->playerManager = $playerManager;
-        $this->setLayout('altLayout');
+        $this->setLayout('empty');
     }
  
     public function renderDefault($song_id) {

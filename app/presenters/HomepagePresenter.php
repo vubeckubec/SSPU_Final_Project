@@ -15,27 +15,24 @@ final class HomepagePresenter extends BasePresenter
 	{
 		$this->signInFactory = $signInFactory;
         $this->signUpFactory = $signUpFactory;
-        $this->setLayout('altLayout');
+		$this->setLayout('layout');
 	}
 	
-	protected function createComponentSignInForm(): Form
-	{
+	protected function createComponentSignInForm(): Form {
 		return $this->signInFactory->create(function (): void {
 			$this->restoreRequest($this->backlink);
-			$this->redirect('Artists:');
+			$this->redirect('Blank:default');
 		});
 	}
 	
-	protected function createComponentSignUpForm(): Form
-	{
+	protected function createComponentSignUpForm(): Form {
 		return $this->signUpFactory->create(function (): void {
 			$this->redirect('Homepage:in');
 		});
 	}
 
-	public function actionOut(): void
-	{
+	public function actionOut(): void {
 		$this->getUser()->logout();
-                $this->redirect('Homepage:in');
+        	$this->redirect('Homepage:in');
 	}
 }

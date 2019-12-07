@@ -8,5 +8,5 @@
     -error kontrol pro URL, pravidelne overovani
             -kosmetika LOW PRIO
     -co s dlouhymi seznamy ??
-    -navrhnout UI, AJAXova volani, cas prechodu
+    -navrhnout UI, AJAXova volani, cas prechodu(kroutitko)
     -navrhnout tabulku propjeni queue
