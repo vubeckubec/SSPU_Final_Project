@@ -1,11 +1,49 @@
+/*Login a Homepage - zacatek*/
+#login_logo_area{
+    background: linear-gradient(black, white);
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    z-index:1000;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: grey;
+    color: white;
+    text-align: center;
+}
+
+#link_area {
+    display: flex;
+    justify-content: center;
+    margin-top: 450px;
+}
+
+.flex-item + .flex-item {
+    margin-left: 10px;
+}
+
+.help-block {
+    color: white;
+}
+/*Login a Homepage - konec*/
+
+/*ostatni styly - zacatek*/
+body {
+    overflow: hidden;
+}
+/*ostatni styly - konec*/
+
 .search {
     width: 100%;
     position: relative;
     display: flex;
-}
-
-body {
-    overflow: hidden;
 }
 
 .searchTerm {
@@ -172,88 +210,16 @@ body {
     text-align: center;
 }
 
-#content_offset {
-    padding-top: 120px;
+#content_offsetx {
+    padding-top: 113px;
     width: 1843px;
     float: right;
+    position: absolute;
 }
 
-
-/*styles for laptop*/
-
-@media screen and (max-width: 1850px) and (min-width: 600px) {
-    #logo_area {
-        text-align: center;
-        border: 2px solid black;
-        margin: 0px;
-        float: left;
-        width: 17%;
-        padding-top: 14px;
-        padding-bottom: 20px;
-        background-color: #3377ff;
-        color: white;
-        height: 113px;
-        position: fixed;
-        left: 0;
-        overflow: hidden;
-    }
-    #functions_area {
-        border: 2px solid black;
-        margin: 0px;
-        float: left;
-        width: 83%;
-        border-left-style: none;
-        background-color: #3377ff;
-        height: 113px;
-        position: fixed;
-        right: 0;
-        z-index: 3;
-        overflow: hidden;
-    }
-    .sidenav {
-        height: 85%;
-        width: 217px;
-        position: fixed;
-        z-index: 1;
-        top: 113px;
-        left: 0;
-        background-color: #3377ff;
-        border: 2px solid black;
-        border-top-style: none;
-        overflow-x: hidden;
-        padding-top: 20px;
-    }
-    #content_offset {
-        padding-top: 115px;
-        width: 1062px;
-        float: right;
-        overflow: hidden;
-    }
-    #logout {
-        padding: 6px 8px 0px 16px;
-        text-decoration: none;
-        font-size: 25px;
-        color: white;
-        display: block;
-        height: 10%;
-        width: 217px;
-        position: fixed;
-        top: 526px;
-        left: 0;
-        z-index: 2;
-        background-color: #3377ff;
-        border: 2px solid black;
-        border-top-style: none;
-        overflow-x: hidden;
-        padding-top: 20px;
-    }
-    .wrap {
-        top: 50%;
-        left: 50%;
-        width: 45%;
-        transform: translate(-27%, -7%);
-        float: left;
-        padding-left: 200px;
-        padding-top: 40px;
-    }
+#overlayx{
+    padding-top: 113px;
+    width: 1843px;
+    float: right;
+    position: absolute;
 }

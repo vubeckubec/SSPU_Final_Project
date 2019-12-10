@@ -15,7 +15,7 @@ final class HomepagePresenter extends BasePresenter
 	{
 		$this->signInFactory = $signInFactory;
         $this->signUpFactory = $signUpFactory;
-		$this->setLayout('layout');
+		$this->setLayout('home_layout');
 	}
 	
 	protected function createComponentSignInForm(): Form {
@@ -33,6 +33,6 @@ final class HomepagePresenter extends BasePresenter
 
 	public function actionOut(): void {
 		$this->getUser()->logout();
-        	$this->redirect('Homepage:in');
+        	$this->redirect('Homepage:default');
 	}
 }

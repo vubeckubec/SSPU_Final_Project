@@ -10,77 +10,171 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{$basePath}/css/style.css">
     <link href="{$basePath}/css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="{$basePath}/css/my_styles.css" rel="stylesheet" media="screen">
+    {*<link href="{$basePath}/css/my_styles.css" rel="stylesheet" media="screen">*}
     {block scripts}
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
     <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
     <script src="{$basePath}/js/main.js"></script>
+    <script src="Detect.js/detect.min.js"></script>
     {/block}
     {block head}{/block}
   </head>
-  <body>
-    <div style="display: block;">
-      <div id="logo_area" style="display: inline-block;">
-        <h1><time>00:00:00</time></h1>
-      </div>
-      <div id="functions_area" style="display: inline-block;">
-        <div class="wrap">
-            <div class="search">
-              <input type="text" class="searchTerm" placeholder="Type">
-              <button type="submit" class="searchButton">
-              <i class="fa fa-search"></i>
-              </button>
-            </div>
-          </div>  
-        <div>
-          <audio controls id="audio_control">
-            <source src="" type="audio/mpeg">
-          </audio>
-          <button type="button" class="btn btn-danger" id="queue_button">Queue</button>
-          <p id="demo" style="padding-bottom=20px;"></p>
-        </div>  
-      </div>
-    </div>
-    <div>
-      {if $user->loggedIn}
-      <div class="sidenav" style="display: inline-block;">
-          <div id="username">{$usernameIs->username}</div>
-          <a class="ajax_change" id="artist_path" n:href="Artists:default">Browse</a>
-          <div id="mymusic">My Music</div>
-          <a class="ajax_change" id="sideblock1" href="#clients">Favorites</a>
-          <a class="ajax_change" id="sideblock2" n:href="Playlists:default">Playlists</a>
-      </div>
-      <div>
-        <a id="logout" n:href="Homepage:out">Logout</a>
-      </div>
-      {elseif ifLoggedIn}
-        <div class="sidenav">
-            <div id="username"></div>
-            <a n:href="Artists:default">Browse</a>
-            <div id="mymusic">My Music</div>
-            <a id="sideblock1" href="#clients">Favorites</a>
-            <a id="sideblock2" n:href="Playlists:default">Playlists</a>
+  <style>
+    .sidenav a {
+      padding: 0px 8px 6px 16px;
+      text-decoration: none;
+      font-size: 25px;
+      color: white;
+      display: block;
+    }
+
+    .sidenav a:hover {
+    color: #bfbfbf;
+} 
+  #username {
+    padding: 0px 8px 0px 16px;
+    text-decoration: none;
+    font-size: 40px;
+    color: white;
+    display: block;
+}
+
+#mymusic {
+    padding: 0px 8px 0px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#sideblock1 {
+    padding: 0px 8px 0px 30px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#sideblock1:hover {
+    color: #bfbfbf;
+}
+
+#logout {
+  color:white;
+  padding: 0px 8px 0px 16px;
+  font-size: 25px;
+  text-decoration: none;
+}
+
+#logout:hover {
+  color: #bfbfbf;
+}
+
+#sideblock2 {
+    padding: 0px 8px 0px 30px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#sideblock2:hover {
+    color: #bfbfbf;
+}
+
+  </style>
+  <body style="height: 100vh;margin:0;padding:0;">
+    <div style="display:flex; flex-direction:column;height:100%;">
+      <div style="display:flex;flex-direction: row;">
+        <div id="logo_area" style="border: 2px solid black; vertical-align: middle; flex: 0 0 152px; text-align: center;border-bottom: none;border-right: none;background-color: #3377ff;">
+          <h1><time>00:00:00</time></h1>
         </div>
-        <div>Byli jste odhlaseni.Prosim prihlaste se znovu.</div>
-        <a n:href="Homepage:in">Login</a>
+        <div id="functions_area" style="display:flex; flex-direction:row;border: 2px solid black;width: 100%;justify-content:space-around;align-items:center;background-color: #3377ff;">
+            <div class="search" style="border: 2px solid #5cb85c;overflow: auto;-webkit-border-radius: 9px;height:63%;">
+              <form class="search-form">
+                <input type="text" class="searchTerm" placeholder="Type" style="border: 0px;width: 72.5%;padding: 10px 10px;">
+                <input type="submit" value="Search" style="border: 0px;background: none;background-color: #5cb85c;color: #fff;float: right;padding: 9px;-webkit-border-top-right-radius: 5px;-webkit-border-bottom-right-radius: 5px;cursor:pointer;padding-top:11px;padding-right:10px;">
+              </form>
+            </div>
+          <div>
+            <audio controls id="audio_control">
+              <source src="" type="audio/mpeg">
+            </audio>
+          </div>
+          <div>  
+            <button type="button" class="btn btn-success" id="queue_button" onclick="queueChangeFunction()">Show queue</button>
+          </div> 
+        </div>
+      </div>
+      {if $user->loggedIn}
+      <div style="display:flex;flex-direction:row;height:100%;">
+        <div style="display:flex; flex-direction:column;border:2px solid black;background-color: #3377ff;">
+          <div class="sidenav" style="width: 150px;">
+            <div id="username">{$usernameIs->username}</div>
+            <a class="ajax_change" id="artist_path" n:href="Artists:default">Browse</a>
+            <div id="mymusic">My Music</div>
+            <a class="ajax_change" id="sideblock1" href="#clients">Favorites</a>
+            <a class="ajax_change" id="sideblock2" n:href="Playlists:default">Playlists</a>
+          </div>
+          <div style="width:150px;margin-top: auto;">
+            <a id="logout" n:href="Homepage:out">Logout</a>
+          </div>
+        </div>    
       {/if}
-      <div id="content_offset" style="display: inline-block;">
-        {include content}
+        <div style="width:100%; height:100%;position:relative;">
+            <div id="content" style="z-index:10;width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+              {include content}
+            </div>
+            <div id="queue" style="z-index:0;width: 100%; height: 100%; position: absolute; top: 0; left: 0; display:none;">
+              <p>Bottom content 1</p>
+            </div>
+        </div>
       </div>
     </div>
     </body>
     <script>
-    //alert("Pre JS big layout.");
     $('.ajax_change').on("click",myAjaxHrefHandler);
-    function myAjaxHrefHandler(e){
-        e.preventDefault(); 
-        //alert("In big layout JS");          
-        var url = $(this).attr("href");
-        //alert(url);
-        $('#content_offset').load(url);
-      }  
+      function myAjaxHrefHandler(e){
+          var queue = document.getElementById("queue");
+          var content = document.getElementById("content");
+          if(queue.style.display === "none") {
+            e.preventDefault();          
+            var url = $(this).attr("href");
+            $('#content').load(url);
+          }else{
+            queue.style.display = "none";
+            content.style.display = "block";
+            queue_button.classList.remove("btn-warning");
+            queue_button.classList.add("btn-success");
+            queue_button.innerHTML = "Show queue";
+            e.preventDefault();          
+            var url = $(this).attr("href");
+            $('#content').load(url);  
+          }
+    }
+    function queueChangeFunction() {
+        var queue = document.getElementById("queue");
+        var content = document.getElementById("content");
+        var queue_button = document.getElementById("queue_button");
+        if (queue.style.display === "none") {
+          queue.style.display = "block";
+          content.style.display = "none";
+          queue_button.classList.remove("btn-success");
+          queue_button.classList.add("btn-warning");
+          queue_button.innerHTML = "Hide queue";
+        } else {
+          queue.style.display = "none";
+          content.style.display = "block";
+          queue_button.classList.remove("btn-warning");
+          queue_button.classList.add("btn-success");
+          queue_button.innerHTML = "Show queue";
+      }
+    }
+
+    /*JS timer temp*/ 
+
 
       var h1 = document.getElementsByTagName('h1')[0],
           start = document.getElementById('start'),

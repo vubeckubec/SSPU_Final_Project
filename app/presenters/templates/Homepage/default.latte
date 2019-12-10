@@ -1,10 +1,7 @@
 {block content}
-<div class="container">
-<br>
-<h1 n:block=title>Přihlásit</h1>
-
-{include bootstrap-form signInForm}
-<br>
-<a n:href="Homepage:up">Nejste registrovaní? Registrujte se zde.</a>
-
+<div class="container" style="color:white;">
+  <div id="link_area">
+    <a n:href="Homepage:in" class="btn btn-primary flex-item" id="login">Přihlásit</a>
+    <a n:href="Homepage:up" class="btn btn-primary flex-item" id="signUp">Registrovat</a>
+  </div>
 </div>
