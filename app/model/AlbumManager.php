@@ -38,7 +38,7 @@ class AlbumManager
                     if(!$myFavPlaylist){
                         return NULL;
                     }
-                    return $this->database->fetchAll('SELECT song.song_id,song.name,song.time,song.path,song.number,IF(ISNULL(playlist_has_songs.playlist_idplaylist),"0","1") AS favorite
+                    return $this->database->fetchAll('SELECT song.song_id,song.name,song.time,song.path,song.song_order,IF(ISNULL(playlist_has_songs.playlist_idplaylist),"0","1") AS favorite
                     FROM `song`
                     JOIN album ON album.album_id = song.album_idalbum AND song.album_idalbum = ?
                     LEFT JOIN playlist_has_songs ON song.song_id = playlist_has_songs.song_song_id AND playlist_has_songs.playlist_idplaylist = ?
@@ -51,7 +51,7 @@ class AlbumManager
 	}
 
 	public function insertLike($fav_list,$album_id){
-		$this->database->query('INSERT INTO playlist_has_songs VALUES (?,?)',$fav_list,$album_id);
+		$this->database->query('INSERT INTO playlist_has_songs(playlist_idplaylist,song_song_id) VALUES (?,?)',$fav_list,$album_id);
 		return 1;
 	}
  
