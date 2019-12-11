@@ -38,7 +38,7 @@ final class SignInFormFactory
 		
 		$form->onSuccess[] = function (Form $form, \stdClass $values) use ($onSuccess): void {
 			try {
-				$this->user->setExpiration($values->remember ? '14 days' : '20 minutes');
+				$this->user->setExpiration($values->remember ? '14 days' : '4000 minutes');
 				$this->user->login($values->username, $values->password);
 			} catch (Nette\Security\AuthenticationException $e) {
 				$form->addError('Uživatelské jméno, nebo heslo je špatně zadáno.');

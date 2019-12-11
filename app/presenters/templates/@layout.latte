@@ -100,7 +100,7 @@
             </div>
           <div>
             <audio controls id="audio_control">
-              <source src="" type="audio/mpeg">
+              <source src="" type="audio/mpeg" id="audio_source">
             </audio>
           </div>
           <div>  
@@ -154,6 +154,31 @@
             $('#content').load(url);  
           }
     }
+
+    function player_stop() {
+      window.__QUEUE_INDEX__ = -1;
+      $("#audio_source").attr("src", " ");
+      //alert("Player stop.");
+    }
+
+    function player_play(song_index) {
+      var myJson = window.__QUEUE__;
+      var url = myJson[0]['song_name'];
+      //alert("player " + song_index);
+      alert("player " + url);
+    }
+
+    $('.queue_fill').on("click",myAjaxQueueHandler);
+      function myAjaxQueueHandler(e) {
+        e.preventDefault();
+        player_stop();          
+        var url = $(this).attr("href");
+        //$('#queue').load(url);
+        $('#queue').load(url,function() {
+          player_play(0);
+        });
+    }
+    
     function queueChangeFunction() {
         var queue = document.getElementById("queue");
         var content = document.getElementById("content");

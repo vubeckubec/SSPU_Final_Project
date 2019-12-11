@@ -13,7 +13,8 @@
     {foreach $songs_list as $song}
         <tr>
             <td>{$song->song_order}</td>
-            <td><span song_id="{$song->song_id}" favorite="{$song->favorite}" class="{$song->favorite ? 'glyphicon glyphicon-heart': 'glyphicon glyphicon-heart-empty'} favtoggle_song" aria-hidden="true"></span>&emsp;<a class="ajax_change" n:href="Player:default song_id=>$song->song_id">{$song->name}</a></td>
+            <td><span song_id="{$song->song_id}" favorite="{$song->favorite}" class="{$song->favorite ? 'glyphicon glyphicon-heart': 
+            'glyphicon glyphicon-heart-empty'} favtoggle_song" aria-hidden="true"></span>&emsp;<a class="ajax_change" n:href="Player:default song_id=>$song->song_id">{$song->name}</a></td>
             <td>{$song->time/60%60}:{$song->time%60 < 10 ? '0' . $song->time%60 : $song->time%60}</td>
             <td>{$song->path}</td>
         </tr>

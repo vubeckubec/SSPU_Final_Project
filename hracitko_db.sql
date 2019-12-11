@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Úte 10. pro 2019, 20:58
+-- Vytvořeno: Stř 11. pro 2019, 22:19
 -- Verze serveru: 10.1.32-MariaDB
 -- Verze PHP: 7.2.5
 
@@ -220,6 +220,22 @@ CREATE TABLE `queue` (
   `song_id` int(11) NOT NULL,
   `song_order` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Vypisuji data pro tabulku `queue`
+--
+
+INSERT INTO `queue` (`user_id`, `song_id`, `song_order`) VALUES
+(12, 368, 915),
+(12, 365, 916),
+(12, 371, 917),
+(12, 374, 918),
+(12, 373, 919),
+(12, 369, 920),
+(12, 372, 921),
+(12, 367, 922),
+(12, 370, 923),
+(12, 366, 924);
 
 -- --------------------------------------------------------
 
@@ -895,13 +911,13 @@ ALTER TABLE `playlist`
 -- AUTO_INCREMENT pro tabulku `playlist_has_songs`
 --
 ALTER TABLE `playlist_has_songs`
-  MODIFY `song_order` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `song_order` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pro tabulku `queue`
 --
 ALTER TABLE `queue`
-  MODIFY `song_order` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `song_order` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=930;
 
 --
 -- AUTO_INCREMENT pro tabulku `song`

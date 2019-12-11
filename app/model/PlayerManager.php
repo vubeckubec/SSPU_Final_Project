@@ -22,7 +22,7 @@ class PlayerManager
 	}
 
     public function readByID($id){
-        $row = $this->database->fetch('SELECT artist.name AS artist_name,album.name AS album_name, album.year, album.album_id, song.name AS song_name, song.time,song.number,song.path 
+        $row = $this->database->fetch('SELECT artist.name AS artist_name,album.name AS album_name, album.year, album.album_id, song.name AS song_name, song.time,song.song_order,song.path 
                                        FROM `song`
                                        LEFT JOIN album ON album.album_id = song.album_idalbum
                                        JOIN artist_has_album ON artist_has_album.album_id = album.album_id 
