@@ -84,6 +84,18 @@
     color: #bfbfbf;
 }
 
+#users_path {
+    padding: 0px 8px 0px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#users_path:hover {
+    color: #bfbfbf;
+}
+
   </style>
   <body style="height: 100vh;margin:0;padding:0;">
     <div style="display:flex; flex-direction:column;height:100%;">
@@ -91,19 +103,26 @@
         <div id="logo_area" style="border: 2px solid black; vertical-align: middle; flex: 0 0 152px; text-align: center;border-bottom: none;border-right: none;background-color: #3377ff;">
           <h1><time>00:00:00</time></h1>
         </div>
-        <div id="functions_area" style="display:flex; flex-direction:row;border: 2px solid black;width: 100%;justify-content:space-around;align-items:center;background-color: #3377ff;">
-            <div class="search" style="border: 2px solid #5cb85c;overflow: auto;-webkit-border-radius: 9px;height:63%;">
+        <div id="functions_area" style="display:flex; flex-direction:row;border: 2px solid black;width: 100%;justify-content:space-around;align-items:center;background-color: #3377ff;height: 102%;">
+            <div class="search" style="border: 2px solid #5cb85c;overflow: auto;-webkit-border-radius: 9px;height:62%;">
               <form class="search-form">
                 <input type="text" class="searchTerm" placeholder="Type" style="border: 0px;width: 72.5%;padding: 10px 10px;">
                 <input type="submit" value="Search" style="border: 0px;background: none;background-color: #5cb85c;color: #fff;float: right;padding: 9px;-webkit-border-top-right-radius: 5px;-webkit-border-bottom-right-radius: 5px;cursor:pointer;padding-top:11px;padding-right:10px;">
               </form>
             </div>
+          <div>  
+          <span class="glyphicon glyphicon-step-backward" aria-hidden="true" id="backward"></span>
+          <span class="glyphicon glyphicon-step-forward" aria-hidden="true" id="forward"></span>
+          <span class="queue_pos"></span> 
+          </div>            
           <div>
             <audio controls id="audio_control">
               <source src="" type="audio/mpeg" id="audio_source">
             </audio>
           </div>
-          <div>  
+          <div>
+            <div id="song_meta"></div>
+            <div id="display_progress">0/0</div>   
             <button type="button" class="btn btn-success" id="queue_button" onclick="queueChangeFunction()">Show queue</button>
           </div> 
         </div>
@@ -117,6 +136,7 @@
             <div id="mymusic">My Music</div>
             <a class="ajax_change" id="sideblock1" href="#clients">Favorites</a>
             <a class="ajax_change" id="sideblock2" n:href="Playlists:default">Playlists</a>
+            <a class="ajax_change" id="users_path" n:href="UserList:default">Users</a>
           </div>
           <div style="width:150px;margin-top: auto;">
             <a id="logout" n:href="Homepage:out">Logout</a>
@@ -124,11 +144,12 @@
         </div>    
       {/if}
         <div style="width:100%; height:100%;position:relative;">
-            <div id="content" style="z-index:10;width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+            <div id="content" style="z-index:10;width: 100%; height: 100%; position: absolute; top: 0; left: 0;overflow: auto;">
               {include content}
             </div>
             <div id="queue" style="z-index:0;width: 100%; height: 100%; position: absolute; top: 0; left: 0; display:none;">
-              <p>Bottom content 1</p>
+              <br>
+              <p style="text-align:center;">V queue zatim nic neni.</p>
             </div>
         </div>
       </div>
@@ -158,25 +179,68 @@
     function player_stop() {
       window.__QUEUE_INDEX__ = -1;
       $("#audio_source").attr("src", " ");
-      //alert("Player stop.");
     }
 
     function player_play(song_index) {
+      if(song_index === undefined) {
+        song_index = 0;
+      }
       var myJson = window.__QUEUE__;
-      var url = myJson[0]['song_name'];
-      //alert("player " + song_index);
-      alert("player " + url);
+      var audio = document.getElementById("audio_control");
+      var url = myJson[song_index]['url'];
+      var max_song = window.__QUEUE__.length;
+      var display_progress = ((song_index*1) + 1)+ "/" +max_song;
+      var song_name = myJson[song_index]['song_name'];
+      $("#audio_source").attr("src",url);
+      $("#display_progress").text(display_progress);
+      $("#song_meta").text(song_name);
+      audio.load();
+      audio.play();
+      window.__QUEUE_INDEX__ = song_index;
     }
 
+    function playPrev() {
+      var cur_song_index = window.__QUEUE_INDEX__;
+      var max_song = window.__QUEUE__.length;
+      cur_song_index--;
+      if(cur_song_index < 0){
+        cur_song_index = max_song-1;
+      }
+      player_play(cur_song_index);
+    }
+
+    function playNext(){
+      var cur_song_index = window.__QUEUE_INDEX__;
+      var max_song = window.__QUEUE__.length;
+      cur_song_index++;
+      if(cur_song_index >= max_song){
+        cur_song_index = 0;
+      }
+      player_play(cur_song_index);
+    }
+
+    $('#backward').on("click",function(){
+      playPrev()  
+    });
+
+    $('#forward').on("click",function(){
+      playNext();
+    });
+
+    $('#audio_control').on("ended",function(){
+      playNext();
+    });
+
     $('.queue_fill').on("click",myAjaxQueueHandler);
-      function myAjaxQueueHandler(e) {
-        e.preventDefault();
-        player_stop();          
-        var url = $(this).attr("href");
-        //$('#queue').load(url);
-        $('#queue').load(url,function() {
-          player_play(0);
-        });
+
+    function myAjaxQueueHandler(e) {
+      e.preventDefault();
+      player_stop();          
+      var url = $(this).attr("href");
+      var cur_song_pos = $(this).attr("song_order");
+      $('#queue').load(url,function() {
+        player_play(cur_song_pos);
+      });
     }
     
     function queueChangeFunction() {

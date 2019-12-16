@@ -7,10 +7,7 @@ use Nette\Security\Identity;
 use Nette\Security\User;
 use Nette\Application\Responses\JsonResponse;
 
-class ArtistsPresenter extends Nette\Application\UI\Presenter
-{
-    /** @var Nette\Database\Context */
-    
+class ArtistsPresenter extends Nette\Application\UI\Presenter {
     private $artistsManager;
     
     public function __construct(ArtistsManager $artistsManager) {

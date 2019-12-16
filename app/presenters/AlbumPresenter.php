@@ -27,7 +27,6 @@ class AlbumPresenter extends Nette\Application\UI\Presenter
             $this->template->songs_list = $this->albumManager->readAll($album_id,$this->user->getId(),$sortmode);
             $this->template->thumb_url = $this->link('Albums:thumbnail',['album_id'=>$album_id]);
             $this->template->fav_list = $this->albumManager->getUsersFavoritePlaylist($this->user->getId());
-            $this->template->usernameIs = $this->albumManager->username_readById($this->user->getId());
         }else{
             $this->template->album_id = $album_id;
             $this->template->album_name = "Invalid album ID.";     

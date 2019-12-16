@@ -22,10 +22,13 @@ class QueueManager
 	}
 
     public function readAll($user_id) {
-        return $this->database->fetchAll('SELECT queue.user_id,queue.song_id,queue.song_order,song.name AS song_name,song.time,song.album_idalbum,album.name AS album_name
+        return $this->database->fetchAll('SELECT queue.user_id,queue.song_id,queue.song_order,song.name AS song_name,song.time,song.album_idalbum,album.name AS album_name,
+                                          artist.artist_id,album.album_id,artist.name AS artist_name
                                           FROM queue
                                           JOIN song ON queue.song_id = song.song_id
                                           JOIN album ON song.album_idalbum = album.album_id
+                                          JOIN artist_has_album ON album.album_id = artist_has_album.album_id
+                                          JOIN artist ON artist_has_album.artist_id = artist.artist_id
                                           WHERE queue.user_id = ?',$user_id); 
     }
     
@@ -40,7 +43,7 @@ class QueueManager
                                        SELECT ?, song.song_id
                                        FROM song 
                                        WHERE song.album_idalbum = ? 
-                                       ORDER BY song.song_order',$user_id,$album_id);
+                                       ORDER BY song.song_order',$user_id,$album_id);   
         return $res;
     }
 

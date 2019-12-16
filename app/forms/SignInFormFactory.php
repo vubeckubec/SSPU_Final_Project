@@ -23,7 +23,7 @@ final class SignInFormFactory
 		$this->factory = $factory;
 		$this->user = $user;
 	}
-	public function create(callable $onSuccess): Form
+	public function Create(callable $onSuccess): Form
 	{
 		$form = $this->factory->create();
 		$form->addText('username', 'Uživatelské jméno:')
@@ -41,7 +41,7 @@ final class SignInFormFactory
 				$this->user->setExpiration($values->remember ? '14 days' : '4000 minutes');
 				$this->user->login($values->username, $values->password);
 			} catch (Nette\Security\AuthenticationException $e) {
-				$form->addError('Uživatelské jméno, nebo heslo je špatně zadáno.');
+				$form->addError('Chyba přihlášení: ' . $e->getMessage());
 				return;
 			}
 			$onSuccess();

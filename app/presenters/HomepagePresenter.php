@@ -17,7 +17,7 @@ final class HomepagePresenter extends BasePresenter
         $this->signUpFactory = $signUpFactory;
 		$this->setLayout('home_layout');
 	}
-	
+
 	protected function createComponentSignInForm(): Form {
 		return $this->signInFactory->create(function (): void {
 			$this->restoreRequest($this->backlink);
@@ -33,6 +33,14 @@ final class HomepagePresenter extends BasePresenter
 
 	public function actionOut(): void {
 		$this->getUser()->logout();
-        	$this->redirect('Homepage:default');
+		$this->redirect('Homepage:default');
 	}
+
+	//Serves for redirection to main page if user is already logged in
+	public function actionDefault(): void {
+		if($this->getUser()->isLoggedIn()) {
+			$this->redirect('Blank:default');
+		}
+	}
+
 }

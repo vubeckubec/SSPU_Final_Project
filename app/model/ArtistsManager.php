@@ -1,28 +1,20 @@
 <?php
 namespace App\Model;
 use Nette;
-/**
- * Users management.
- */
-class ArtistsManager
-{
-	//use Nette\SmartObject;
-	const
-		TABLE_NAME = 'artist',
-		COLUMN_IDARTIST = 'artist_id',
-		COLUMN_NAME = 'name';
-	/** @var Nette\Database\Context */
+
+class ArtistsManager {
 	private $database;
+
 	public function __construct(Nette\Database\Context $database)
 	{
 	    $this->database = $database;
 	}
 
-    public function readAll($order){
+    /*public function readAll($order){
         return $this->database->table(self::TABLE_NAME)
                     ->order($order)
                     ->fetchAll();
-	}
+	}*/
 	
 	public function readByLikes($user_id){
 		return $this->database->fetchAll('SELECT artist.artist_id,artist.name,IF(ISNULL(user_likes_artist.user_iduser),"0","1") AS favorite

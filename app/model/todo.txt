@@ -1,9 +1,6 @@
 Co dodělat: (Priority from highest to lowest)
-    - ZAJAXovatět co je třeba
     - Přidat paging kde je třeba
-    - Vyřešit queue
     - Player předělat ???
-    - Stránky Favorites a Playlists
     - Search bar
     - Přidat u alb a písniček čudlík play, add to queue, add to Playlist
     - Sortování

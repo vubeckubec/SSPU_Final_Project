@@ -1,15 +1,16 @@
 {block content}
 <br>
-<div>Obsah queue:<div>
+{*<div>Obsah queue:<div>
 <div>album ID: {$album_id}</div>
-<div>playlist ID: {$playlist_id}</div>
+<div>playlist ID: {$playlist_id}</div>*}
 <table class="table table-striped">
     <thead>
         {*<th><a n:href="default sortmode=>'name ASC', artist_id=>$artist_id ">Název Album</a></th>*}
         {*<th><a n:href="default sortmode=>'year ASC', artist_id=>$artist_id ">Rok vydání</a></th>*}
         <th>Název písničky</th>
         <th>Délka písničky</th>
-        <th>Album písničky</th>
+        <th>Album</th>
+        <th>Interpret</th>
     </thead>
     <tbody>
         {foreach $queue_list as $queue}
@@ -17,13 +18,13 @@
             <td>{$queue->song_name}</td>
             <td>{$queue->time/60%60}:{$queue->time%60 < 10 ? '0' . $queue->time%60 : $queue->time%60}</td>
             <td>{$queue->album_name}</td>
+            <td>{$queue->artist_name}</td>
         </tr>
         {/foreach}
     </tbody>
 </table>
 <script>
     window.__QUEUE__ = JSON.parse({$json});
-    alert("Queue post.");
 </script>
 {/block}
 

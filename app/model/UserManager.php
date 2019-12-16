@@ -36,9 +36,11 @@ final class UserManager implements Nette\Security\IAuthenticator
 			->where(self::COLUMN_USERNAME, $username)
 			->fetch();
 		if (!$row) {
-			throw new Nette\Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
+			throw new Nette\Security\AuthenticationException('The username/password is incorrect.', self::IDENTITY_NOT_FOUND);
 		} elseif (!$this->passwords->verify($password, $row[self::COLUMN_PASSWORD])) {
-			throw new Nette\Security\AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
+			throw new Nette\Security\AuthenticationException('The username/password is incorrect.', self::INVALID_CREDENTIAL);
+		} elseif($row->disabled){
+			throw new Nette\Security\AuthenticationException('Disabled by Admin.', self::INVALID_CREDENTIAL);
 		} elseif ($this->passwords->needsRehash($row[self::COLUMN_PASSWORD])) {
 			$row->update([
 				self::COLUMN_PASSWORD => $this->passwords->hash($password),
@@ -67,6 +69,13 @@ final class UserManager implements Nette\Security\IAuthenticator
     public function getUser($id){
         return $this->database->table(self::TABLE_NAME)->where('id = ?', $id)->fetch();
 	}
+
+	public function actionCreate(): void {
+		if (!$this->getUser()->isLoggedIn()) {
+			$this->redirect('Homepage:in');
+		}
+	}
+	
 	
 	
 }

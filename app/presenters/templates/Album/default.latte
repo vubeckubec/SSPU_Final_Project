@@ -1,5 +1,5 @@
 {block content}
-    <div>Název alba: {$album_name}
+    <div>Název alba: {$album_name->name}
     <img src="{$thumb_url}">
     </div>
     <table fav_list="{$fav_list}" class="table table-striped fav_list">
@@ -13,8 +13,9 @@
     {foreach $songs_list as $song}
         <tr>
             <td>{$song->song_order}</td>
-            <td><span song_id="{$song->song_id}" favorite="{$song->favorite}" class="{$song->favorite ? 'glyphicon glyphicon-heart': 
-            'glyphicon glyphicon-heart-empty'} favtoggle_song" aria-hidden="true"></span>&emsp;<a class="ajax_change" n:href="Player:default song_id=>$song->song_id">{$song->name}</a></td>
+            <td><span class="glyphicon glyphicon-play queue_fill" aria-hidden="true" n:href="Queue:default album_id=>$album_id" song_order="{$song->song_order - 1}" id="song_pos"></span>
+            <span song_id="{$song->song_id}" favorite="{$song->favorite}" class="{$song->favorite ? 'glyphicon glyphicon-heart': 
+            'glyphicon glyphicon-heart-empty'} favtoggle_song" aria-hidden="true"></span>&emsp;<span class="ajax_change" n:href="Player:default song_id=>$song->song_id">{$song->name}</span></td>
             <td>{$song->time/60%60}:{$song->time%60 < 10 ? '0' . $song->time%60 : $song->time%60}</td>
             <td>{$song->path}</td>
         </tr>

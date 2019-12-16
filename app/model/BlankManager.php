@@ -3,12 +3,12 @@ namespace App\Model;
 use Nette;
 
 class BlankManager {
-    private const
+   /* private const
 		TABLE_NAME = 'user',
 		COLUMN_IDUSER = 'iduser',
 		COLUMN_USERNAME = 'username',
 		COLUMN_PASSWORD = 'password';
-
+*/
     private $database;
     
 	public function __construct(Nette\Database\Context $database) {

@@ -1,0 +1,30 @@
+{block content}
+<br>
+{*<div>Název umělce: {$artists}<div>*}
+<table class="table table-striped">
+    <thead>
+        {*<th><a n:href="default sortmode=>'name ASC', artist_id=>$artist_id ">Název Album</a></th>*}
+        {*<th><a n:href="default sortmode=>'year ASC', artist_id=>$artist_id ">Rok vydání</a></th>*}
+        <th>Jméno usera</th>
+        <th>Role</th>
+        <th>Thumbnail</th>
+    </thead>
+    <tbody>
+        {foreach $UsersList as $users}
+        <tr>
+            <td>{$users->username}</td>
+            <td>{$users->role}</td>
+            <td>{$users->avatar}</td>
+        </tr>
+        {/foreach}
+    </tbody>
+</table>
+{/block}
+
+{block scripts}
+{include parent}
+{/block}
+
+
+{block head}
+{/block}

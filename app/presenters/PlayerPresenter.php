@@ -16,7 +16,7 @@ class PlayerPresenter extends Nette\Application\UI\Presenter
         $this->setLayout('empty');
     }
  
-    public function renderDefault($song_id) {
+    /*public function renderDefault($song_id) {
 		$this->template->song_id = $song_id;
 		$this->template->song_meta = $this->playerManager->readByID($song_id);
 		if($this->template->song_meta) {
@@ -34,7 +34,7 @@ class PlayerPresenter extends Nette\Application\UI\Presenter
 			$this->template->thumb_url = "Error 404 not found";		
 		}
 		
-    }
+    }*/
 
 	public function renderDataFile($song_id) {
 		$song_meta = $this->playerManager->readByID($song_id);

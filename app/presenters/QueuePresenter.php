@@ -28,7 +28,6 @@ class QueuePresenter extends Nette\Application\UI\Presenter
         $this->template->queue_list = $this->queueManager->readAll($this->user->getId());  
 
         $jsonArray = array();
-        $counter = 0;
         foreach ($this->template->queue_list as $qsong) {
             $jsonRow = array();
             $jsonRow['song_id'] = $qsong->song_id;
@@ -36,8 +35,6 @@ class QueuePresenter extends Nette\Application\UI\Presenter
             $jsonRow['album_name'] = $qsong->album_name;
             $jsonRow['url'] = $this->link('Player:datafile',['song_id'=>$qsong->song_id]);
             array_push($jsonArray,$jsonRow);
-            //$jsonArray[$counter] = $jsonRow;
-            $counter++;
         }
 
         $this->template->json = json_encode($jsonArray);

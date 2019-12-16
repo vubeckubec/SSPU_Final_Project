@@ -1,6 +1,7 @@
 
 {block content}
     <br>
+    <div>{$mp3_url}</div>
     <div>ID pisnicky: {$song_id}<div>
     <div>Poradi v albu: {$song_meta->song_order}</div>
     <div>Nazev pisnicky: {$song_meta->song_name}</div>

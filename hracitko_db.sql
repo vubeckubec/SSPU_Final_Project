@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Stř 11. pro 2019, 22:19
+-- Vytvořeno: Pon 16. pro 2019, 21:09
 -- Verze serveru: 10.1.32-MariaDB
 -- Verze PHP: 7.2.5
 
@@ -204,6 +204,7 @@ INSERT INTO `playlist_has_songs` (`playlist_idplaylist`, `song_song_id`, `song_o
 (1, 2, 1),
 (1, 3, 2),
 (1, 4, 3),
+(1, 61, 9),
 (1, 83, 4),
 (1, 362, 8),
 (2, 4, 5),
@@ -226,16 +227,27 @@ CREATE TABLE `queue` (
 --
 
 INSERT INTO `queue` (`user_id`, `song_id`, `song_order`) VALUES
-(12, 368, 915),
-(12, 365, 916),
-(12, 371, 917),
-(12, 374, 918),
-(12, 373, 919),
-(12, 369, 920),
-(12, 372, 921),
-(12, 367, 922),
-(12, 370, 923),
-(12, 366, 924);
+(12, 275, 3634),
+(12, 268, 3635),
+(12, 273, 3636),
+(12, 259, 3637),
+(12, 258, 3638),
+(12, 263, 3639),
+(12, 261, 3640),
+(12, 265, 3641),
+(12, 274, 3642),
+(12, 276, 3643),
+(12, 260, 3644),
+(12, 269, 3645),
+(12, 272, 3646),
+(12, 267, 3647),
+(12, 262, 3648),
+(12, 270, 3649),
+(12, 278, 3650),
+(12, 277, 3651),
+(12, 271, 3652),
+(12, 264, 3653),
+(12, 266, 3654);
 
 -- --------------------------------------------------------
 
@@ -722,17 +734,22 @@ INSERT INTO `song` (`song_id`, `name`, `time`, `album_idalbum`, `path`, `song_or
 CREATE TABLE `user` (
   `iduser` int(10) UNSIGNED NOT NULL,
   `username` varchar(45) NOT NULL,
-  `password` varchar(2048) NOT NULL
+  `password` varchar(2048) NOT NULL,
+  `role` set('admin','normal','moderator','') NOT NULL DEFAULT 'normal',
+  `disabled` tinyint(1) NOT NULL,
+  `private` tinyint(1) NOT NULL,
+  `personal` varchar(64) NOT NULL,
+  `avatar` varchar(2048) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Vypisuji data pro tabulku `user`
 --
 
-INSERT INTO `user` (`iduser`, `username`, `password`) VALUES
-(12, 'viktor1', '$2y$10$mo0UeHPZNvfRWf6YBWAtIOm15Mx73MEK8DViXFzwQFEmDAGe.v5oS'),
-(13, 'guest', '$2y$10$qDAEjPiLYrlGcRKHe3KopO6EbUeTNGfU99ZMPBM8ybg6Ca7IkbKRa'),
-(14, 'viktor2', '$2y$10$pgIZN8fS2N00m8TiG0jbAufW84JKbrPPx.wjf2hSjC.SzxC6swz6C');
+INSERT INTO `user` (`iduser`, `username`, `password`, `role`, `disabled`, `private`, `personal`, `avatar`) VALUES
+(12, 'viktor1', '$2y$10$mo0UeHPZNvfRWf6YBWAtIOm15Mx73MEK8DViXFzwQFEmDAGe.v5oS', 'admin', 0, 0, '', ''),
+(13, 'guest', '$2y$10$qDAEjPiLYrlGcRKHe3KopO6EbUeTNGfU99ZMPBM8ybg6Ca7IkbKRa', 'normal', 0, 0, '', ''),
+(14, 'viktor2', '$2y$10$pgIZN8fS2N00m8TiG0jbAufW84JKbrPPx.wjf2hSjC.SzxC6swz6C', 'normal', 1, 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -917,7 +934,7 @@ ALTER TABLE `playlist_has_songs`
 -- AUTO_INCREMENT pro tabulku `queue`
 --
 ALTER TABLE `queue`
-  MODIFY `song_order` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=930;
+  MODIFY `song_order` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3665;
 
 --
 -- AUTO_INCREMENT pro tabulku `song`
