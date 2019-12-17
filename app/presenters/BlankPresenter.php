@@ -20,6 +20,7 @@ class BlankPresenter extends Nette\Application\UI\Presenter
  
     public function renderDefault() {
         $this->template->usernameIs = $this->blankManager->username_readById($this->user->getId());
+        $this->template->user_id = $this->user->getId();
     }
 
 }

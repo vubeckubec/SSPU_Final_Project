@@ -16,6 +16,7 @@ class UserListPresenter extends Nette\Application\UI\Presenter
     }
  
     public function renderDefault() {
+        $this->template->user_id = $this->user->getId();
         $this->template->UsersList = $this->userlistManager->readAll();
     }
 }

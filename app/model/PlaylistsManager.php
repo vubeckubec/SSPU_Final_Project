@@ -23,5 +23,9 @@ class PlaylistsManager
                                           JOIN playlist ON playlist.idplaylist = user_has_playlist.playlist_idplaylist AND user_has_playlist.user_iduser = ?',$user_id);
      }
 
+    public function username_readById($user_id){
+	    return $this->database->fetch('SELECT user.username FROM user WHERE iduser = ?',$user_id);
+	}
+
 }
     

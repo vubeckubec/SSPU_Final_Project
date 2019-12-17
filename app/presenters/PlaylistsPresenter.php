@@ -18,6 +18,8 @@ class PlaylistsPresenter extends Nette\Application\UI\Presenter
     }
  
     public function renderDefault($user_id) {
-        $this->template->playlists_list = $this->playlistsManager->readAll($this->user->getId()); 
+        $this->template->user_id = $user_id;
+        $this->template->playlists_list = $this->playlistsManager->readAll($user_id);
+        $this->template->usernameIs = $this->playlistsManager->username_readById($user_id); 
     }
 }

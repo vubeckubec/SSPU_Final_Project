@@ -12,7 +12,7 @@
     <tbody>
         {foreach $UsersList as $users}
         <tr>
-            <td>{$users->username}</td>
+            <td><a class="ajax_change" n:href="Playlists:default user_id=>$users->iduser">{$users->username}</a></td>
             <td>{$users->role}</td>
             <td>{$users->avatar}</td>
         </tr>
