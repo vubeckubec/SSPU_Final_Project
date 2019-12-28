@@ -26,22 +26,22 @@ final class SignInFormFactory
 	public function Create(callable $onSuccess): Form
 	{
 		$form = $this->factory->create();
-		$form->addText('username', 'Uživatelské jméno:')
-			->setRequired('Prosím zadejte své uživatelské jméno.');
+		$form->addText('username', 'Username:')
+			->setRequired('Please fill in your username.');
 
-		$form->addPassword('password', 'Heslo:')
-			->setRequired('Prosím zadejte své heslo.');
+		$form->addPassword('password', 'Password:')
+			->setRequired('Please fill in your password.');
 
-		$form->addCheckbox('remember', '  Zůstat přihlášen');
+		$form->addCheckbox('remember', '  Remember me');
 
-		$form->addSubmit('send', 'Přihlásit');
+		$form->addSubmit('send', 'Login');
 		
 		$form->onSuccess[] = function (Form $form, \stdClass $values) use ($onSuccess): void {
 			try {
 				$this->user->setExpiration($values->remember ? '14 days' : '4000 minutes');
 				$this->user->login($values->username, $values->password);
 			} catch (Nette\Security\AuthenticationException $e) {
-				$form->addError('Chyba přihlášení: ' . $e->getMessage());
+				$form->addError('Login error: ' . $e->getMessage());
 				return;
 			}
 			$onSuccess();

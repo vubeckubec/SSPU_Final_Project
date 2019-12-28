@@ -16,7 +16,8 @@ class AlbumsManager
                                           FROM album
                                           JOIN artist_has_album ON album.album_id = artist_has_album.album_id
                                           LEFT JOIN user_likes_album ON album.album_id = user_likes_album.album_album_id AND user_likes_album.user_iduser = ?
-                                          WHERE artist_has_album.artist_id = ?',$user_id,$artist_id);
+                                          WHERE artist_has_album.artist_id = ?
+                                          ORDER BY album.year',$user_id,$artist_id);
     }
 
     public function readByID($album_id){

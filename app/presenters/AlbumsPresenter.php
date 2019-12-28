@@ -67,5 +67,6 @@ class AlbumsPresenter extends Nette\Application\UI\Presenter {
 		$httpResponse->setHeader('Content-Transfer-Encoding', 'binary');
 		$httpResponse->setHeader('Accept-Ranges', 'bytes');
 		$this->sendResponse(new Nette\Application\Responses\FileResponse($file_path));	
-	}
+    }
+
 }

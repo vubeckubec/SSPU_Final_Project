@@ -17,9 +17,11 @@ class ArtistsManager {
 	}*/
 	
 	public function readByLikes($user_id){
-		return $this->database->fetchAll('SELECT artist.artist_id,artist.name,IF(ISNULL(user_likes_artist.user_iduser),"0","1") AS favorite
+		return $this->database->fetchAll('SELECT artist.artist_id,artist.name,
+		                                  IF(ISNULL(user_likes_artist.user_iduser),"0","1") AS favorite
 									      FROM artist
-										  LEFT JOIN user_likes_artist ON artist.artist_id = user_likes_artist.artist_artist_id AND user_likes_artist.user_iduser = ?', $user_id);	  					   
+										  LEFT JOIN user_likes_artist ON artist.artist_id = user_likes_artist.artist_artist_id 
+										  AND user_likes_artist.user_iduser = ?', $user_id);	  					   
 	}
 
 	public function deleteLike($user_id,$artist_id){

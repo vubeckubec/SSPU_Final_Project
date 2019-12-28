@@ -20,13 +20,13 @@ final class SignUpFormFactory
 	public function create(callable $onSuccess): Form
 	{
 		$form = $this->factory->create();
-		$form->addText('username', 'Zvolte si své uživatelské jméno:')
-			->setRequired('Prosím zvolte si své uživatelské jméno.');
-		$form->addPassword('password', 'Vytvořte si své heslo:')
-			->setOption('description', sprintf('alespoň %d znaků', self::PASSWORD_MIN_LENGTH))
-			->setRequired('Prosím vytvořte si své heslo.')
+		$form->addText('username', 'Choose your username:')
+			->setRequired('Please choose your username.');
+		$form->addPassword('password', 'Choose your password:')
+			->setOption('description', sprintf('at least %d characters', self::PASSWORD_MIN_LENGTH))
+			->setRequired('Please create your password.')
 			->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH);
-		$form->addSubmit('send', 'Registrovat');
+		$form->addSubmit('send', 'Sign up');
 		$form->onSuccess[] = function (Form $form, \stdClass $values) use ($onSuccess): void {
 			try {
 				$this->userManager->add($values->username, $values->password);

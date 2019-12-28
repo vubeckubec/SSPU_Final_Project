@@ -1,13 +1,13 @@
 {block content}
 <br>
-<div>Název umělce: {$artists->name}<div>
+<div>Interprets name: {$artists->name}<div>
 <table class="table table-striped">
     <thead>
         {*<th><a n:href="default sortmode=>'name ASC', artist_id=>$artist_id ">Název Album</a></th>*}
         {*<th><a n:href="default sortmode=>'year ASC', artist_id=>$artist_id ">Rok vydání</a></th>*}
-        <th>Název Alba</th>
-        <th>Rok vydání</th>
-        <th>Thumbnail</th>
+        <th>Album name</th>
+        <th>Release year</th>
+        <th>Album cover</th>
     </thead>
     <tbody>
         {foreach $album_list_new as $album}
@@ -50,7 +50,7 @@ $('.favtoggle_album').click(function(){
             }
         }
     );
-});   
+});  
 </script>
 {/block}
 

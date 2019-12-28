@@ -10,7 +10,7 @@ php:
 
 
 application:
-	errorPresenter: Error
+	#errorPresenter: Error
 	mapping:
 		*: App\*Module\Presenters\*Presenter
 
@@ -29,6 +29,9 @@ services:
 	- App\Model\PlayerManager	
 	- App\Model\PlaylistsManager
 	- App\Model\QueueManager
+	- App\Model\SpinnerManager
+	- App\Model\SearchManager
+	- App\Model\ProfileManager
 	- App\Model\UserListManager	
 	- App\Forms\FormFactory
 	- App\Forms\SignInFormFactory

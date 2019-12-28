@@ -11,7 +11,7 @@ class UserListManager
 	    $this->database = $database;
     }
     
-    public function readAll(){
+    public function readAll() {
                     return $this->database->fetchAll('SELECT user.iduser,user.username,user.role,user.disabled,user.private,user.personal,user.avatar
                                                       FROM `user`
                                                       WHERE user.disabled = 0 AND user.private = 0 AND user.role = "normal" '); 

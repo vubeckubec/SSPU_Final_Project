@@ -1,0 +1,95 @@
+{block content}
+<div>user id: {$user_id}</div>
+<div>Profile of user: {$profileInfo->username}</div>
+<div>User's role: {$profileInfo->role}</div>
+{if $profileInfo->disabled == 0}<div>Profile status: Profile is not disabled</div>{else}<div>Profile status: Profile is disabled</div>{/if}
+{if $profileInfo->private == 0}<div>Profile status: Profile is not private</div>{else}<div>Profile status: Profile is private</div>{/if}
+<span>User's profile description: </span><div class="inplace" style="display: inline-block;" data-field-value="{$profileInfo->personal}">{$profileInfo->personal}</div>
+<div><img src="{$thumb_url}" height="95" width="95"></div>
+<form id="uploadimage" action="" method="post" enctype="multipart/form-data">
+<div id="image_preview"><img id="previewing" src="noimage.png" /></div>
+<hr id="line">
+<div id="selectImage">
+<label>Select Your Image</label><br/>
+<input type="file" name="file" id="file" required />
+<input type="submit" value="Upload" class="submit" />
+</div>
+</form>
+</div>
+<h4 id='loading' >loading..</h4>
+<div id="message"></div>
+<script>
+$('.inplace').inplace({
+    buttonOrder: ['save', 'cancel'],
+	cancel: true,
+	cancelClass: 'inplace__cancel btn btn-danger',
+	cancelValue: 'Cancel',
+
+    save: true,
+	saveClass: 'inplace__save btn btn-success',
+	saveValue: 'Save',
+
+    fieldClass: 'inplace__field',
+	fieldName: 'personal',
+	fieldType: 'text',
+	
+	selectable: ['select-one', 'select-multiple'],
+    method: 'POST',
+    url: {$save_url}
+});
+
+$(document).ready(function (e) {
+	$("#uploadimage").on('submit',(function(e) {
+		e.preventDefault();
+		$("#message").empty();
+		$('#loading').show();
+		$.ajax({
+			url: {link Profile:UploadThumb user_id=>$user_id}, // Url to which the request is send
+			type: "POST",             // Type of request to be send, called as method
+			data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+			contentType: false,       // The content type used when sending data to the server.
+			cache: false,             // To unable request pages to be cached
+			processData:false,        // To send DOMDocument or non processed data file it is set to false
+			success: function(data) { // A function to be called if request succeeds
+				$('#loading').hide();
+				$("#message").html(data);
+			}
+		});
+	}));
+
+	// Function to preview image after validation
+	$(function() {
+		$("#file").change(function() {
+			$("#message").empty(); // To remove the previous error message
+			var file = this.files[0];
+			var imagefile = file.type;
+			var match= ["image/jpeg","image/png","image/jpg"];
+			if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]))) {
+				$('#previewing').attr('src','noimage.png');
+				$("#message").html("<p id='error'>Please Select A valid Image File</p>"+"<h4>Note</h4>"+"<span id='error_message'>Only jpeg, jpg and png Images type allowed</span>");
+				return false;	
+			}else{
+				var reader = new FileReader();
+				reader.onload = imageIsLoaded;
+				reader.readAsDataURL(this.files[0]);
+			}
+		});
+	});
+
+	function imageIsLoaded(e) {
+		$("#file").css("color","green");
+		$('#image_preview').css("display", "block");
+		$('#previewing').attr('src', e.target.result);
+		$('#previewing').attr('width', '250px');
+		$('#previewing').attr('height', '230px');
+	};
+});
+</script>
+{/block}
+{block scripts}
+{include parent}
+{/block}
+
+
+{block head}
+{/block}

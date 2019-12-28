@@ -5,16 +5,16 @@
     <thead>
         {*<th><a n:href="default sortmode=>'name ASC', artist_id=>$artist_id ">Název Album</a></th>*}
         {*<th><a n:href="default sortmode=>'year ASC', artist_id=>$artist_id ">Rok vydání</a></th>*}
-        <th>Jméno usera</th>
+        <th>Username</th>
         <th>Role</th>
-        <th>Thumbnail</th>
+        <th>Avatar</th>
     </thead>
     <tbody>
-        {foreach $UsersList as $users}
+        {foreach $UsersList as $userRec}
         <tr>
-            <td><a class="ajax_change" n:href="Playlists:default user_id=>$users->iduser">{$users->username}</a></td>
-            <td>{$users->role}</td>
-            <td>{$users->avatar}</td>
+            <td><a class="ajax_change" n:href="Playlists:default user_id=>$userRec->iduser">{$userRec->username}</a></td>
+            <td>{$userRec->role}</td>
+            <td><img src="{link Profile:thumbnail user_id=>$userRec->iduser}" height="55" width="55"></td>
         </tr>
         {/foreach}
     </tbody>

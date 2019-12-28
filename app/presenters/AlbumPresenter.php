@@ -47,4 +47,11 @@ class AlbumPresenter extends Nette\Application\UI\Presenter
             $this->sendResponse(new JsonResponse(['response' => $res]));
         }
     }
+
+    public function actionSave($song_id, $song_name) {
+        $this->albumManager->updateSongName($song_id,$song_name);
+        $pole = array();
+        $pole['song_name'] = $song_name;
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($pole));
+    } 
 }

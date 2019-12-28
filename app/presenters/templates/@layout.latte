@@ -17,7 +17,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
     <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
     <script src="{$basePath}/js/main.js"></script>
-    <script src="Detect.js/detect.min.js"></script>
+    <script src="{$basePath}/js/inplace.js"></script>
     {/block}
     {block head}{/block}
   </head>
@@ -36,9 +36,13 @@
   #username {
     padding: 0px 8px 0px 16px;
     text-decoration: none;
-    font-size: 40px;
+    font-size: 30px;
     color: white;
     display: block;
+}
+
+#username:hover {
+    color: #bfbfbf;
 }
 
 #mymusic {
@@ -96,6 +100,62 @@
     color: #bfbfbf;
 }
 
+.loader {
+   border: 16px solid #f3f3f3;
+   border-radius: 50%;
+   border-top: 16px solid #3498db;
+   width: 120px;
+   height: 120px;
+   -webkit-animation: spin 2s linear infinite; 
+   animation: spin 2s linear infinite;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   margin-left: -50px;
+   margin-top: -50px;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.result_list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: white;
+}
+
+.results {
+  float: left;
+}
+
+.results {
+  display: block;
+  color: #92add7;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.results:hover:not(.active) {
+  color: #32323d;
+}
+
+.active {
+  color: #32323d;
+}
+
+hr {
+  margin-top: 0px;
+}
   </style>
   <body style="height: 100vh;margin:0;padding:0;">
     <div style="display:flex; flex-direction:column;height:100%;">
@@ -103,11 +163,11 @@
         <div id="logo_area" style="border: 2px solid black; vertical-align: middle; flex: 0 0 152px; text-align: center;border-bottom: none;border-right: none;background-color: #3377ff;">
           <h1><time>00:00:00</time></h1>
         </div>
-        <div id="functions_area" style="display:flex; flex-direction:row;border: 2px solid black;width: 100%;justify-content:space-around;align-items:center;background-color: #3377ff;height: 102%;">
+        <div id="functions_area" style="display:flex; flex-direction:row;border: 2px solid black;width: 100%;justify-content:space-around;align-items:center;background-color: #3377ff;height: 102%;z-index:5;">
             <div class="search" style="border: 2px solid #5cb85c;overflow: auto;-webkit-border-radius: 9px;height:62%;">
-              <form class="search-form">
-                <input type="text" class="searchTerm" placeholder="Type" style="border: 0px;width: 72.5%;padding: 10px 10px;">
-                <input type="submit" value="Search" style="border: 0px;background: none;background-color: #5cb85c;color: #fff;float: right;padding: 9px;-webkit-border-top-right-radius: 5px;-webkit-border-bottom-right-radius: 5px;cursor:pointer;padding-top:11px;padding-right:10px;">
+              <form class="search-form" id="search-form" n:href="Search:default">
+                <input type="text" class="searchTerm" id="searchQuery" placeholder="Type" style="border: 0px;width: 72.55%;padding: 10px 10px;">
+                <input type="submit" value="Search" id="submit_button" url="/spinner/" style="border: 0px;background: none;background-color: #5cb85c;color: #fff;float: right;padding: 9px;-webkit-border-top-right-radius: 5px;-webkit-border-bottom-right-radius: 5px;cursor:pointer;padding-top:11px;padding-right:10px;">
               </form>
             </div>
           <div>  
@@ -120,9 +180,9 @@
               <source src="" type="audio/mpeg" id="audio_source">
             </audio>
           </div>
+          <div id="song_meta"></div>
+          <div id="display_progress">0/0</div>   
           <div>
-            <div id="song_meta"></div>
-            <div id="display_progress">0/0</div>   
             <button type="button" class="btn btn-success" id="queue_button" onclick="queueChangeFunction()">Show queue</button>
           </div> 
         </div>
@@ -131,10 +191,10 @@
       <div style="display:flex;flex-direction:row;height:100%;">
         <div style="display:flex; flex-direction:column;border:2px solid black;background-color: #3377ff;">
           <div class="sidenav" style="width: 150px;">
-            <div id="username">{$usernameIs->username}</div>
+            <a class="ajax_change" id="username" n:href="Profile:default user_id=>$user_id">{$usernameIs->username}</a>
             <a class="ajax_change" id="artist_path" n:href="Artists:default">Browse</a>
             <div id="mymusic">My Music</div>
-            <a class="ajax_change" id="sideblock1" href="#clients">Favorites</a>
+            <a class="ajax_change" id="sideblock1" n:href="Spinner:default">Favorites</a>
             <a class="ajax_change" id="sideblock2" n:href="Playlists:default user_id=>$user_id">Playlists</a>
             <a class="ajax_change" id="users_path" n:href="UserList:default">Users</a>
           </div>
@@ -144,18 +204,31 @@
         </div>    
       {/if}
         <div style="width:100%; height:100%;position:relative;">
-            <div id="content" style="z-index:10;width: 100%; height: 100%; position: absolute; top: 0; left: 0;overflow: auto;">
+            <div id="content" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;overflow: auto;">
               {include content}
             </div>
             <div id="queue" style="z-index:0;width: 100%; height: 100%; position: absolute; top: 0; left: 0; display:none;">
               <br>
-              <p style="text-align:center;">V queue zatim nic neni.</p>
+              <p style="text-align:center;">There is nothing in queue yet.</p>
             </div>
         </div>
       </div>
     </div>
     </body>
     <script>
+    /*$('#submit_button').on("click",function(e){
+      var content = document.getElementById("content");
+      var url = $(this).attr("url");
+      e.preventDefault();
+      $('#content').load(url);
+    });*/
+
+    $('#search-form').submit(function(e){
+        e.preventDefault();
+        var searchUrl = $(this).attr("href") + '?' + 'query=' + encodeURIComponent($('#searchQuery').val());
+        $('#content').load(searchUrl);
+    });              
+
     $('.ajax_change').on("click",myAjaxHrefHandler);
       function myAjaxHrefHandler(e){
           var queue = document.getElementById("queue");

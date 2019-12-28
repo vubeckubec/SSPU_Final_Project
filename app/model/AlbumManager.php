@@ -28,7 +28,8 @@ class AlbumManager
                                           FROM song
                                           JOIN album ON album.album_id = song.album_idalbum AND song.album_idalbum = ?
                                           LEFT JOIN playlist_has_songs ON song.song_id = playlist_has_songs.song_song_id 
-                                          AND playlist_has_songs.playlist_idplaylist = ?',$album_id,$myFavPlaylist);
+                                          AND playlist_has_songs.playlist_idplaylist = ?
+                                          ORDER BY song.song_order',$album_id,$myFavPlaylist);
     }
     
     public function deleteLike($fav_list,$album_id){
@@ -53,5 +54,11 @@ class AlbumManager
         return $this->database->fetch('SELECT * 
                                        FROM album 
                                        WHERE album.album_id = ?',$album_id);             
+    }
+
+    public function updateSongName($song_id, $song_name) {
+        return $this->database->query('UPDATE song
+                                       SET name = ?
+                                       WHERE song_id = ?',$song_name,$song_id);
     }
 }
