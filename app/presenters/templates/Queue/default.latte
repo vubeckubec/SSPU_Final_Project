@@ -7,6 +7,10 @@
     <thead>
         {*<th><a n:href="default sortmode=>'name ASC', artist_id=>$artist_id ">Název Album</a></th>*}
         {*<th><a n:href="default sortmode=>'year ASC', artist_id=>$artist_id ">Rok vydání</a></th>*}
+        {*            <td>{$queue->song_name}</td>
+            <td>{$queue->time/60%60}:{$queue->time%60 < 10 ? '0' . $queue->time%60 : $queue->time%60}</td>
+            <td>{$queue->album_name}</td>
+            <td>{$queue->artist_name}</td>*}
         <th>Název písničky</th>
         <th>Délka písničky</th>
         <th>Album</th>
@@ -15,10 +19,7 @@
     <tbody>
         {foreach $queue_list as $queue}
         <tr>
-            <td>{$queue->song_name}</td>
-            <td>{$queue->time/60%60}:{$queue->time%60 < 10 ? '0' . $queue->time%60 : $queue->time%60}</td>
-            <td>{$queue->album_name}</td>
-            <td>{$queue->artist_name}</td>
+            {$queue|noescape}
         </tr>
         {/foreach}
     </tbody>

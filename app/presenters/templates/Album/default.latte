@@ -10,14 +10,7 @@
         </thead>
         <tbody>
     {foreach $songs_list as $song}
-        <tr>
-            <td>{$song->song_order}</td>
-            <td><span class="glyphicon glyphicon-play queue_fill" aria-hidden="true" n:href="Queue:default album_id=>$album_id" song_order="{$song->song_order - 1}" id="song_pos"></span>
-            <span song_id="{$song->song_id}" favorite="{$song->favorite}" class="{$song->favorite ? 'glyphicon glyphicon-heart': 
-            'glyphicon glyphicon-heart-empty'} favtoggle_song" aria-hidden="true"></span>&emsp;
-            <span class="inplace" data-field-value="{$song->name}" data-url="{link Album:save song_id=>$song->song_id}">{$song->name}</span></td>
-            <td>{$song->time/60%60}:{$song->time%60 < 10 ? '0' . $song->time%60 : $song->time%60}</td>
-        </tr>
+        <tr>{$song|noescape}</tr>
     {/foreach}
         </tbody>
     </table>
@@ -69,7 +62,43 @@ $('.inplace').inplace({
 	
 	selectable: ['select-one', 'select-multiple'],
     method: 'POST'
-});   
+}); 
+
+$(document).ready(function() {
+    $('.demo').dropit({
+        action: 'click',
+        triggerEl: 'span',
+        beforeShow: function(){
+            var action_url = $(this).attr("url");
+            $.ajax({
+                url: action_url, 
+                type: "GET",         
+			    contentType: false,       
+			    cache: false,             
+			    processData:false,  
+                success: function(data) { 
+                    var row;
+                    for(row of data) {
+                        $(".append").append('<li><a class=\"async_clicker\" href=\"'+row['playlist_url']+'\">'+row['playlist_name']+'</a></li>');
+                    }
+                    $('.async_clicker').on("click",myFavHref);     
+                }       
+		    });  
+        },
+        afterHide: function(){
+            $('.append li').remove();
+        }
+    });
+
+    function myFavHref(e) {
+        e.preventDefault();
+        var action_url = $(this).attr("href");
+        $.ajax({
+            url: action_url, 
+            type: "GET"            
+		});  
+    }
+});  
 </script>
 {/block}
 {block scripts}

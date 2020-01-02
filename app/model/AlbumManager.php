@@ -39,8 +39,12 @@ class AlbumManager
 	}
 
 	public function insertLike($fav_list,$album_id){
-		$this->database->query('INSERT INTO playlist_has_songs(playlist_idplaylist,song_song_id) 
+        try{
+            $this->database->query('INSERT INTO playlist_has_songs(playlist_idplaylist,song_song_id) 
                                 VALUES (?,?)',$fav_list,$album_id);
+        }catch(\Exception $e){
+
+        }
 		return 1;
 	}
 
@@ -61,4 +65,12 @@ class AlbumManager
                                        SET name = ?
                                        WHERE song_id = ?',$song_name,$song_id);
     }
+
+    public function getAllUsersPlaylists($user_id) {
+        return $this->database->fetchAll('SELECT user_has_playlist.user_iduser,user_has_playlist.playlist_idplaylist,user_has_playlist.isfavorites,playlist.name,playlist.idplaylist 
+                                          FROM user_has_playlist 
+                                          JOIN playlist ON playlist.idplaylist = user_has_playlist.playlist_idplaylist 
+                                          AND user_has_playlist.user_iduser = ? AND user_has_playlist.isfavorites = "0"',$user_id);
+    }
+
 }

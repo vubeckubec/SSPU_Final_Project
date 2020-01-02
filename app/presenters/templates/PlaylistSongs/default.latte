@@ -1,0 +1,23 @@
+{block content}
+    <div>Playlist name: {$playlist_name->name}</div>
+    <table class="table table-striped fav_list">
+        <thead>
+            <th>Track Name</th>
+            <th>Track length</th>
+            <th>Album</th>
+            <th>Artist</th>
+        </thead>
+        <tbody>
+    {foreach $playlistSongs_list as $song}
+        <tr>{$song|noescape}</tr>
+    {/foreach}
+        </tbody>
+    </table>
+{/block}
+{block scripts}
+{include parent}
+{/block}
+
+
+{block head}
+{/block}

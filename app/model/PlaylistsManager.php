@@ -17,15 +17,36 @@ class PlaylistsManager
 	    $this->database = $database;
 	}
 
-    public function readAll($user_id){
-        return $this->database->fetchAll('SELECT user_has_playlist.user_iduser,user_has_playlist.playlist_idplaylist,playlist.name,playlist.idplaylist 
+    public function readAll($user_id) {
+        return $this->database->fetchAll('SELECT user_has_playlist.user_iduser,user_has_playlist.playlist_idplaylist,user_has_playlist.isfavorites,playlist.name,playlist.idplaylist 
                                           FROM `user_has_playlist` 
                                           JOIN playlist ON playlist.idplaylist = user_has_playlist.playlist_idplaylist AND user_has_playlist.user_iduser = ?',$user_id);
      }
 
-    public function username_readById($user_id){
+    public function username_readById($user_id) {
 	    return $this->database->fetch('SELECT user.username FROM user WHERE iduser = ?',$user_id);
-	}
+    }
 
+    public function checkPlaylistContent($playlist_id) {
+        $result = $this->database->fetch('SELECT * FROM playlist_has_songs WHERE playlist_idplaylist = ?',$playlist_id);
+        return $result ? 1 : 0;
+    }
+
+    public function deletePlaylistWithSongs($playlist_id) {
+        $this->database->query('LOCK TABLES playlist_has_songs WRITE, user_has_playlist WRITE, playlist WRITE');
+		$this->database->query('DELETE FROM playlist_has_songs WHERE playlist_idplaylist = ?',$playlist_id);
+        $this->database->query('DELETE FROM user_has_playlist WHERE playlist_idplaylist = ?',$playlist_id);
+        $this->database->query('DELETE FROM playlist WHERE idplaylist = ?',$playlist_id);
+		$this->database->query('UNLOCK TABLES');						
+		return true;
+    }
+
+    public function deletePlaylistWithoutSongs($playlist_id) {
+        $this->database->query('LOCK TABLES user_has_playlist WRITE, playlist WRITE');
+        $this->database->query('DELETE FROM user_has_playlist WHERE playlist_idplaylist = ?',$playlist_id);
+        $this->database->query('DELETE FROM playlist WHERE idplaylist = ?',$playlist_id);
+		$this->database->query('UNLOCK TABLES');						
+		return true;
+    }
 }
     

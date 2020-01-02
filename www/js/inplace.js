@@ -62,6 +62,7 @@
       this.element = element;
 
       this.options = $.extend({}, $.inplace, options, this.el.data());
+      
     }
 
     Inplace.prototype = {

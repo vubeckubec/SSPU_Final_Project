@@ -5,6 +5,7 @@ use Nette;
 use App\Model\QueueManager;
 use Nette\Security\Identity;
 use Nette\Application\Responses\JsonResponse;
+require_once('myRenderers.php');
 
 class QueuePresenter extends Nette\Application\UI\Presenter
 {
@@ -25,10 +26,12 @@ class QueuePresenter extends Nette\Application\UI\Presenter
         }elseif($playlist_id){
             $this->queueManager->insertPlaylistToQueue($this->user->getId(),$playlist_id);
         }
-        $this->template->queue_list = $this->queueManager->readAll($this->user->getId());  
+        $this->template->queue_list = array(); 
+        $temp_queue_list = $this->queueManager->readAll($this->user->getId());
 
+        preRenderSongsForQueue($this,$album_id,$temp_queue_list,$this->template->queue_list);
         $jsonArray = array();
-        foreach ($this->template->queue_list as $qsong) {
+        foreach ($temp_queue_list as $qsong) {
             $jsonRow = array();
             $jsonRow['song_id'] = $qsong->song_id;
             $jsonRow['song_name'] = $qsong->song_name;

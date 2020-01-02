@@ -4,7 +4,8 @@ namespace App\Presenters;
 use Nette;
 use App\Model\AlbumManager;
 use Nette\Security\Identity;
-use Nette\Application\Responses\JsonResponse;   
+use Nette\Application\Responses\JsonResponse;  
+require_once('myRenderers.php');
 
 class AlbumPresenter extends Nette\Application\UI\Presenter
 {
@@ -18,13 +19,15 @@ class AlbumPresenter extends Nette\Application\UI\Presenter
     }
  
     public function renderDefault($album_id,$sortmode) {
-        if(!$sortmode){
+        if(!$sortmode){ 
             $sortmode = 'number ASC';
         }
         if($this->albumManager->album_is_valid($album_id)){
             $this->template->album_id = $album_id;
-            $this->template->album_name = $this->albumManager->albumname_readByID($album_id);     
-            $this->template->songs_list = $this->albumManager->readAll($album_id,$this->user->getId(),$sortmode);
+            $this->template->album_name = $this->albumManager->albumname_readByID($album_id);
+            $this->template->songs_list = array();     
+            $temp_songs_list = $this->albumManager->readAll($album_id,$this->user->getId(),$sortmode);
+            preRenderSongs($this,$album_id,$temp_songs_list,$this->template->songs_list);
             $this->template->thumb_url = $this->link('Albums:thumbnail',['album_id'=>$album_id]);
             $this->template->fav_list = $this->albumManager->getUsersFavoritePlaylist($this->user->getId());
         }else{
@@ -54,4 +57,23 @@ class AlbumPresenter extends Nette\Application\UI\Presenter
         $pole['song_name'] = $song_name;
         $this->sendResponse(new \Nette\Application\Responses\JsonResponse($pole));
     } 
+
+    public function actionPlaylistJson($song_id) {
+        $res = $this->albumManager->getAllUsersPlaylists($this->user->getId());
+        $json = array();
+        foreach($res as $row) {
+            $json_row = array();
+            $json_row['playlist_name'] = $row->name;
+            $json_row['playlist_url'] = $this->link('Album:InsertToPlaylist',['playlist_id'=>$row->playlist_idplaylist,'song_id'=>$song_id]);
+            array_push($json,$json_row);
+        }
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($json));
+    }
+
+    public function actionInsertToPlaylist($playlist_id,$song_id) {
+        $this->albumManager->insertLike($playlist_id,$song_id);
+        $pole = array();
+        $pole['res'] = 1;
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($pole));
+    }
 }

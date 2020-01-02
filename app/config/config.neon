@@ -20,11 +20,11 @@ session:
 
 
 services:
-	- App\Model\BlankManager
+	- App\Model\MainManager
 	- App\Model\ArtistsManager
 	- App\Model\UserManager
 	- App\Model\AlbumsManager
-	- App\Model\HomepageManager
+	- App\Model\LoginManager
 	- App\Model\AlbumManager
 	- App\Model\PlayerManager	
 	- App\Model\PlaylistsManager
@@ -32,10 +32,12 @@ services:
 	- App\Model\SpinnerManager
 	- App\Model\SearchManager
 	- App\Model\ProfileManager
-	- App\Model\UserListManager	
+	- App\Model\UserListManager
+	- App\Model\PlaylistSongsManager	
 	- App\Forms\FormFactory
 	- App\Forms\SignInFormFactory
 	- App\Forms\SignUpFormFactory
+
 	router: App\RouterFactory::createRouter
 	cacheStorage:
 		factory: Nette\Caching\Storages\DevNullStorage

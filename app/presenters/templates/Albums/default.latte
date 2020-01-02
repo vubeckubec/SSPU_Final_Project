@@ -11,14 +11,7 @@
     </thead>
     <tbody>
         {foreach $album_list_new as $album}
-        <tr>
-            <td><span class="glyphicon glyphicon-play queue_fill" aria-hidden="true" n:href="Queue:default $album->album_id"></span>
-            <span album_id="{$album->album_id}" favorite="{$album->favorite}" class="{$album->favorite ? 'glyphicon glyphicon-heart': 'glyphicon glyphicon-heart-empty'} 
-            favtoggle_album" aria-hidden="true"></span> 
-            <a class="ajax_change" n:href="Album:default $album->album_id">{$album->name}</a>&emsp;</td>
-            <td>{$album->year}</td>
-            <td><img src="{$album->thumb_url}" height="95" width="95"></td>
-        </tr>
+            <tr>{$album|noescape}</tr>
         {/foreach}
     </tbody>
 </table>

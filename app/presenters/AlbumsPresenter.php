@@ -25,15 +25,17 @@ class AlbumsPresenter extends Nette\Application\UI\Presenter {
             $this->template->album_list_new = array();
             foreach($this->template->album_list_old as $album) {
                 $thumb_url = $this->link('Albums:thumbnail',['album_id'=>$album->album_id]);
+                $queue_url = $this->link('Queue:default',['album_id'=>$album->album_id]);
+                $album_url = $this->link('Album:default',['album_id'=>$album->album_id]);
                 $new_album = new \stdClass();
-                $new_album->album_id = $album->album_id;
-                $new_album->name = $album->name;
-                $new_album->year = $album->year;
-                $new_album->favorite = $album->favorite;
-                $new_album->thumb_url = $thumb_url;
-                array_push($this->template->album_list_new,$new_album);
+                $album_string = "";
+                $album_string .= "<td><span class=\"glyphicon glyphicon-play queue_fill\" aria-hidden=\"true\" href=\"$queue_url\"></span>
+                <span album_id=\"$album->album_id\" favorite=\"$album->favorite\" class=\"" . ($album->favorite ? "glyphicon glyphicon-heart": "glyphicon glyphicon-heart-empty") . "
+                favtoggle_album\" aria-hidden=\"true\"></span><a class=\"ajax_change\" href=\"$album_url\">$album->name</a></td>";
+                $album_string .= "<td>$album->year</td>";
+                $album_string .= "<td><img src=\"$thumb_url\" height=\"95\" width=\"95\"></td>";
+                array_push($this->template->album_list_new,$album_string); 
             }
-
         }else{
             $this->template->artist_id = $artist_id;    
             $this->template->artists = "Invalid artist id.";        

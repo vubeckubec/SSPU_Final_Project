@@ -1,19 +1,72 @@
 {block content}
     <table class="table table-striped">
     <div>playlists of user: {$usernameIs->username}</div>
+
     <thead>
         <th>Playlist number</th>
         <th>Playlist name</th>
     </thead>
     <tbody>
         {foreach $playlists_list as $playlist}
+        {if $playlist->isfavorites == 0}
         <tr>
             <td>{$playlist->idplaylist}</td>
-            <td>{$playlist->name}</td>
+            <td>
+            <span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist"></span>
+            <a n:href="PlaylistSongs:default playlist_id=>$playlist->idplaylist" class="ajax_change">{$playlist->name}</a>&nbsp;
+            <span class="glyphicon glyphicon-remove remove_playlist" playlist_id="{$playlist->idplaylist}" 
+            href="{link Playlists:DeletePlaylist playlist_id=>$playlist->idplaylist}"></span>
+            </td>
         </tr>
+        {else}<tr>
+        <td>{$playlist->idplaylist}</td>
+        <td><span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist"></span>
+        <a n:href="PlaylistSongs:default playlist_id=>$playlist->idplaylist" class="ajax_change">{$playlist->name}</td></a></tr>{/if}
         {/foreach}
     </tbody>
 </table>
+&nbsp;<div class="glyphicon glyphicon-plus" style="display: inline-block;" id="addPlaylist"></div><span>Add playlist</span>
+<form id="insertPlaylistName" action="" method="post" enctype="multipart/form-data">
+&nbsp;<label>Select your playlist name:</label><br/>
+&nbsp;<input type="text" name="playlistName" id="text" required />
+<input type="submit" value="Submit" class="submit" />
+</form>
+<script>
+    $("#insertPlaylistName").on('submit',(function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: {link Main:InsertPlaylist user_id=>$user_id}, // Url to which the request is send
+			type: "POST",             // Type of request to be send, called as method
+			data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+			contentType: false,       // The content type used when sending data to the server.
+			cache: false,             // To unable request pages to be cached
+			processData:false,
+            success: function(data) { 
+                var url = $("#sideblock2").attr("href");
+                $('#content').load(url);
+			}        
+		});
+	})); 
+
+    $(".remove_playlist").on("click",removePlaylist);
+
+    function removePlaylist () {
+        var playlist_id = $(this).attr("playlist_id");
+        var remove_url = $(this).attr("href");
+		$.ajax({
+			url: remove_url, // Url to which the request is send
+			type: "POST",  
+            data: { playlist_id },         // Type of request to be send, called as method
+			contentType: false,       // The content type used when sending data to the server.
+			cache: false,             // To unable request pages to be cached
+			processData:false,
+            success: function(data) { 
+                var url = $("#sideblock2").attr("href");
+                $('#content').load(url);
+			}       
+		});      
+	}
+</script>
 {/block}
 {block scripts}
 {include parent}
