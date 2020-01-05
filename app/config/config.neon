@@ -33,7 +33,8 @@ services:
 	- App\Model\SearchManager
 	- App\Model\ProfileManager
 	- App\Model\UserListManager
-	- App\Model\PlaylistSongsManager	
+	- App\Model\PlaylistSongsManager
+	- App\Model\UploadManager	
 	- App\Forms\FormFactory
 	- App\Forms\SignInFormFactory
 	- App\Forms\SignUpFormFactory

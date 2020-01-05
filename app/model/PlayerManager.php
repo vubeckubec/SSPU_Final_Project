@@ -32,6 +32,6 @@ class PlayerManager
     }
 
     public function username_readById($user_id){
-		return $this->database->fetch('SELECT user.username FROM user WHERE iduser = ?',$user_id);
+		return $this->database->fetch('SELECT user.username,user.role FROM user WHERE iduser = ?',$user_id);
 	}
 }

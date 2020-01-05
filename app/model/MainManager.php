@@ -11,7 +11,7 @@ class MainManager {
 	}
 
     public function username_readById($user_id){
-		return $this->database->fetch('SELECT user.username FROM user WHERE iduser = ?',$user_id);
+		return $this->database->fetch('SELECT user.username,user.role FROM user WHERE iduser = ?',$user_id);
 	}
 
 	public function getFavPlaylist($user_id) {
@@ -21,14 +21,14 @@ class MainManager {
 
 	public function insertUsersFavPlaylist($user_id) {
 		$playlistName = $this->username_readById($user_id)->username . "'s favorites";
-		return $this->insertUsersPlaylist($user_id,$playlistName,"1");						
+		return $this->insertUsersPlaylist($user_id,$playlistName,"1","0");						
 	}
 
-	public function insertUsersPlaylist($user_id, $playlistName, $isfavorite) {
+	public function insertUsersPlaylist($user_id, $playlistName, $isfavorite,$privacy) {
 		//todo error control
 		$this->database->query('LOCK TABLES playlist WRITE, user_has_playlist WRITE');
-		$this->database->query('INSERT INTO playlist(name)
-							    VALUES(?)',$playlistName);
+		$this->database->query('INSERT INTO playlist(name,private)
+							    VALUES(?,?)',$playlistName,$privacy);
 		$this->database->query('INSERT INTO user_has_playlist(user_iduser,playlist_idplaylist,isfavorites)
 								VALUES (?,LAST_INSERT_ID(),?)',$user_id,$isfavorite);
 		$this->database->query('UNLOCK TABLES');						

@@ -15,7 +15,7 @@ class SpinnerPresenter extends Nette\Application\UI\Presenter
     
     public function __construct(SpinnerManager $spinnerManager) {
         $this->spinnerManager = $spinnerManager;
-        $this->setLayout('empty');
+        $this->setLayout('empty_layout');
     }
  
     public function renderDefault() {

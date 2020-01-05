@@ -19,7 +19,7 @@ class AlbumManager
         }
     }
 
-    public function readAll($album_id,$user_id,$sortmode){
+    public function readAlbumSongsWithLikes($album_id,$user_id){
         $myFavPlaylist = $this->getUsersFavoritePlaylist($user_id);
         if(!$myFavPlaylist){
             return NULL;
@@ -48,10 +48,12 @@ class AlbumManager
 		return 1;
 	}
 
-    public function albumname_readByID($album_id){
-        return $this->database->fetch('SELECT album.name
+    public function albuminfo_readByID($album_id){
+        return $this->database->fetch('SELECT artist.name AS artist_name,album.name AS album_name, album.year, artist_has_album.artist_id,artist_has_album.album_id
                                        FROM album
-                                       WHERE album.album_id = ?',$album_id);            
+                                       JOIN artist_has_album ON artist_has_album.album_id = album.album_id
+                                       JOIN artist ON artist.artist_id = artist_has_album.artist_id
+                                       AND album.album_id = ?',$album_id);            
     }
 
     public function album_is_valid($album_id) {

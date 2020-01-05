@@ -1,6 +1,6 @@
 /*Login a Homepage - zacatek*/
 #login_logo_area{
-    background: linear-gradient(black, white);
+    background: linear-gradient(grey, white);
     position:fixed;
     width:100%;
     height:100%;
@@ -22,7 +22,7 @@
 #link_area {
     display: flex;
     justify-content: center;
-    margin-top: 450px;
+    margin-top: 50px;
 }
 
 .flex-item + .flex-item {
@@ -30,7 +30,7 @@
 }
 
 .help-block {
-    color: white;
+    color: black;
 }
 /*Login a Homepage - konec*/
 

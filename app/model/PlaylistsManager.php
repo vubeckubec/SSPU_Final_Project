@@ -17,14 +17,18 @@ class PlaylistsManager
 	    $this->database = $database;
 	}
 
-    public function readAll($user_id) {
-        return $this->database->fetchAll('SELECT user_has_playlist.user_iduser,user_has_playlist.playlist_idplaylist,user_has_playlist.isfavorites,playlist.name,playlist.idplaylist 
-                                          FROM `user_has_playlist` 
-                                          JOIN playlist ON playlist.idplaylist = user_has_playlist.playlist_idplaylist AND user_has_playlist.user_iduser = ?',$user_id);
-     }
+    public function readUsersPlaylists($user_id) {
+        return $this->database->fetchAll('SELECT user_has_playlist.user_iduser,user_has_playlist.playlist_idplaylist,user_has_playlist.isfavorites,playlist.name,playlist.idplaylist,
+                                                 playlist.private,COUNT(playlist_has_songs.playlist_idplaylist) AS song_count
+                                          FROM `user_has_playlist`
+                                          LEFT JOIN playlist_has_songs ON playlist_has_songs.playlist_idplaylist = user_has_playlist.playlist_idplaylist
+                                          JOIN playlist ON playlist.idplaylist = user_has_playlist.playlist_idplaylist 
+                                          AND user_has_playlist.user_iduser = ?
+                                          GROUP BY user_has_playlist.playlist_idplaylist',$user_id);
+    }
 
     public function username_readById($user_id) {
-	    return $this->database->fetch('SELECT user.username FROM user WHERE iduser = ?',$user_id);
+	    return $this->database->fetch('SELECT user.username,user.role FROM user WHERE iduser = ?',$user_id);
     }
 
     public function checkPlaylistContent($playlist_id) {

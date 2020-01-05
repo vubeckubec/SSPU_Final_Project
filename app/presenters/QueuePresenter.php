@@ -15,10 +15,11 @@ class QueuePresenter extends Nette\Application\UI\Presenter
     
     public function __construct(QueueManager $queueManager) {
         $this->queueManager = $queueManager;
-        $this->setLayout('empty');
+        $this->setLayout('empty_layout');
     }
  
     public function renderDefault($album_id,$playlist_id) {
+        $this->template->refreshUrl = $this->getHttpRequest()->getUrl()->getAbsoluteUrl();
         $this->template->album_id = $album_id;    
         $this->template->playlist_id = $playlist_id;
         if($album_id){
@@ -29,14 +30,17 @@ class QueuePresenter extends Nette\Application\UI\Presenter
         $this->template->queue_list = array(); 
         $temp_queue_list = $this->queueManager->readAll($this->user->getId());
 
-        preRenderSongsForQueue($this,$album_id,$temp_queue_list,$this->template->queue_list);
+        preRenderSongsForQueue($this,$temp_queue_list,$this->template->queue_list);
         $jsonArray = array();
         foreach ($temp_queue_list as $qsong) {
             $jsonRow = array();
             $jsonRow['song_id'] = $qsong->song_id;
             $jsonRow['song_name'] = $qsong->song_name;
             $jsonRow['album_name'] = $qsong->album_name;
+            $jsonRow['album_year'] = $qsong->year;
+            $jsonRow['artist_name'] = $qsong->artist_name;
             $jsonRow['url'] = $this->link('Player:datafile',['song_id'=>$qsong->song_id]);
+            $jsonRow['albumThumb'] = $this->link('Albums:thumbnail',['album_id'=>$qsong->album_id]);
             array_push($jsonArray,$jsonRow);
         }
 

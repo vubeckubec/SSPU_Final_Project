@@ -1,0 +1,71 @@
+{block content}
+<h1>New content upload</h1>
+
+{if $folder_count > 0}
+<p>There are {$folder_count} albums to upload.</p>
+<div id="upload_btn" xhref="{link Upload:UploadOneAlbum}"><a class="btn btn-primary" style="">Upload</a></div>
+<br>
+<div id="progressName"></div>   
+<progress id="progressbar" max={$folder_count} value="0" />
+{else}
+<p>Currently there is no new content to upload.</p>
+<div id="refresh_btn"><a class="btn btn-primary">Refresh</a></div>
+{/if}   
+<script>   
+var uploadCurIndex = 0;
+var uploadMaxIndex = {$folder_count};
+
+
+$(document).ready(function() {
+    $("#upload_btn").on("click",uploadFolders);
+    $("#refresh_btn").on("click",function(e){
+        var url = $("#refreshUrl").attr("href");
+        $('#content').load(url);        
+    });
+}); 
+
+function uploadFolders(e) {
+    e.preventDefault();
+    runAjaxOnce();
+}    
+
+function runAjaxOnce() {
+    if(uploadMaxIndex > 0) {
+        var url = $("#upload_btn").attr("xhref") + "?" + "cur_upload=" + uploadCurIndex + "&" + "all_upload=" +  uploadMaxIndex;
+        $.ajax({
+		    url: url, 
+		    type: "GET",             
+		    contentType: false,       
+		    cache: false,             
+		    processData:false,
+            success: function(data) { 
+                var newUploadCurIndex = data['cur'];
+                var newUploadMaxIndex = data['all'];
+                var newUploadName = data['name'];
+                if(newUploadMaxIndex > 0){
+                    uploadCurIndex = newUploadCurIndex;
+                    uploadMaxIndex = newUploadMaxIndex;
+                    $("#progressbar").attr("value",newUploadCurIndex);
+                    $('#progressName').text(newUploadCurIndex + "/" + newUploadMaxIndex + ": " + newUploadName);
+                    if(newUploadCurIndex >= newUploadMaxIndex){
+                        alert("Everything was uploaded.");
+                        var url = $("#refreshUrl").attr("href");
+                        $('#content').load(url);
+                    }else{
+                        $("#upload_btn").trigger("click");
+                    }
+                }       
+		    }        
+	    });
+    }
+}
+</script>
+{/block}
+{block scripts}
+
+{include parent}
+{/block}
+
+
+{block head}
+{/block}

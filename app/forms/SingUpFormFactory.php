@@ -8,9 +8,7 @@ final class SignUpFormFactory
 {
 	use Nette\SmartObject;
 	private const PASSWORD_MIN_LENGTH = 7;
-	/** @var FormFactory */
 	private $factory;
-	/** @var Model\UserManager */
 	private $userManager;
 	public function __construct(FormFactory $factory, Model\UserManager $userManager)
 	{
@@ -26,6 +24,9 @@ final class SignUpFormFactory
 			->setOption('description', sprintf('at least %d characters', self::PASSWORD_MIN_LENGTH))
 			->setRequired('Please create your password.')
 			->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH);
+		$form->addPassword('passwordVerify', 'Password verification: ')	
+			 ->setRequired('Please fill out the password again')
+			 ->addRule($form::EQUAL,"The passwords don't match.",$form['password']);
 		$form->addSubmit('send', 'Sign up');
 		$form->onSuccess[] = function (Form $form, \stdClass $values) use ($onSuccess): void {
 			try {

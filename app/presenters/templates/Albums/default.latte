@@ -1,20 +1,10 @@
 {block content}
-<br>
-<div>Interprets name: {$artists->name}<div>
-<table class="table table-striped">
-    <thead>
-        {*<th><a n:href="default sortmode=>'name ASC', artist_id=>$artist_id ">Název Album</a></th>*}
-        {*<th><a n:href="default sortmode=>'year ASC', artist_id=>$artist_id ">Rok vydání</a></th>*}
-        <th>Album name</th>
-        <th>Release year</th>
-        <th>Album cover</th>
-    </thead>
-    <tbody>
-        {foreach $album_list_new as $album}
-            <tr>{$album|noescape}</tr>
-        {/foreach}
-    </tbody>
-</table>
+<h1>{$artists->name} albums</h1>
+{foreach $album_list_new as $album}
+    <div style="width:180px;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;vertical-align:top;">
+        {$album|noescape}
+    </div>
+{/foreach}
 <script>
 $('.favtoggle_album').click(function(){
     var album_id = $(this).attr("album_id");
@@ -44,6 +34,26 @@ $('.favtoggle_album').click(function(){
         }
     );
 });  
+$(document).ready(function(){
+    $('.remove_album').on('click',removeAlbum);
+});
+
+function removeAlbum(e) {
+    e.preventDefault();
+    var remove_url = $(this).attr("href");
+	$.ajax({
+        url: remove_url,
+        type: "POST",             
+        contentType: false,       
+        cache: false,             
+        processData:false,        
+        success: function(data) { 	
+            var url = data['url'];
+            $('#content').load(url);
+        }
+    });
+}
+
 </script>
 {/block}
 

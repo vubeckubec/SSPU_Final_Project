@@ -1,24 +1,17 @@
 {block content}
-<div id="ajax_change">
-    <table class="table table-striped">
-        <thead>
-            {*<th><a n:href="default '$interpret->artist_id->name ASC' ">Název Interpreta</a></th>*}
-            <th>Interprets name</th>
-        </thead>
-        <tbody>
-            {foreach $interpretList as $interpret}
-            <tr>
-                <td>
-                <span artist_id="{$interpret->artist_id}" favorite="{$interpret->favorite}" class="{$interpret->favorite ? 'glyphicon glyphicon-heart': 'glyphicon glyphicon-heart-empty'} favtoggle" aria-hidden="true"></span>
-                <a n:href="Albums:default artist_id=>$interpret->artist_id" class="ajax_change">{$interpret->name}</a>&emsp;
-                </td>
-            </tr>
-            {/foreach}
-        </tbody>
-    </table>
+{foreach $interpretList as $interpret}
+<div style="width:auto;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;text-align:center;">
+    <span artist_id="{$interpret->artist_id}" favorite="{$interpret->favorite}" class="{$interpret->favorite ? 'glyphicon glyphicon-heart': 'glyphicon glyphicon-heart-empty'} favtoggle" aria-hidden="true"></span>
+    <a n:href="Albums:default artist_id=>$interpret->artist_id" class="ajax_change">{$interpret->name}</a>&emsp;
 </div>
+{/foreach}
 <script>
-$('.favtoggle').click(function(){
+
+$(document).ready(function(){
+    $('.favtoggle').on("click",artistLikeChange);
+});
+
+function artistLikeChange() {
     var artist_id = $(this).attr("artist_id");
     var favorite = $(this).attr("favorite");
     $.post(
@@ -45,7 +38,8 @@ $('.favtoggle').click(function(){
             }
         }
     );
-}); 
+}
+
 </script>
 {/block}
 

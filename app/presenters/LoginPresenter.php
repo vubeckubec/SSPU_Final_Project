@@ -6,11 +6,8 @@ use Nette\Application\UI\Form;
 use App\Model\LoginManager;
 final class LoginPresenter extends BasePresenter
 {
-	/** @persistent */
 	public $backlink = '';
-	/** @var Forms\SignInFormFactory */
 	private $signInFactory;
-	/** @var Forms\SignUpFormFactory */
 	private $signUpFactory;
 
 	private $loginManager;
@@ -20,7 +17,7 @@ final class LoginPresenter extends BasePresenter
 		$this->signInFactory = $signInFactory;
 		$this->signUpFactory = $signUpFactory;
 		$this->loginManager = $loginManager;
-		$this->setLayout('home_layout');
+		$this->setLayout('login_layout');
 	}
 
 	protected function createComponentSignInForm(): Form {

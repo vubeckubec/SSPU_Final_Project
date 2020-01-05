@@ -1,23 +1,27 @@
 {block content}
-<div>user id: {$user_id}</div>
-<div>Profile of user: {$profileInfo->username}</div>
-<div>User's role: {$profileInfo->role}</div>
-{if $profileInfo->disabled == 0}<div>Profile status: Profile is not disabled</div>{else}<div>Profile status: Profile is disabled</div>{/if}
-{if $profileInfo->private == 0}<div>Profile status: Profile is not private</div>{else}<div>Profile status: Profile is private</div>{/if}
-<span>User's profile description: </span><div class="inplace" style="display: inline-block;" data-field-value="{$profileInfo->personal}">{$profileInfo->personal}</div>
-<div><img src="{$thumb_url}" height="95" width="95"></div>
-<form id="uploadimage" action="" method="post" enctype="multipart/form-data">
-<div id="image_preview"><img id="previewing" src="noimage.png" /></div>
-<hr id="line">
-<div id="selectImage">
-<label>Select Your Image</label><br/>
-<input type="file" name="file" id="file" required />
-<input type="submit" value="Upload" class="submit" />
-</div>
-</form>
-</div>
-<h4 id='loading' >loading..</h4>
-<div id="message"></div>
+	<h1>{$profileInfo->username}'s Profile</h1>
+	<div><img id="newProfileThumb" src="{$thumb_url}" height="95" width="95"></div>
+	<div>Username: {$profileInfo->username}</div>
+	<div>Role: {$profileInfo->role}</div>
+	{if $profileInfo->disabled == 0}<div>Profile disabled: NO</div>{else}<div>Profile disabled: YES</div>{/if}
+	{if $profileInfo->private == 0}<div>Private profile: NO</div>{else}<div>Private profile: YES</div>{/if}
+	<span>User's personal text: </span><div class="inplace" style="display: inline-block;" data-field-value="{$profileInfo->personal}">{$profileInfo->personal}</div>
+	<br>
+	<div class="btn btn-primary" id="changeAvatar">Change avatar</div>
+	<div id="uploadForm" style="display:none;">
+		<form id="uploadimage" action="" method="post" enctype="multipart/form-data">
+		<div id="upload_image_preview" style="display:none;"><img id="previewing" src="{link Profile:Thumbnail user_id=>0}"/></div>
+			<div id="selectImage">
+				<label>Select Your Image</label>
+				<input type="file" name="file" id="file" required />
+				<input type="submit" value="Upload" class="submit" />
+			</div>
+		</form>
+		<div id="uploadProgress">
+			<h4 id='loading' style="display:none;">loading..</h4>
+			<div id="message"></div>
+		</div>
+	</div>
 <script>
 $('.inplace').inplace({
     buttonOrder: ['save', 'cancel'],
@@ -39,6 +43,14 @@ $('.inplace').inplace({
 });
 
 $(document).ready(function (e) {
+	var newThumbPrefix = $("#newProfileThumb");
+	var newProfileThumbUrl = newThumbPrefix.attr("src");
+	$("#profilePicture").attr("src",newProfileThumbUrl); 
+
+	$("#changeAvatar").on('click',function(){
+		$("#uploadForm").css("display","inline");
+	});
+
 	$("#uploadimage").on('submit',(function(e) {
 		e.preventDefault();
 		$("#message").empty();
@@ -51,8 +63,13 @@ $(document).ready(function (e) {
 			cache: false,             // To unable request pages to be cached
 			processData:false,        // To send DOMDocument or non processed data file it is set to false
 			success: function(data) { // A function to be called if request succeeds
+				//should refresh but doesn't seem so TODO
 				$('#loading').hide();
-				$("#message").html(data);
+				if(data['message']){
+					alert(data['message']);
+				}
+				var url = $("#refreshUrl").attr("href");
+                $('#content').load(url);
 			}
 		});
 	}));
@@ -65,7 +82,7 @@ $(document).ready(function (e) {
 			var imagefile = file.type;
 			var match= ["image/jpeg","image/png","image/jpg"];
 			if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]))) {
-				$('#previewing').attr('src','noimage.png');
+				$('#previewing').attr('src','{link Profile:Thumbnail user_id=>0}');
 				$("#message").html("<p id='error'>Please Select A valid Image File</p>"+"<h4>Note</h4>"+"<span id='error_message'>Only jpeg, jpg and png Images type allowed</span>");
 				return false;	
 			}else{
@@ -78,7 +95,7 @@ $(document).ready(function (e) {
 
 	function imageIsLoaded(e) {
 		$("#file").css("color","green");
-		$('#image_preview').css("display", "block");
+		$('#upload_image_preview').css("display", "block");
 		$('#previewing').attr('src', e.target.result);
 		$('#previewing').attr('width', '250px');
 		$('#previewing').attr('height', '230px');

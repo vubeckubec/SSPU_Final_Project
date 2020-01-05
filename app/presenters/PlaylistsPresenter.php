@@ -14,13 +14,15 @@ class PlaylistsPresenter extends Nette\Application\UI\Presenter
 
     public function __construct(playlistsManager $playlistsManager) {
         $this->playlistsManager = $playlistsManager;
-        $this->setLayout('empty');
+        $this->setLayout('empty_layout');
     }
  
     public function renderDefault($user_id) {
         $this->template->user_id = $user_id;
-        $this->template->playlists_list = $this->playlistsManager->readAll($user_id);
+        $this->template->myUserId = $this->user->getId();
+        $this->template->playlists_list = $this->playlistsManager->readUsersPlaylists($user_id);
         $this->template->usernameIs = $this->playlistsManager->username_readById($user_id); 
+        $this->template->refreshUrl = $this->getHttpRequest()->getUrl()->getAbsoluteUrl();
     }
 
     public function actionDeletePlaylist($playlist_id) {
@@ -31,8 +33,8 @@ class PlaylistsPresenter extends Nette\Application\UI\Presenter
         }else{
             $this->playlistsManager->deletePlaylistWithoutSongs($playlist_id);
         }
-        $pole = array();
-        $pole['response'] = 1; 
-        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($pole));
+        $results = array();
+        $results['response'] = 1; 
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($results));
     }
 }

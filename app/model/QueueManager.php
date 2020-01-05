@@ -22,7 +22,7 @@ class QueueManager
 	}
 
     public function readAll($user_id) {
-        return $this->database->fetchAll('SELECT queue.user_id,queue.song_id,queue.song_order,song.name AS song_name,song.time,song.album_idalbum,album.name AS album_name,
+        return $this->database->fetchAll('SELECT queue.user_id,queue.song_id,queue.song_order,song.name AS song_name,song.time,song.album_idalbum,album.name AS album_name,album.pic_tn,album.year,
                                           artist.artist_id,album.album_id,artist.name AS artist_name
                                           FROM queue
                                           JOIN song ON queue.song_id = song.song_id
@@ -54,6 +54,14 @@ class QueueManager
                                        FROM playlist_has_songs
                                        WHERE playlist_has_songs.playlist_idplaylist = ?
                                        ORDER BY playlist_has_songs.song_order',$user_id,$playlist_id);
+    }
+
+    public function albuminfo_readByID($album_id){
+        return $this->database->fetch('SELECT artist.name AS artist_name,album.name AS album_name, album.year, artist_has_album.artist_id,artist_has_album.album_id
+                                       FROM album
+                                       JOIN artist_has_album ON artist_has_album.album_id = album.album_id
+                                       JOIN artist ON artist.artist_id = artist_has_album.artist_id
+                                       AND album.album_id = ?',$album_id);            
     }
 
 }

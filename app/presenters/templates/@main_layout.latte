@@ -4,10 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{ifset title}{include title|stripHtml} | {/ifset}MP3 Extreme player</title>
+    <title>{ifset title}{include title|stripHtml} | {/ifset}Viktrola</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{$basePath}/css/style.css">
     <link href="{$basePath}/css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="{$basePath}/css/dropit.css" rel="stylesheet" type="text/css">
@@ -20,24 +21,16 @@
     <script src="{$basePath}/js/main.js"></script>
     <script src="{$basePath}/js/inplace.js"></script>
     <script src="{$basePath}/js/dropit.js"></script>
+     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <span contentUrl={$contentUrl} id="contentUrl"></span>
     {/block}
     {block head}{/block}
   </head>
   <style>
-    .sidenav a {
-      padding: 0px 8px 6px 16px;
-      text-decoration: none;
-      font-size: 25px;
-      color: white;
-      display: block;
-    }
+    
 
-    .sidenav a:hover {
-    color: #bfbfbf;
-} 
-  #username {
-    padding: 0px 8px 0px 16px;
+#username {
+    text-align: center;
     text-decoration: none;
     font-size: 30px;
     color: white;
@@ -49,6 +42,18 @@
 }
 
 #mymusic {
+    padding: 0px 8px 0px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#artist_path:hover {
+  color: #bfbfbf;
+}
+
+#artist_path {
     padding: 0px 8px 0px 16px;
     text-decoration: none;
     font-size: 25px;
@@ -79,6 +84,14 @@
   color: #bfbfbf;
 }
 
+#role {
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    color: white;
+    display: block;
+}
+
 #sideblock2 {
     padding: 0px 8px 0px 30px;
     text-decoration: none;
@@ -100,6 +113,18 @@
 }
 
 #users_path:hover {
+    color: #bfbfbf;
+}
+
+#upload_path {
+    padding: 0px 8px 0px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#upload_path:hover {
     color: #bfbfbf;
 }
 
@@ -198,17 +223,35 @@ hr {
 	text-decoration: none;
 }
 
+#left_column_menu {
+  margin: 0px;
+}
+
+#upload_image_preview{
+  font-size: 30px;
+  top: 100px;
+  left: 100px;
+  width: 250px;
+  height: 230px;
+  text-align: center;
+  line-height: 180px;
+  font-weight: bold;
+  color: #C0C0C0;
+  background-color: #FFFFFF;
+  overflow: auto;
+}
+
   </style>
   <body style="height: 100vh;margin:0;padding:0;">
     <div style="display:flex; flex-direction:column;height:100%;">
-      <div style="display:flex;flex-direction: row;">
+      <div style="display:flex;flex-direction: row;height:72px;">
         <div id="logo_area" style="border: 2px solid black; vertical-align: middle; flex: 0 0 152px; text-align: center;border-bottom: none;border-right: none;background-color: #3377ff;">
-          <h1><time>00:00:00</time></h1>
+           <span style="display: inline-block;height: 100%;vertical-align: middle;"></span><img src="{$basePath}/images/viktrolaW.png" alt="logo" style="vertical-align: middle;"> 
         </div>
         <div id="functions_area" style="display:flex; flex-direction:row;border: 2px solid black;width: 100%;justify-content:space-around;align-items:center;background-color: #3377ff;height: 102%;z-index:5;">
-            <div class="search" style="border: 2px solid #5cb85c;overflow: auto;-webkit-border-radius: 9px;height:62%;">
+            <div class="search" style="border: 2px solid #5cb85c;overflow: auto;-webkit-border-radius: 9px;height:67%;">
               <form class="search-form" id="search-form" n:href="Search:default">
-                <input type="text" class="searchTerm" id="searchQuery" placeholder="Type" style="border: 0px;width: 72.55%;padding: 10px 10px;">
+                <input type="text" class="searchTerm" id="searchQuery" placeholder="Type" style="border: 0px;width: 72.4%;padding: 10px 10px;">
                 <input type="submit" value="Search" id="submit_button" url="/spinner/" style="border: 0px;background: none;background-color: #5cb85c;color: #fff;float: right;padding: 9px;-webkit-border-top-right-radius: 5px;-webkit-border-bottom-right-radius: 5px;cursor:pointer;padding-top:11px;padding-right:10px;">
               </form>
             </div>
@@ -233,12 +276,18 @@ hr {
       <div style="display:flex;flex-direction:row;height:100%;">
         <div style="display:flex; flex-direction:column;border:2px solid black;background-color: #3377ff;">
           <div class="sidenav" style="width: 150px;">
-            <a class="ajax_change" id="username" n:href="Profile:default user_id=>$user_id">{$usernameIs->username}</a>
+            <div>
+              <img id="profilePicture" src="{link Profile:thumbnail user_id=>$user_id}" alt="logo" width="128" height="128" style="display: block;margin-left: auto;margin-right: auto;">
+              <a class="ajax_change" id="username" n:href="Profile:default user_id=>$user_id">{$usernameIs->username}</a>
+              <a id="role">{$usernameIs->role}</a>
+            </div>
+            <hr id="left_column_menu">
             <a class="ajax_change" id="artist_path" n:href="Artists:default">Browse</a>
             <div id="mymusic">My Music</div>
             <a class="ajax_change" id="sideblock1" n:href="Spinner:default">Favorites</a>
             <a class="ajax_change" id="sideblock2" n:href="Playlists:default user_id=>$user_id">Playlists</a>
             <a class="ajax_change" id="users_path" n:href="UserList:default">Users</a>
+            <a class="ajax_change" id="upload_path" n:href="Upload:default">Upload</a>
           </div>
           <div style="width:150px;margin-top: auto;">
             <a id="logout" n:href="Login:out">Logout</a>
@@ -307,14 +356,26 @@ hr {
     }
 
     function player_stop() {
+      //zruseni zvyrazneni radku podle __QUEUE_INDEX__
+      deHighlightSong();
       window.__QUEUE_INDEX__ = -1;
       $("#audio_source").attr("src", " ");
     }
 
     function player_play(song_index) {
+      var cur_song_index = window.__QUEUE_INDEX__;
+      // zruseni zvyrazneni radku podle __QUEUE_INDEX__
+      deHighlightSong();
+      
       if(song_index === undefined) {
         song_index = 0;
       }
+
+      //zvyrazneni radek podle song_index a naplneni thumbnailu a informaci o albu
+      var cur_line = $(".highlightSong:eq("+song_index+")");
+      cur_line.attr("background-color-backup",cur_line.css("background-color"));
+      cur_line.css("background-color","#ff9999");
+      
       var myJson = window.__QUEUE__;
       var audio = document.getElementById("audio_control");
       var url = myJson[song_index]['url'];
@@ -324,6 +385,17 @@ hr {
       $("#audio_source").attr("src",url);
       $("#display_progress").text(display_progress);
       $("#song_meta").text(song_name);
+
+      //inserting album info to left of queue
+      var song_thumb = myJson[song_index]['albumThumb'];
+      $("#queueThumb").attr("src",song_thumb);
+      var song_artist = myJson[song_index]['artist_name'];
+      $("#artist_name").text(song_artist);
+      var album_name = myJson[song_index]['album_name'];
+      $("#album_name").text(album_name);
+      var album_year = myJson[song_index]['album_year'];
+      $("#album_year").text(album_year);
+
       audio.load();
       audio.play();
       window.__QUEUE_INDEX__ = song_index;
@@ -331,6 +403,8 @@ hr {
 
     function playPrev() {
       var cur_song_index = window.__QUEUE_INDEX__;
+      //zruseni zvyrazneni radku podle __QUEUE_INDEX__
+      deHighlightSong();
       var max_song = window.__QUEUE__.length;
       cur_song_index--;
       if(cur_song_index < 0){
@@ -341,12 +415,24 @@ hr {
 
     function playNext(){
       var cur_song_index = window.__QUEUE_INDEX__;
+      // zruseni zvyrazneni radku podle __QUEUE_INDEX__
+      deHighlightSong();
       var max_song = window.__QUEUE__.length;
       cur_song_index++;
       if(cur_song_index >= max_song){
         cur_song_index = 0;
       }
       player_play(cur_song_index);
+    }
+
+    function deHighlightSong() {
+      if(window.__QUEUE_INDEX__ >= 0) {
+        var cur_line = $(".highlightSong:eq("+window.__QUEUE_INDEX__+")");
+        var originalColor = cur_line.attr("background-color-backup");
+        if(originalColor) {
+          cur_line.css("background-color",originalColor);
+        } 
+      }
     }
 
     $('#backward').on("click",function(){
@@ -399,50 +485,5 @@ hr {
           queue_button.innerHTML = "Show queue";
       }
     }
-
-    /*JS timer temp*/ 
-
-
-      var h1 = document.getElementsByTagName('h1')[0],
-          start = document.getElementById('start'),
-          stop = document.getElementById('stop'),
-          clear = document.getElementById('clear'),
-          seconds = 0, minutes = 0, hours = 0,
-          t;
-
-      function add() {
-          seconds++;
-          if (seconds >= 60) {
-              seconds = 0;
-              minutes++;
-              if (minutes >= 60) {
-                  minutes = 0;
-                  hours++;
-              }
-          }
-          
-          h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
-
-          timer();
-      }
-      function timer() {
-          t = setTimeout(add, 1000);
-      }
-      timer();
-
-
-      /* Start button */
-      start.onclick = timer;
-
-      /* Stop button */
-      stop.onclick = function() {
-          clearTimeout(t);
-      }
-
-      /* Clear button */
-      clear.onclick = function() {
-          h1.textContent = "00:00:00";
-          seconds = 0; minutes = 0; hours = 0;
-      }
 </script>
 </html>

@@ -12,10 +12,11 @@ class UserListPresenter extends Nette\Application\UI\Presenter
     
     public function __construct(UserListManager $userlistManager) {
         $this->userlistManager = $userlistManager;
-        $this->setLayout('empty');
+        $this->setLayout('empty_layout');
     }
  
     public function renderDefault() {
+        $this->template->refreshUrl = $this->getHttpRequest()->getUrl()->getAbsoluteUrl();
         $this->template->UsersList = $this->userlistManager->readAll();
     }
 }

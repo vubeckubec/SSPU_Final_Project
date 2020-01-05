@@ -1,37 +1,67 @@
 {block content}
-    <table class="table table-striped">
-    <div>playlists of user: {$usernameIs->username}</div>
-
+    {if $user_id == $myUserId }<h1>My playlists</h1>{else}<h1>{$usernameIs->username}'s playlists</h1>{/if}
+    <table class="table table-striped" style="width:700px;">
     <thead>
-        <th>Playlist number</th>
         <th>Playlist name</th>
+        <th>Songs count</th>
+        <th>Remove playlist</th>
     </thead>
     <tbody>
         {foreach $playlists_list as $playlist}
         {if $playlist->isfavorites == 0}
         <tr>
-            <td>{$playlist->idplaylist}</td>
             <td>
-            <span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist"></span>
-            <a n:href="PlaylistSongs:default playlist_id=>$playlist->idplaylist" class="ajax_change">{$playlist->name}</a>&nbsp;
-            <span class="glyphicon glyphicon-remove remove_playlist" playlist_id="{$playlist->idplaylist}" 
-            href="{link Playlists:DeletePlaylist playlist_id=>$playlist->idplaylist}"></span>
+                <span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist"></span>
+                <a n:href="PlaylistSongs:default playlist_id=>$playlist->idplaylist" class="ajax_change">{$playlist->name} ({if $playlist->private == 0}Private{else}Public{/if})</a>&nbsp;
+            </td>
+            <td>
+                {$playlist->song_count}    
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-remove remove_playlist" playlist_id="{$playlist->idplaylist}" 
+                href="{link Playlists:DeletePlaylist playlist_id=>$playlist->idplaylist}" style="color:red;"></span>
             </td>
         </tr>
-        {else}<tr>
-        <td>{$playlist->idplaylist}</td>
-        <td><span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist"></span>
-        <a n:href="PlaylistSongs:default playlist_id=>$playlist->idplaylist" class="ajax_change">{$playlist->name}</td></a></tr>{/if}
+        {else}
+        <tr>
+            <td>
+                <span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist"></span>
+                <a n:href="PlaylistSongs:default playlist_id=>$playlist->idplaylist" class="ajax_change">{$playlist->name} ({if $playlist->private == 0}Private{else}Public{/if})</a>
+            </td>
+            <td>
+                {$playlist->song_count}       
+            </td>
+            <td>
+
+            </td>
+        </tr>
+        {/if}
         {/foreach}
     </tbody>
 </table>
-&nbsp;<div class="glyphicon glyphicon-plus" style="display: inline-block;" id="addPlaylist"></div><span>Add playlist</span>
-<form id="insertPlaylistName" action="" method="post" enctype="multipart/form-data">
-&nbsp;<label>Select your playlist name:</label><br/>
-&nbsp;<input type="text" name="playlistName" id="text" required />
-<input type="submit" value="Submit" class="submit" />
-</form>
+{if $user_id == $myUserId }
+<div style="margin-left:10px;">
+    <div class="glyphicon glyphicon-plus" style="display: inline-block;" id="addPlaylist"></div>
+    <span>Add playlist</span>
+    <div id="playlistHide" style="display:none;">
+        <form id="insertPlaylistName" action="" method="post" enctype="multipart/form-data">
+            <label>Playlist name:</label><br/>
+            <input type="text" name="playlistName" id="text" required />
+            <input type="submit" value="Submit" class="submit" />
+            <div style="display:block;">
+                <input type="radio" name="privacy" value="0" checked="checked"> Private
+                <input type="radio" name="privacy" value="1"> Public
+            </div>
+        </form>
+    </div>
+</div>
+{/if}
 <script>
+
+    $("#addPlaylist").on('click',function(){
+		$("#playlistHide").css("display","inline");
+	});
+
     $("#insertPlaylistName").on('submit',(function(e) {
 		e.preventDefault();
 		$.ajax({
@@ -42,8 +72,9 @@
 			cache: false,             // To unable request pages to be cached
 			processData:false,
             success: function(data) { 
-                var url = $("#sideblock2").attr("href");
+                var url = $("#refreshUrl").attr("href");
                 $('#content').load(url);
+                $("#playlistHide").css("display","none");
 			}        
 		});
 	})); 

@@ -15,12 +15,14 @@ class PlaylistSongsPresenter extends Nette\Application\UI\Presenter
     
     public function __construct(PlaylistSongsManager $playlistSongsManager) {
         $this->playlistSongsManager = $playlistSongsManager;
-        $this->setLayout('empty');
+        $this->setLayout('empty_layout');
     }
  
     public function renderDefault($playlist_id) {
+        $this->template->refreshUrl = $this->getHttpRequest()->getUrl()->getAbsoluteUrl();
         $this->template->playlist_id = $playlist_id;
         $this->template->playlist_name = $this->playlistSongsManager->playlistName_readByID($playlist_id);
+        $this->template->playlist_owner = $this->playlistSongsManager->username_readById($this->user->getId());
         $this->template->playlistSongs_list = array();     
         $temp_playlistSongs_list = $this->playlistSongsManager->readAll($playlist_id);
         preRenderSongsForPlaylist($this,$playlist_id,$temp_playlistSongs_list,$this->template->playlistSongs_list);

@@ -15,10 +15,11 @@ class SearchPresenter extends Nette\Application\UI\Presenter
     
     public function __construct(SearchManager $searchManager) {
         $this->searchManager = $searchManager;
-        $this->setLayout('empty');
+        $this->setLayout('empty_layout');
     }
  
     public function renderDefault($query) {
+        $this->template->refreshUrl = $this->getHttpRequest()->getUrl()->getAbsoluteUrl();
         $this->template->query = $query;
         $this->template->usernameIs = $this->searchManager->username_readById($this->user->getId());
         $this->template->searchAlert = "Jsem v searchi '" . $query . "'";

@@ -17,7 +17,7 @@ class MainPresenter extends Nette\Application\UI\Presenter
     
     public function __construct(MainManager $mainManager) {
         $this->mainManager = $mainManager;
-        $this->setLayout('layout');
+        $this->setLayout('main_layout');
     }
  
     public function renderDefault($view) {
@@ -54,10 +54,15 @@ class MainPresenter extends Nette\Application\UI\Presenter
         }
     }
 
-    public function actionInsertPlaylist($user_id, $playlistName) {
-        $this->mainManager->insertUsersPlaylist($user_id,$playlistName,"0");
-        $pole = array();
-        $pole['response'] = 1; 
-        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($pole));
+    public function actionInsertPlaylist($user_id, $playlistName,$privacy) {
+        //checking if creating playlist is done by the user
+        $results = array();
+        if($user_id == $this->user->getId()){
+            $this->mainManager->insertUsersPlaylist($user_id,$playlistName,"0",$privacy);   
+            $results['response'] = 1; 
+        }else{
+            $results['response'] = 0;
+        }
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($results)); 
     } 
 }

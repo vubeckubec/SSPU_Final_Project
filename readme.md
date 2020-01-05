@@ -2,36 +2,11 @@
  maturitni-projekt
 
  TODO:
-    - pres admina nutnost pridavat hudbu(pouze z nemobilnich zarizeni)
-    - srdickovani znovupouzit z jinych modulu - castecne hotovo
-    - error kontrol pro URL, pravidelne overovani, nemely by jit otevrit do samostatneho okna
-    - jine playlisty nez favorite implementovat a sdileni playlistu mezi uzivateli, overovat private vs public
-      - user si muze zobrazit, vytvorit a prehrat vlastni playlisty
-      - vytvoreni pomoci jednoducheho formu
-      - prohlizeni jinych playlistu v sekci Users->username->klik na jeho playlist pokud neni nastaven na private
-    
-    - JS na load contentu pri backu
-
-    $(document).ajaxComplete(function(ev, jqXHR, settings) {
-
-        var stateObj = { url: settings.url, innerhtml: document.body.innerHTML };
-        window.history.pushState(stateObj, settings.url, settings.url);
-    });
-
-    window.onpopstate = function (event) {
-        var currentState = history.state;
-        document.body.innerHTML = currentState.innerhtml;
-    };
-
-    Dropdown s jQuery
-    https://www.jqueryscript.net/menu/Simple-Flexible-jQuery-Dropdown-Menu-Plugin-Dropit.html
-
-    Multiple files:
-    -opet nutno omezit prohlizece, upload nebude fungovat z mobilu, takze to
-    chce zakazat admin uploady - viz caniuse
-    https://stackoverflow.com/questions/4008406/upload-a-whole-directory-through-an-html-form
-    https://fahmidasclassroom.com/how-to-upload-folder-using-html-and-php/
-
+    - error kontrol pro URL, pravidelne overovani
+    - JS na load contentu pri backu (castecne)
+    - nelze editovat jmena desek, protoze odkazy
+    - resize image not present na 128x128
+    - mazat soubory na disku
 
     Search - schovat na potom, kvuli naseptavaci
     WHERE lastname LIKE '%poc%' COLLATE utf8_general_ci". - asi zbytecne u
@@ -39,11 +14,9 @@
     https://forum.nette.org/en/29208-how-to-implement-search-field-in-the-page
     https://forum.nette.org/cs/23568-suggestinput-autocomplete-pro-nette-2-3-3
 
-
     - kosmetika LOW PRIO
     - https://blogs.perficient.com/2017/12/19/how-to-customize-your-own-html5-audio-player/?fbclid=IwAR2PH0O_EozzIf9m_GIsMuiUbBwWZKKXAGQR63AeHl3r9I0IAtmhH4A1hNc
     - http://alexkatz.me/posts/building-a-custom-html5-audio-player-with-javascript/?fbclid=IwAR1dodiR9n5wom5hjaVzNDxCn-iya17e6G8Weg-Jx0OrUdHtYCi7FXQqVpA
-    - kontrola a meneni location
 DONE:
     - proof of concept zobrazovani srdicek z DB do gridu
     - on click asynchronni funkce co zapise do DB,vrati true a pak zbarvi v gridu
@@ -64,6 +37,16 @@ DONE:
     - jazyk
     - Upload single file (pro avatary)
       https://www.formget.com/ajax-image-upload-php/
+    -  Dropdown s jQuery
+       https://www.jqueryscript.net/menu/Simple-Flexible-jQuery-Dropdown-Menu-Plugin-Dropit.html  
+    - pres admina nutnost pridavat hudbu(pouze z nemobilnich zarizeni)   
+    - srdickovani znovupouzit z jinych modulu - castecne hotovo
+    - jine playlisty nez favorite implementovat a sdileni playlistu mezi uzivateli, overovat private vs public
+      - user si muze zobrazit, vytvorit a prehrat vlastni playlisty
+      - vytvoreni pomoci jednoducheho formu
+      - prohlizeni jinych playlistu v sekci Users->username->klik na jeho playlist pokud neni nastaven na private
+    - subviews nejdou otevrit samostatne
+    - kontrola a meneni location 
 NESTIHNU:
     - 2fa na login
     - kontrola multiple loginu
@@ -71,4 +54,5 @@ NESTIHNU:
     - user stats
     - loga kapel
     - implementace naseptavace
+    - resizovani avatar image (https://stackoverflow.com/questions/14649645/resize-image-in-php)
 

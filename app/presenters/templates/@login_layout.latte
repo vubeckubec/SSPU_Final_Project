@@ -23,9 +23,11 @@
   </head>
   <body>
     <div id="login_logo_area">
+    <span style="display: inline-block;vertical-align: middle;"></span><center><img src="{$basePath}/images/hmv_640.png" alt="logo" style="vertical-align: middle;"></center> 
+    <div id="bad_browser" style="color: red;text-align: center;border: 4px solid red;padding:10px;display:none;" class="container"></div>
     {include content}
     <div class="footer">
-      <p>&copy; Závěrečná práce, Viktor Kubec 2019/2020</p>
+      <p>&copy; Viktrola, závěrečná práce, Viktor Kubec 2019/2020</p>
     </div>
     </div>
   </body>
@@ -33,16 +35,25 @@
   var browserInfo = detect.parse(navigator.userAgent);
   var loginButton = document.getElementById("login");
   var signUpButton = document.getElementById("signUp");
-  if(browserInfo.browser.family === "Firefox") {
-   // alert("Vítej civilizovaný občane.Užij si mou aplikaci.");
+  var legalBrowser = 0;
+  //technology: progressbar IE 10, Edge 12, Firefox 6, chrome 8, Opera 11, android 4.4, samsung 4 
+  //html5 audio: IE 9, Edge 12, FF 20, Chrome 4, Opera 11, android 2.3, samsung 4
+  //flexbox: IE ne, Edge 12, FF 28, Chrome 29, Opera 12, android 4.4, samsung 4 
+
+  if(browserInfo.browser.family === "Firefox" && browserInfo.browser.major >= 28) {
+    legalBrowser = 1;
+  }else if(browserInfo.browser.family === "Chrome" && browserInfo.browser.major >= 29) {
+    legalBrowser = 1;
+  }else if(browserInfo.browser.family === "Edge" && browserInfo.browser.major >=12){
+    legalBrowser = 1;
+  }else if(browserInfo.browser.family === "Opera" && browserInfo.browser.major >= 12){
+    legalBrowser = 1;
   }
-  if(browserInfo.browser.family === "Chrome") {
-   // alert("Vítej civilizovaný občane.Užij si mou aplikaci.");
-  }
-  if(browserInfo.browser.family === "Edge"){
-   // alert("You should head out boi.");
+  if(!legalBrowser) {
     loginButton.setAttribute("disabled", "");
     signUpButton.setAttribute("disabled", "");
+    $("#bad_browser").css("display","block");
+    $('#bad_browser').text("Unfotunately, the combination of your browser ("+browserInfo.browser.family+") and version ("+browserInfo.browser.version+") is missing support for technologies this application uses. Please use modern browser.");
   }
 </script>
 </html>
