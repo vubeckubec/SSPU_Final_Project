@@ -170,4 +170,11 @@ class UploadPresenter extends Nette\Application\UI\Presenter
             $this->uploadManager->uploadSong($album_id,$song['song_order'],$song['name'],$song['time'],$song['length'],$song['dest']);
         }
     }
+
+    public function actionOptimizeTables() {
+        $this->uploadManager->optimizeTables();
+        $results = array();
+        $results['res'] = 1;
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($results));
+    }
 }

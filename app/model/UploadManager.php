@@ -50,5 +50,11 @@ class UploadManager
 		return $this->database->query('INSERT INTO song (name,time,album_idalbum,path,song_order,bytes) VALUES(?,?,?,?,?,?)',$song_name,$song_time,$album_id,$song_dest,$song_order,$song_length);
 	}
 
+	public function optimizeTables() {
+		$this->database->query('OPTIMIZE TABLE song');
+		$this->database->query('OPTIMIZE TABLE album');
+		$this->database->query('OPTIMIZE TABLE artist');
+	}
+
 
 }

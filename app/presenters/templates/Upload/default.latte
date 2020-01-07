@@ -2,15 +2,16 @@
 <h1>New content upload</h1>
 
 {if $folder_count > 0}
-<p>There are {$folder_count} albums to upload.</p>
-<div id="upload_btn" xhref="{link Upload:UploadOneAlbum}"><a class="btn btn-primary" style="">Upload</a></div>
-<br>
-<div id="progressName"></div>   
-<progress id="progressbar" max={$folder_count} value="0" />
+    <p>There are {$folder_count} albums to upload.</p>
+    <div id="upload_btn" xhref="{link Upload:UploadOneAlbum}" style="display:inline-block"><a class="btn btn-primary" style="">Upload</a></div>
+    <br>
+    <div id="progressName"></div>   
+    <progress id="progressbar" max={$folder_count} value="0" />
 {else}
-<p>Currently there is no new content to upload.</p>
-<div id="refresh_btn"><a class="btn btn-primary">Refresh</a></div>
-{/if}   
+    <p>Currently there is no new content to upload.</p>
+    <div id="refresh_btn" style="display:inline-block"><a class="btn btn-primary">Refresh</a></div>
+{/if}
+<div id="optimize_btn" href="{link Upload:OptimizeTables}" style="display:inline-block"><a class="btn btn-primary">Optimize tables</a></div>   
 <script>   
 var uploadCurIndex = 0;
 var uploadMaxIndex = {$folder_count};
@@ -22,12 +23,27 @@ $(document).ready(function() {
         var url = $("#refreshUrl").attr("href");
         $('#content').load(url);        
     });
+    $("#optimize_btn").on("click",optimizeTables);
 }); 
 
 function uploadFolders(e) {
     e.preventDefault();
     runAjaxOnce();
 }    
+
+function optimizeTables() {
+    var url = $("#refresh_btn").attr("href");
+    $.ajax({
+        url: url, 
+        type: "POST",             
+        contentType: false,       
+        cache: false,             
+        processData:false,
+        success: function(data) {
+            alert("Tables were optimized.");      
+        }        
+    });    
+}
 
 function runAjaxOnce() {
     if(uploadMaxIndex > 0) {
