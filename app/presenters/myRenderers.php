@@ -3,7 +3,7 @@ function preRenderSongs($presObj,$album_id,$from,&$to) {
     foreach($from as $song) {
         $myString = "";    
         $modifiedSongOrder = $song->song_order - 1;
-        $queue_url = $presObj->link('Queue:default',['album_id'=>$album_id]);
+        $queue_url = $presObj->link('Queue:default',['album_id'=>$album_id, 'deleteQueue'=>1]);
         $album_save = $presObj->link('Album:save', ['song_id'=>$song->song_id]);
         $json_url = $presObj->link('Album:PlaylistJson',['song_id'=>$song->song_id]);
         $myString .= "<td style=\"width:25%;\">$song->song_order</td>";
@@ -43,7 +43,7 @@ function preRenderSongsForPlaylist($presObj,$playlist_id,$from,&$to) {
     $modifiedSongOrder = 0;
     foreach($from as $song) {
         $myString = "";    
-        $queue_url = $presObj->link('Queue:default',['playlist_id'=>$playlist_id]);
+        $queue_url = $presObj->link('Queue:default',['playlist_id'=>$playlist_id, 'deleteQueue'=> 1]);
         $album_save = $presObj->link ('Album:save', ['song_id'=>$song->song_id]);
         $myString .= "<td><span class=\"glyphicon glyphicon-play queue_fill\" aria-hidden=\"true\" href=\"$queue_url\" song_order=\"$modifiedSongOrder\" id=\"song_pos\"></span>
         <span class=\"inplace\" data-field-value=\"$song->songName\" data-url=\"$album_save\">$song->songName</span></td>";

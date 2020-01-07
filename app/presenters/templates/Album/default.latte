@@ -80,11 +80,15 @@ $(document).ready(function() {
 			    cache: false,             
 			    processData:false,  
                 success: function(data) { 
+                    var url = data['addQueueUrl'];
+                    $('.append').append('<li><a class=\"queue_clicker\" href=\"'+url+'\">Add to queue</a></li>');
+                    $('.append').append('<li><hr/></li>');
                     var row;
-                    for(row of data) {
+                    for(row of data['playlists']) {
                         $(".append").append('<li><a class=\"async_clicker\" href=\"'+row['playlist_url']+'\">'+row['playlist_name']+'</a></li>');
                     }
-                    $('.async_clicker').on("click",myFavHref);     
+                    $('.async_clicker').on("click",myFavHref); 
+                    $('.queue_clicker').on("click",myAjaxAddQueueHandler);    
                 }       
 		    });  
         },

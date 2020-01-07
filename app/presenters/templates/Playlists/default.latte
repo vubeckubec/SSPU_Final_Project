@@ -11,7 +11,7 @@
         {if $playlist->isfavorites == 0}
         <tr>
             <td>
-                <span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist"></span>
+                <span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist, deleteQueue=>1"></span>
                 <a n:href="PlaylistSongs:default playlist_id=>$playlist->idplaylist" class="ajax_change">{$playlist->name} ({if $playlist->private == 0}Private{else}Public{/if})</a>&nbsp;
             </td>
             <td>
@@ -25,7 +25,7 @@
         {else}
         <tr>
             <td>
-                <span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist"></span>
+                <span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist, deleteQueue=>1"></span>
                 <a n:href="PlaylistSongs:default playlist_id=>$playlist->idplaylist" class="ajax_change">{$playlist->name} ({if $playlist->private == 0}Private{else}Public{/if})</a>
             </td>
             <td>

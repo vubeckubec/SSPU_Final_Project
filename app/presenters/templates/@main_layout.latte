@@ -371,35 +371,44 @@ hr {
         song_index = 0;
       }
 
-      //zvyrazneni radek podle song_index a naplneni thumbnailu a informaci o albu
-      var cur_line = $(".highlightSong:eq("+song_index+")");
-      cur_line.attr("background-color-backup",cur_line.css("background-color"));
-      cur_line.css("background-color","#ff9999");
-      
+      highlightSong(song_index);
       var myJson = window.__QUEUE__;
       var audio = document.getElementById("audio_control");
       var url = myJson[song_index]['url'];
-      var max_song = window.__QUEUE__.length;
-      var display_progress = ((song_index*1) + 1)+ "/" +max_song;
-      var song_name = myJson[song_index]['song_name'];
       $("#audio_source").attr("src",url);
-      $("#display_progress").text(display_progress);
-      $("#song_meta").text(song_name);
-
-      //inserting album info to left of queue
-      var song_thumb = myJson[song_index]['albumThumb'];
-      $("#queueThumb").attr("src",song_thumb);
-      var song_artist = myJson[song_index]['artist_name'];
-      $("#artist_name").text(song_artist);
-      var album_name = myJson[song_index]['album_name'];
-      $("#album_name").text(album_name);
-      var album_year = myJson[song_index]['album_year'];
-      $("#album_year").text(album_year);
-
       audio.load();
       audio.play();
       window.__QUEUE_INDEX__ = song_index;
     }
+
+    function highlightSong(song_index) {
+      var myJson = window.__QUEUE__;
+      if(window.__QUEUE__.length > song_index) {
+        //zvyrazneni radek podle song_index a naplneni thumbnailu a informaci o albu
+        var cur_line = $(".highlightSong:eq("+song_index+")");
+        cur_line.attr("background-color-backup",cur_line.css("background-color"));
+        cur_line.css("background-color","#ff9999");
+
+        //inserting album info to left of queue
+        var song_thumb = myJson[song_index]['albumThumb'];
+        $("#queueThumb").attr("src",song_thumb);
+        var song_artist = myJson[song_index]['artist_name'];
+        $("#artist_name").text(song_artist);
+        var album_name = myJson[song_index]['album_name'];
+        $("#album_name").text(album_name);
+        var album_year = myJson[song_index]['album_year'];
+        $("#album_year").text(album_year);
+
+        var max_song = window.__QUEUE__.length;
+        var display_progress = ((song_index*1) + 1)+ "/" +max_song;
+        var song_name = myJson[song_index]['song_name'];
+
+        $("#display_progress").text(display_progress);
+        $("#song_meta").text(song_name);
+      }
+      
+    }
+
 
     function playPrev() {
       var cur_song_index = window.__QUEUE_INDEX__;
@@ -464,6 +473,19 @@ hr {
       $('#queue').load(url,function() {
         player_play(cur_song_pos);
         $('.queue_play').on("click",myInQueuePlay);
+      });
+    }
+
+    function myAjaxAddQueueHandler(e) {
+      e.preventDefault();         
+      var url = $(this).attr("href");
+       $('#queue').load(url,function() {
+        $('.queue_play').on("click",myInQueuePlay);
+        deHighlightSong();
+        var song_index = window.__QUEUE_INDEX__;
+        if(song_index >= 0){
+          highlightSong(song_index);
+        }
       });
     }
     

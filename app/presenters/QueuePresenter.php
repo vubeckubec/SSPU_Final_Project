@@ -18,15 +18,21 @@ class QueuePresenter extends Nette\Application\UI\Presenter
         $this->setLayout('empty_layout');
     }
  
-    public function renderDefault($album_id,$playlist_id) {
+    public function renderDefault($album_id,$playlist_id,$song_id,$deleteQueue) {
         $this->template->refreshUrl = $this->getHttpRequest()->getUrl()->getAbsoluteUrl();
-        $this->template->album_id = $album_id;    
-        $this->template->playlist_id = $playlist_id;
+        if($deleteQueue) {
+            $this->queueManager->deleteUsersQueue($this->user->getId());
+        }
+        //filling queue
         if($album_id){
             $this->queueManager->insertAlbumToQueue($this->user->getId(),$album_id);
         }elseif($playlist_id){
             $this->queueManager->insertPlaylistToQueue($this->user->getId(),$playlist_id);
+        }elseif($song_id) {
+            $this->queueManager->insertSongToQueue($this->user->getId(),$song_id);
         }
+
+        //processing queue
         $this->template->queue_list = array(); 
         $temp_queue_list = $this->queueManager->readAll($this->user->getId());
 
@@ -43,7 +49,7 @@ class QueuePresenter extends Nette\Application\UI\Presenter
             $jsonRow['albumThumb'] = $this->link('Albums:thumbnail',['album_id'=>$qsong->album_id]);
             array_push($jsonArray,$jsonRow);
         }
-
+        //passing queue as JSON
         $this->template->json = json_encode($jsonArray);
     }
 }

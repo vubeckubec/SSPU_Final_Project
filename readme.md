@@ -4,7 +4,6 @@
  TODO:
     - error kontrol pro URL, pravidelne overovani
     - JS na load contentu pri backu (castecne)
-    - nelze editovat jmena desek, protoze odkazy
     - resize image not present na 128x128
     - mazat soubory na disku
 
@@ -47,6 +46,7 @@ DONE:
       - prohlizeni jinych playlistu v sekci Users->username->klik na jeho playlist pokud neni nastaven na private
     - subviews nejdou otevrit samostatne
     - kontrola a meneni location 
+    - nelze editovat jmena desek, protoze odkazy
 NESTIHNU:
     - 2fa na login
     - kontrola multiple loginu

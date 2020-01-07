@@ -61,11 +61,6 @@
       this.el      = $(element);
       this.element = element;
 
-      var oDisplay = "inline";
-      //var oDisplay = $(element).css( "display" );
-      //$(element).css( "display", "inline" );
-      $(element).after( "&nbsp;<div class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"display: " + oDisplay + "\"></div>" );
-      this.pencil_el = $(element).next();
       this.options = $.extend({}, $.inplace, options, this.el.data());
       
     }
@@ -73,22 +68,6 @@
     Inplace.prototype = {
       _activate: function() {
         var field = this._field();
-
-	this.pencil_el.off('click.inplace.el' );
-	this.pencil_el.hide();
-
-	var a_el = this.el.parent( 'A' );
-	if( ! a_el.length )
-	{
-		this.orig_href = undefined;
-		this.orig_a = undefined;
-	}
-	else
-	{
-		this.orig_a = a_el;
-		this.orig_href = $(a_el).attr("href");
-		$(a_el).attr("href",null);
-	}
 
         this
           .el
@@ -123,8 +102,7 @@
       },
 
       _bindClick: function() {
-        //this.el.on('click.inplace.el', this._activate.bind(this));
-	this.pencil_el.on('click.inplace.el', this._activate.bind(this));
+        this.el.on('click.inplace.el', this._activate.bind(this));
       },
 
       _bindField: function() {
@@ -169,8 +147,7 @@
 
         options['data-inplace-' + kind] = '';
 
-	var newsel = $('<input />', options);
-        return newsel;
+        return $('<input />', options);
       },
 
       _create: function() {
@@ -185,7 +162,6 @@
       },
 
       _deactivate: function() {
-	this.pencil_el.show();
         this._bindClick();
 
         this
@@ -193,16 +169,13 @@
           .removeClass('inplace--active')
           .html(this.element.getAttribute('data-field-value'))
           .trigger('inplace:deactivate', this.element);
-
-	if( this.orig_a !== undefined )
-	{
-		$(this.orig_a).attr("href",this.orig_href);
-	}
-	return false;
       },
 
       _done: function(json) {
+        //alert(JSON.stringify(json, null, 2));
+
         this.options.fieldValue = json[this.options.fieldName];
+
         this.element.setAttribute('data-field-value', this.options.fieldValue);
         //deactivate moved down because of losing data
         this._deactivate();

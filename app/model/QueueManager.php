@@ -29,7 +29,8 @@ class QueueManager
                                           JOIN album ON song.album_idalbum = album.album_id
                                           JOIN artist_has_album ON album.album_id = artist_has_album.album_id
                                           JOIN artist ON artist_has_album.artist_id = artist.artist_id
-                                          WHERE queue.user_id = ?',$user_id); 
+                                          WHERE queue.user_id = ?
+                                          ORDER BY queue.song_order ASC',$user_id); 
     }
     
     public function deleteUsersQueue($user_id) {
@@ -38,7 +39,6 @@ class QueueManager
 	}
 
 	public function insertAlbumToQueue($user_id,$album_id) {
-        $this->deleteUsersQueue($user_id);
 		$res =  $this->database->query('INSERT INTO queue (user_id,song_id) 
                                        SELECT ?, song.song_id
                                        FROM song 
@@ -48,13 +48,17 @@ class QueueManager
     }
 
     public function insertPlaylistToQueue($user_id,$playlist_id) {
-        $this->deleteUsersQueue($user_id);
         return $this->database->query('INSERT INTO queue (user_id,song_id)
                                        SELECT ?, playlist_has_songs.song_song_id
                                        FROM playlist_has_songs
                                        WHERE playlist_has_songs.playlist_idplaylist = ?
                                        ORDER BY playlist_has_songs.song_order',$user_id,$playlist_id);
     }
+
+    public function insertSongToQueue($user_id,$song_id) {
+        return $this->database->query('INSERT INTO queue (user_id,song_id) VALUES(?,?)',$user_id,$song_id);
+    }
+
 
     public function albuminfo_readByID($album_id){
         return $this->database->fetch('SELECT artist.name AS artist_name,album.name AS album_name, album.year, artist_has_album.artist_id,artist_has_album.album_id

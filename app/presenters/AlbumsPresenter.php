@@ -24,13 +24,14 @@ class AlbumsPresenter extends Nette\Application\UI\Presenter {
             $this->template->album_list_new = array();
             foreach($this->template->album_list_old as $album) {
                 $thumb_url = $this->link('Albums:thumbnail',['album_id'=>$album->album_id]);
-                $queue_url = $this->link('Queue:default',['album_id'=>$album->album_id]);
+                $queue_url = $this->link('Queue:default',['album_id'=>$album->album_id, 'deleteQueue'=> 1]);
                 $album_url = $this->link('Album:default',['album_id'=>$album->album_id]);
+                $save_url = $this->link('Albums:Save',['album_id'=>$album->album_id]);
                 $album_delete_url = $this->link('Albums:DeleteAlbum',['album_id'=>$album->album_id,'artist_id'=>$artist_id]);
                 $new_album = new \stdClass();
                 $album_string = "";
                 $album_string .= "<div style=\"overflow-wrap: break-word;\"><a class=\"ajax_change\" href=\"$album_url\"><img src=\"$thumb_url\" height=\"\" width=\"\" style=\"display: block;margin-left: auto;margin-right: auto;\">";
-                $album_string .= "<div style=\"display:block;text-align:center;\">$album->year - $album->name</a>";
+                $album_string .= "<div style=\"display:block;text-align:center;\">$album->year - <span class=\"inplace\" style=\"\" data-field-value=\"$album->name\" data-url=\"$save_url\">$album->name</span></a>";
                 if($userInfo->role == "admin"){
                     $album_string .= "<div style=\"display:block;\"><span class=\"glyphicon glyphicon-play queue_fill\" aria-hidden=\"true\" href=\"$queue_url\"></span>
                     <span album_id=\"$album->album_id\" favorite=\"$album->favorite\" class=\"" . ($album->favorite ? "glyphicon glyphicon-heart": "glyphicon glyphicon-heart-empty") . "
@@ -87,4 +88,10 @@ class AlbumsPresenter extends Nette\Application\UI\Presenter {
         $this->sendResponse(new \Nette\Application\Responses\JsonResponse($results));
     }
 
+    public function actionSave($album_id,$album_name) {
+        $this->albumsManager->updateAlbumName($album_id,$album_name);
+        $results = array();
+        $results['album_name'] = $album_name;
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($results));
+    }
 }

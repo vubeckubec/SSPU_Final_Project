@@ -5,7 +5,7 @@
 	<div>Role: {$profileInfo->role}</div>
 	{if $profileInfo->disabled == 0}<div>Profile disabled: NO</div>{else}<div>Profile disabled: YES</div>{/if}
 	{if $profileInfo->private == 0}<div>Private profile: NO</div>{else}<div>Private profile: YES</div>{/if}
-	<span>User's personal text: </span><div class="inplace" style="display: inline-block;" data-field-value="{$profileInfo->personal}">{$profileInfo->personal}</div>
+	<span>User's personal text: </span><span class="inplace" style="display: inline-block;" data-field-value="{$profileInfo->personal}">{$profileInfo->personal}</span>
 	<br>
 	<div class="btn btn-primary" id="changeAvatar">Change avatar</div>
 	<div id="uploadForm" style="display:none;">

@@ -57,11 +57,13 @@ class AlbumPresenter extends Nette\Application\UI\Presenter
     public function actionPlaylistJson($song_id) {
         $res = $this->albumManager->getAllUsersPlaylists($this->user->getId());
         $json = array();
+        $json['playlists'] = array();
+        $json['addQueueUrl'] = $this->link('Queue:default',['song_id'=>$song_id]);
         foreach($res as $row) {
             $json_row = array();
             $json_row['playlist_name'] = $row->name;
             $json_row['playlist_url'] = $this->link('Album:InsertToPlaylist',['playlist_id'=>$row->playlist_idplaylist,'song_id'=>$song_id]);
-            array_push($json,$json_row);
+            array_push($json['playlists'],$json_row);
         }
         $this->sendResponse(new \Nette\Application\Responses\JsonResponse($json));
     }

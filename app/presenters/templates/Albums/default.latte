@@ -54,6 +54,27 @@ function removeAlbum(e) {
     });
 }
 
+$('.inplace').inplace(
+    {
+    buttonOrder: ['save', 'cancel'],
+    cancel: true,
+    cancelClass: 'inplace__cancel btn btn-danger',
+    cancelValue: 'Cancel',
+
+    save: true,
+    saveClass: 'inplace__save btn btn-success',
+    saveValue: 'Save',
+
+    fieldClass: 'inplace__field',
+    fieldName: 'album_name',
+    fieldType: 'text',
+    
+    selectable: ['select-one', 'select-multiple'],
+    method: 'POST'
+    }
+);
+
+
 </script>
 {/block}
 

@@ -77,7 +77,9 @@ class AlbumsManager
 		return $res;
     }
 
-    
-
-    
+    public function updateAlbumName($album_id, $rename) {
+        return $this->database->query('UPDATE album
+                                       SET album.name = ?
+                                       WHERE album.album_id = ?',$rename,$album_id);
+    } 
 }
