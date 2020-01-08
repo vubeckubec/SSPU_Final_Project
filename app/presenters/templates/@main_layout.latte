@@ -241,6 +241,36 @@ hr {
   overflow: auto;
 }
 
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;  
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
   </style>
   <body style="height: 100vh;margin:0;padding:0;">
     <div style="display:flex; flex-direction:column;height:100%;">
@@ -248,27 +278,41 @@ hr {
         <div id="logo_area" style="border: 2px solid black; vertical-align: middle; flex: 0 0 152px; text-align: center;border-bottom: none;border-right: none;background-color: #3377ff;">
            <span style="display: inline-block;height: 100%;vertical-align: middle;"></span><img src="{$basePath}/images/viktrolaW.png" alt="logo" style="vertical-align: middle;"> 
         </div>
-        <div id="functions_area" style="display:flex; flex-direction:row;border: 2px solid black;width: 100%;justify-content:space-around;align-items:center;background-color: #3377ff;height: 102%;z-index:5;">
-            <div class="search" style="border: 2px solid #5cb85c;overflow: auto;-webkit-border-radius: 9px;height:67%;">
+        <div id="functions_area" style="display:flex; flex-direction:row;border: 2px solid black;width: 100%;align-items:center;background-color: #3377ff;height: 102%;z-index:5;">
+            <div class="search" style="border: 2px solid #5cb85c;overflow: auto;-webkit-border-radius: 9px;height:67%;left:15%;position:sticky;">
               <form class="search-form" id="search-form" n:href="Search:default">
                 <input type="text" class="searchTerm" id="searchQuery" placeholder="Type" style="border: 0px;width: 72.4%;padding: 10px 10px;">
                 <input type="submit" value="Search" id="submit_button" url="/spinner/" style="border: 0px;background: none;background-color: #5cb85c;color: #fff;float: right;padding: 9px;-webkit-border-top-right-radius: 5px;-webkit-border-bottom-right-radius: 5px;cursor:pointer;padding-top:11px;padding-right:10px;">
               </form>
             </div>
-          <div>  
-          <span class="glyphicon glyphicon-step-backward" aria-hidden="true" id="backward"></span>
-          <span class="glyphicon glyphicon-step-forward" aria-hidden="true" id="forward"></span>
+          <div style="position:fixed;left:35%;">  
+          <span class="glyphicon glyphicon-step-backward" aria-hidden="true" id="backward" style="font-size: 25px;"></span>
+          <span id="play" class="glyphicon glyphicon-play" aria-hidden="true" style="font-size: 25px;"></span>
+          <span class="glyphicon glyphicon-step-forward" aria-hidden="true" id="forward" style="font-size: 25px;"></span>
           <span class="queue_pos"></span> 
           </div>            
-          <div>
-            <audio controls id="audio_control">
+          <div style="position:fixed;left:45%;">
+            <audio id="audio_control">
               <source src="" type="audio/mpeg" id="audio_source">
             </audio>
+            <div>
+              <div style="display:inline-block;position:fixed;left:45%;top:1.5%;"><div id="song_meta" style="display:inline-block;">nothing</div> · <div id="song_artist" style="display:inline-block;">nothing</div></div>
+              <div class="range_volume" style="display:inline-block;position:fixed;left:61.2%;top:1.9%;">
+                <input type="range" min="0" max="99" value="99" class="slider" id="myvol">
+              </div>
+            </div>
+            <p/>
+            <div>
+              <div id="curTime" style="display:inline-block;position:fixed;left:43.5%;top:3.8%;">0:00</div>
+              <div class="range_seek" style="position:fixed;width:500px;display:inline-block;left:45%;top:4.0%;">
+                <input type="range" min="0" max="99" value="0" class="slider" id="myseek">
+              </div>
+              <div id="duration" style="display:inline-block;position:fixed;left:69.7%;top:3.8%;">0:00</div>
+            </div>
           </div>
-          <div id="song_meta"></div>
-          <div id="display_progress">0/0</div>   
+          <div id="display_progress" style="position:fixed;left:80%;">0/0</div>   
           <div>
-            <button type="button" class="btn btn-success" id="queue_button" onclick="queueChangeFunction()">Show queue</button>
+            <button type="button" class="btn btn-success" id="queue_button" onclick="queueChangeFunction()" style="position:fixed;left:85%;top:1.7%;">Show queue</button>
           </div> 
         </div>
       </div>
@@ -360,6 +404,13 @@ hr {
       deHighlightSong();
       window.__QUEUE_INDEX__ = -1;
       $("#audio_source").attr("src", " ");
+      $("#play").removeClass("glyphicon-pause");
+      $("#play").addClass("glyphicon-play");
+
+
+      /*$("#play").attr("id","play");
+      playTrackOff();
+      playTrack();*/
     }
 
     function player_play(song_index) {
@@ -378,6 +429,14 @@ hr {
       $("#audio_source").attr("src",url);
       audio.load();
       audio.play();
+      $("#play").removeClass("glyphicon-play");
+      $("#play").addClass("glyphicon-pause");
+      
+
+
+      /*$("#play").attr("id","pause");
+      pauseTrackOff();
+      pauseTrack();*/
       window.__QUEUE_INDEX__ = song_index;
     }
 
@@ -405,10 +464,10 @@ hr {
 
         $("#display_progress").text(display_progress);
         $("#song_meta").text(song_name);
+        $("#song_artist").text(song_artist);
       }
       
     }
-
 
     function playPrev() {
       var cur_song_index = window.__QUEUE_INDEX__;
@@ -444,16 +503,68 @@ hr {
       }
     }
 
-    $('#backward').on("click",function(){
+    $('#backward').on("click",function() {
       playPrev()  
     });
 
-    $('#forward').on("click",function(){
+    $('#forward').on("click",function() {
       playNext();
     });
 
-    $('#audio_control').on("ended",function(){
+    $('#audio_control').on("ended",function() {
       playNext();
+    });
+  
+    $("#audio_control").on("timeupdate", function() {
+      var aud = document.getElementById("audio_control");
+      $("#curTime").text(formatTime(aud.currentTime));
+      $("#duration").text(formatTime(aud.duration));
+      var myseek = document.getElementById("myseek");
+      var curTime = aud.currentTime;
+      var duration = aud.duration;
+      if(duration > 0) {
+        myseek.value = curTime*100/duration;
+      }
+	  });
+
+    function formatTime(seconds) {
+      minutes = Math.floor(seconds / 60);
+      seconds = Math.floor(seconds % 60);
+      seconds = (seconds >= 10) ? seconds : "0" + seconds;
+      return minutes + ":" + seconds;
+    }
+
+    function playPause() {
+      var aud = document.getElementById("audio_control");
+      if (aud.paused) {
+        aud.play();
+        $("#play").removeClass("glyphicon-play");
+        $("#play").addClass("glyphicon-pause"); 
+      }else{
+        aud.pause();
+        $("#play").removeClass("glyphicon-pause");
+        $("#play").addClass("glyphicon-play");
+      }
+    } 
+
+    $("#play").on("click",playPause);
+
+    $("#audio_control").on("volumechange", function() {
+      var aud = document.getElementById("audio_control");
+      $("#volume").text("volume:" + aud.volume);
+    });
+
+    $("#myseek").on("input", function() {
+      var seek = this.value / 100;
+      var aud = document.getElementById("audio_control");
+      var dur = aud.duration;
+      aud.currentTime = dur * seek;
+    });
+
+    $("#myvol").on("input", function() {
+      var vol = this.value / 100;
+      var aud = document.getElementById("audio_control");
+      aud.volume = vol;
     });
 
     $('.queue_fill').on("click",myAjaxQueueHandler);
