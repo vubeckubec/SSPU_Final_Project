@@ -26,7 +26,8 @@ class PlayerPresenter extends Nette\Application\UI\Presenter
 			$httpResponse->setHeader('X-Pad', 'avoid browser bug');
 			$httpResponse->setHeader('Cache-Control', 'no-cache');
 			$httpResponse->setHeader('Content-Transfer-Encoding', 'binary');
-			$httpResponse->setHeader('Accept-Ranges', 'bytes');
+			//$httpResponse->setHeader('Accept-Ranges', 'bytes');
+			$httpResponse->setHeader('Accept-Ranges', 'none');
 			$this->sendResponse(new Nette\Application\Responses\FileResponse($file_path));	
 		}else{
 			$this->error("Song with ID '$song_id' was not found.",Nette\HTTP\IResponse::S401_UNAUTHORIZED);

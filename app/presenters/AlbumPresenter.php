@@ -25,7 +25,8 @@ class AlbumPresenter extends Nette\Application\UI\Presenter
             $this->template->album_info = $this->albumManager->albuminfo_readByID($album_id);
             $this->template->songs_list = array();     
             $temp_songs_list = $this->albumManager->readAlbumSongsWithLikes($album_id,$this->user->getId());
-            preRenderSongs($this,$album_id,$temp_songs_list,$this->template->songs_list);
+            $userInfo = $this->albumManager->username_readById($this->user->getId());
+            preRenderSongs($this,$album_id,$temp_songs_list,$this->template->songs_list,$userInfo);
             $this->template->thumb_url = $this->link('Albums:thumbnail',['album_id'=>$album_id]);
             $this->template->fav_list = $this->albumManager->getUsersFavoritePlaylist($this->user->getId());
         }else{

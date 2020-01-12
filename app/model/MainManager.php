@@ -19,6 +19,10 @@ class MainManager {
 		return $result ? 1 : 0;
 	}
 
+	public function getFavPlaylistId($user_id) {
+		return $this->database->fetch('SELECT * FROM user_has_playlist WHERE user_iduser = ? AND isfavorites',$user_id);
+	}
+
 	public function insertUsersFavPlaylist($user_id) {
 		$playlistName = $this->username_readById($user_id)->username . "'s favorites";
 		return $this->insertUsersPlaylist($user_id,$playlistName,"1","0");						

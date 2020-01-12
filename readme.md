@@ -1,21 +1,22 @@
 # MP3-player-web
  maturitni-projekt
 
- TODO:
+ TODO:  
     - error kontrol pro URL, pravidelne overovani
     - JS na load contentu pri backu (castecne)
-    - resize image not present na 128x128
     - mazat soubory na disku
 
-    Search - schovat na potom, kvuli naseptavaci
-    WHERE lastname LIKE '%poc%' COLLATE utf8_general_ci". - asi zbytecne u
-    fulltextu
-    https://forum.nette.org/en/29208-how-to-implement-search-field-in-the-page
-    https://forum.nette.org/cs/23568-suggestinput-autocomplete-pro-nette-2-3-3
+    5. 
+    - predelat styly na playeru z position fixed na position relative
 
-    - kosmetika LOW PRIO
-    - https://blogs.perficient.com/2017/12/19/how-to-customize-your-own-html5-audio-player/?fbclid=IwAR2PH0O_EozzIf9m_GIsMuiUbBwWZKKXAGQR63AeHl3r9I0IAtmhH4A1hNc
-    - http://alexkatz.me/posts/building-a-custom-html5-audio-player-with-javascript/?fbclid=IwAR1dodiR9n5wom5hjaVzNDxCn-iya17e6G8Weg-Jx0OrUdHtYCi7FXQqVpA
+    6.
+    - pridat dashboard na uvodni stranku
+    
+    - Search - schovat na potom, kvuli naseptavaci
+    - WHERE lastname LIKE '%poc%' COLLATE utf8_general_ci". - asi zbytecne u
+    - fulltextu
+    - https://forum.nette.org/en/29208-how-to-implement-search-field-in-the-page
+    - https://forum.nette.org/cs/23568-suggestinput-autocomplete-pro-nette-2-3-3
 DONE:
     - proof of concept zobrazovani srdicek z DB do gridu
     - on click asynchronni funkce co zapise do DB,vrati true a pak zbarvi v gridu
@@ -47,6 +48,22 @@ DONE:
     - subviews nejdou otevrit samostatne
     - kontrola a meneni location 
     - nelze editovat jmena desek, protoze odkazy
+    - resize image not present na 128x128
+    - plus do playlistu
+    - krizek ve favorites
+    - kdyz user nema playlisty tak neproklik
+    - krizek v playlists
+    - dodelat inline editaci jmena alba 
+    - dodelat plus u alba na vlozeni alba do queue
+    - srdicko, plusko a krizek v queue
+    - overflow v queue
+    - v searchi dodelat vzhled
+    - ZEPTAT SE JINDRICHA NA ESCAPING
+    - omezit mazani,inline editaci a upload jen pro admina
+    - jeste v searchi v songach tuzticku jen admin
+    - kosmetika LOW PRIO
+    - https://blogs.perficient.com/2017/12/19/how-to-customize-your-own-html5-audio-player/?fbclid=IwAR2PH0O_EozzIf9m_GIsMuiUbBwWZKKXAGQR63AeHl3r9I0IAtmhH4A1hNc
+    - http://alexkatz.me/posts/building-a-custom-html5-audio-player-with-javascript/?fbclid=IwAR1dodiR9n5wom5hjaVzNDxCn-iya17e6G8Weg-Jx0OrUdHtYCi7FXQqVpA
 NESTIHNU:
     - 2fa na login
     - kontrola multiple loginu
@@ -55,4 +72,5 @@ NESTIHNU:
     - loga kapel
     - implementace naseptavace
     - resizovani avatar image (https://stackoverflow.com/questions/14649645/resize-image-in-php)
+    - kontrola dotazu v kodu
 

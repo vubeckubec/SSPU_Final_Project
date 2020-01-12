@@ -38,7 +38,7 @@ class AlbumsManager
 		return 1;
     }
 
-    public function readByID($album_id){
+    public function album_readByID($album_id){
         return $this->database->fetch('SELECT * 
                                        FROM album
                                        WHERE album.album_id = ?',$album_id); 
@@ -52,6 +52,16 @@ class AlbumsManager
 
     public function username_readById($user_id){
 		return $this->database->fetch('SELECT user.username,user.role FROM user WHERE iduser = ?',$user_id);
+    }
+
+    public function updateAlbumName($album_id, $rename) {
+        return $this->database->query('UPDATE album
+                                       SET album.name = ?
+                                       WHERE album.album_id = ?',$rename,$album_id);
+    }
+
+    public function getAllAlbumsSongs($album_id) {
+        return $this->database->fetchAll('SELECT * FROM song WHERE song.album_idalbum = ?',$album_id);
     }
     
     public function deleteAlbum($album_id,$artist_id) {
@@ -75,11 +85,5 @@ class AlbumsManager
         }
         $this->database->query('UNLOCK TABLES');						
 		return $res;
-    }
-
-    public function updateAlbumName($album_id, $rename) {
-        return $this->database->query('UPDATE album
-                                       SET album.name = ?
-                                       WHERE album.album_id = ?',$rename,$album_id);
     } 
 }

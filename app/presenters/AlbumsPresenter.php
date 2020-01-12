@@ -27,19 +27,36 @@ class AlbumsPresenter extends Nette\Application\UI\Presenter {
                 $queue_url = $this->link('Queue:default',['album_id'=>$album->album_id, 'deleteQueue'=> 1]);
                 $album_url = $this->link('Album:default',['album_id'=>$album->album_id]);
                 $save_url = $this->link('Albums:Save',['album_id'=>$album->album_id]);
+                $json_url = $this->link('Albums:AlbumJson',['album_id'=>$album->album_id]);
                 $album_delete_url = $this->link('Albums:DeleteAlbum',['album_id'=>$album->album_id,'artist_id'=>$artist_id]);
                 $new_album = new \stdClass();
                 $album_string = "";
                 $album_string .= "<div style=\"overflow-wrap: break-word;\"><a class=\"ajax_change\" href=\"$album_url\"><img src=\"$thumb_url\" height=\"\" width=\"\" style=\"display: block;margin-left: auto;margin-right: auto;\">";
-                $album_string .= "<div style=\"display:block;text-align:center;\">$album->year - <span class=\"inplace\" style=\"\" data-field-value=\"$album->name\" data-url=\"$save_url\">$album->name</span></a>";
-                if($userInfo->role == "admin"){
+                if($userInfo->role == "admin") {
+                    $album_string .= "<div style=\"display:block;text-align:center;\">$album->year - <span class=\"inplace\" style=\"\" data-field-value=\"$album->name\" data-url=\"$save_url\">$album->name</span></a>";
+                }else{
+                    $album_string .= "<div style=\"display:block;text-align:center;\">$album->year - $album->name</a>";
+                }
+                if($userInfo->role == "admin") {
                     $album_string .= "<div style=\"display:block;\"><span class=\"glyphicon glyphicon-play queue_fill\" aria-hidden=\"true\" href=\"$queue_url\"></span>
                     <span album_id=\"$album->album_id\" favorite=\"$album->favorite\" class=\"" . ($album->favorite ? "glyphicon glyphicon-heart": "glyphicon glyphicon-heart-empty") . "
-                    favtoggle_album\" aria-hidden=\"true\"></span> <span class=\"glyphicon glyphicon-remove remove_album\" style=\"color:red;\" aria-hidden=\"true\" href=\"$album_delete_url\"></span></div></div></div>";  
+                    favtoggle_album\" aria-hidden=\"true\"></span> 
+                    <ul class=\"albumsAddDropdown menu\" style=\"display: inline-block;\">
+                    <li><span href=\"#\" class=\"glyphicon glyphicon-plus\" url=\"$json_url\"></span>
+                        <ul class=\"append\">
+                        </ul>
+                    </li>
+                </ul> <span class=\"glyphicon glyphicon-remove remove_album\" style=\"color:red;\" aria-hidden=\"true\" href=\"$album_delete_url\"></span></div></div></div>";  
                 }else{
                     $album_string .= "<div style=\"display:block;\"><span class=\"glyphicon glyphicon-play queue_fill\" aria-hidden=\"true\" href=\"$queue_url\"></span>
                     <span album_id=\"$album->album_id\" favorite=\"$album->favorite\" class=\"" . ($album->favorite ? "glyphicon glyphicon-heart": "glyphicon glyphicon-heart-empty") . "
-                    favtoggle_album\" aria-hidden=\"true\"></span></div></div></div>";
+                    favtoggle_album\" aria-hidden=\"true\"></span>
+                    <ul class=\"albumsAddDropdown menu\" style=\"display: inline-block;\">
+                    <li><span href=\"#\" class=\"glyphicon glyphicon-plus\" url=\"$json_url\"></span>
+                        <ul class=\"append\">
+                        </ul>
+                    </li>
+                </ul></div></div></div>";
                 }
                 array_push($this->template->album_list_new,$album_string); 
             }
@@ -64,8 +81,11 @@ class AlbumsPresenter extends Nette\Application\UI\Presenter {
     }
     
     public function renderThumbnail($album_id) {
-		$album = $this->albumsManager->readByID($album_id);
-        $file_path = realpath(__DIR__ . "/../writable/album_tns") . "\\" . strtr($album->pic_tn, '/', '\\');
+        $file_path = "";
+        $album = $this->albumsManager->album_readByID($album_id);
+        if(is_object($album)){
+            $file_path = realpath(__DIR__ . "/../writable/album_tns") . "\\" . strtr($album->pic_tn, '/', '\\');
+        }
         if(!is_file($file_path)){
             $file_path = realpath(__DIR__ . "/../writable/avatars") . "\\" . "blank-image.jpg";   
         }
@@ -93,5 +113,11 @@ class AlbumsPresenter extends Nette\Application\UI\Presenter {
         $results = array();
         $results['album_name'] = $album_name;
         $this->sendResponse(new \Nette\Application\Responses\JsonResponse($results));
+    }
+
+    public function actionAlbumJson($album_id) {
+        $json = array();
+        $json['album_url'] = $this->link('Queue:default',['album_id'=>$album_id]);
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($json));
     }
 }

@@ -34,7 +34,9 @@ services:
 	- App\Model\ProfileManager
 	- App\Model\UserListManager
 	- App\Model\PlaylistSongsManager
-	- App\Model\UploadManager	
+	- App\Model\UploadManager
+	- App\Model\FavoritesManager
+	- App\Model\DashboardManager	
 	- App\Forms\FormFactory
 	- App\Forms\SignInFormFactory
 	- App\Forms\SignUpFormFactory

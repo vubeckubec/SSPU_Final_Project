@@ -9,7 +9,11 @@
     <tbody>
         {foreach $UsersList as $userRec}
         <tr>
+            {if $userRec->playlistCount != null}
             <td><a class="ajax_change" n:href="Playlists:default user_id=>$userRec->iduser">{$userRec->username}</a></td>
+            {else}
+            <td>{$userRec->username}</td>
+            {/if}
             <td>{$userRec->role}</td>
             <td><img src="{link Profile:thumbnail user_id=>$userRec->iduser}" height="55" width="55"></td>
         </tr>

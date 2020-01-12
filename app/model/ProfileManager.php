@@ -27,4 +27,8 @@ class ProfileManager {
                                        SET avatar = ?
                                        WHERE iduser = ?',$myFileName,$user_id);
     }
+
+    public function getUsersPlaylistCount($user_id) {
+        return $this->database->fetch('SELECT user_iduser,COUNT(playlist_idplaylist) AS playlist_count FROM user_has_playlist WHERE user_iduser = ?',$user_id);
+    }
 }

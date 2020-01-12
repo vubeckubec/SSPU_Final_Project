@@ -1,0 +1,49 @@
+{block content}
+<h1>Dashboard</h1>
+{if $user->isInRole('admin')}
+    <div style="width:auto;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;text-align:left;vertical-align:top;">
+        <h4 style="margin:0px;margin-bottom:5px;font-weight:bold;background:#3377ff;color:white;padding:3px;text-align:center;">Content stats</h4>
+        <div>Number of artists in application: {$artistsCount->artistCount}</div>
+        <div>Number of albums in application: {$albumsCount->albumCount}</div>
+        <div>Number of songs in application: {$songsCount->songCount}</div>
+    </div>
+
+    <div style="width:auto;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;text-align:left;vertical-align:top;">
+        <h4 style="margin:0px;margin-bottom:5px;font-weight:bold;background:#3377ff;color:white;padding:3px;text-align:center;">Used storage</h4>
+        <div>Disk size of content: {$diskSize} GB</div>
+    </div>
+
+    <div style="width:auto;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;text-align:left;vertical-align:top;">
+        <h4 style="margin:0px;margin-bottom:5px;font-weight:bold;background:#3377ff;color:white;padding:3px;text-align:center;">Playlists stats</h4>
+        <div>Number of playlists in application: {$playlistsCount->playlistCount}</div>
+        <div>Number of songs in playlists: {$playlistSongsCount->playlistSongs}</div>
+        <div>Average song count in playlist: {$averageSongCount}</div>
+    </div>
+
+    <div style="width:auto;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;text-align:left;vertical-align:top;">
+        <h4 style="margin:0px;margin-bottom:5px;font-weight:bold;background:#3377ff;color:white;padding:3px;text-align:center;">User stats</h4>
+        <div>Number of users in application: {$usersCount->usersCount}</div>
+    </div>
+
+    <div style="width:auto;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;text-align:left;vertical-align:top;">
+        <h4 style="margin:0px;margin-bottom:5px;font-weight:bold;background:#3377ff;color:white;padding:3px;text-align:center;">Likes stats</h4>
+        <div>Number of artists liked by users: {$likedArtistsCount->likedArtistsCount}</div>
+        <div>Number of albums liked by users: {$likedAlbumsCount->likedAlbumsCount}</div>
+        <div>Number of songs liked by users: {$likedSongsCount->likedSongs}</div>
+    </div>
+{else}
+
+{/if}
+{/block}
+
+{block scripts}
+
+{include parent}
+{/block}
+
+
+{block head}
+{/block}
+
+
+

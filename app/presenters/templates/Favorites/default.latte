@@ -1,6 +1,6 @@
 {block content}
-    <h1>Playlist '{$playlist_name->name}' from {$playlist_owner->username}</h1>
-    <table fav_list="{$fav_list}" class="table table-striped fav_list">
+    <h1>{$playlist_owner->username}'s favorites</h1>
+    <table class="table table-striped fav_list">
         <thead>
             <th>Track Name</th>
             <th>Track length</th>
@@ -13,41 +13,9 @@
     {/foreach}
         </tbody>
     </table>
-
     <script>
-    $('.favtoggle_song').click(function(){
-    var song_id = $(this).attr("song_id");
-    var favorite = $(this).attr("favorite");
-    var fav_list = $(".fav_list").attr("fav_list");
-    $.post(
-        {link LikeChange},
-        {
-            song_id: song_id,
-            favorite: favorite,
-            fav_list: fav_list
-        },function(data){
-            if(data.response == 1){
-                //database function performed ok
-                if(favorite == 1){
-                    //removing favorite  
-                    $('.favtoggle_song[song_id*="'+song_id+'"]').attr("favorite","0"); 
-                    $('.favtoggle_song[song_id*="'+song_id+'"]').removeClass('glyphicon-heart');
-                    $('.favtoggle_song[song_id*="'+song_id+'"]').addClass('glyphicon-heart-empty');
-                    $('.favtoggle_song[song_id*="'+song_id+'"]').redraw();
-                }else{
-                    //adding favorite
-                    $('.favtoggle_song[song_id*="'+song_id+'"]').attr("favorite","1");
-                    $('.favtoggle_song[song_id*="'+song_id+'"]').removeClass('glyphicon-heart-empty');
-                    $('.favtoggle_song[song_id*="'+song_id+'"]').addClass('glyphicon-heart');
-                    $('.favtoggle_song[song_id*="'+song_id+'"]').redraw();    
-                }               
-            }
-        }
-    );
-});
-
-$(document).ready(function() {
-    $('.addInPlaylist').dropit({
+        $(document).ready(function() {
+    $('.demo').dropit({
         action: 'click',
         triggerEl: 'span',
         beforeShow: function(){
@@ -84,7 +52,7 @@ $(document).ready(function() {
             type: "GET"            
 		});  
     }
-});  
+}); 
 
 $(document).ready(function(){
     $('.remove_song').on('click',removeSong);

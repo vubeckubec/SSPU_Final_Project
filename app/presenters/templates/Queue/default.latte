@@ -3,11 +3,16 @@
 {*<div>Obsah queue:<div>
 <div>album ID: {$album_id}</div>
 <div>playlist ID: {$playlist_id}</div>*}
-<div style="width:180px;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;vertical-align:top;text-align:center;">
-    <div style="display:block;"><img id="queueThumb" src=" " height="" width="" style="display: block;margin-left: auto;margin-right: auto;"></div>
-    <div style="display:block;" id="artist_name">n/a</div><div style="display:block;"id="album_name">n/a</div><div style="display:block;" id="album_year">n/a</div>
+{if count($queue_list) > 0}
+<div style="width:180px;height:auto;display:inline-block;vertical-align:top;text-align:center;">
+    <div style="background:#e9e9e9;border-radius:10px;margin:5px;padding:10px;">
+        <div style="display:block;"><img id="queueThumb" src="{$empty_thumb}" height="" width="" style="display: block;margin-left: auto;margin-right: auto;"></div>
+        <div style="display:block;" id="artist_name">n/a</div><div style="display:block;"id="album_name">n/a</div><div style="display:block;" id="album_year">n/a</div>
+    </div>
+    <center><div style="color:white;"><a class="btn btn-primary" id="empty_btn" href="{link Queue:default deleteQueue=>1}">Empty queue</a></div></center>
 </div>
-<table class="table table-striped" style="display:inline-block; width:700px;">
+<span id="refreshQueue" href="{link Queue:default}"></span>
+<table fav_list="{$fav_list}" class="table table-striped fav_list" style="display:inline-block; width:700px;">
     <thead>
         {*<th><a n:href="default sortmode=>'name ASC', artist_id=>$artist_id ">Název Album</a></th>*}
         {*<th><a n:href="default sortmode=>'year ASC', artist_id=>$artist_id ">Rok vydání</a></th>*}
@@ -27,8 +32,136 @@
         {/foreach}
     </tbody>
 </table>
+{else}
+    <p style="text-align:center;">The queue is empty.</p>
+{/if}
 <script>
     window.__QUEUE__ = JSON.parse({$json});
+
+    $("#empty_btn").off("click",emptyQueue);
+    $("#empty_btn").on("click",emptyQueue);
+
+    function emptyQueue (e) {
+        //alert("1");
+        player_stop();
+        e.preventDefault();
+        var action_url = $(this).attr("href");
+        //alert(action_url);
+            $.ajax({
+                url: action_url, 
+                type: "GET",         
+			    contentType: false,       
+			    cache: false,             
+			    processData:false,  
+                success: function(data) { 
+                    //alert("pred loadem");
+                    var url = $("#refreshQueue").attr("href");
+                    $('#queue').load(url,function(){
+                        //alert("1");
+                        refreshQueueDisplay();
+                    });
+                }       
+		    });   
+    }
+
+    $('.favtoggle_song').click(function(){
+    var song_id = $(this).attr("song_id");
+    var favorite = $(this).attr("favorite");
+    var fav_list = $(".fav_list").attr("fav_list");
+    $.post(
+        {link LikeChange},
+        {
+            song_id: song_id,
+            favorite: favorite,
+            fav_list: fav_list
+        },function(data){
+            if(data.response == 1){
+                //database function performed ok
+                if(favorite == 1){
+                    //removing favorite  
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').attr("favorite","0"); 
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').removeClass('glyphicon-heart');
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').addClass('glyphicon-heart-empty');
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').redraw();
+                }else{
+                    //adding favorite
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').attr("favorite","1");
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').removeClass('glyphicon-heart-empty');
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').addClass('glyphicon-heart');
+                    $('.favtoggle_song[song_id*="'+song_id+'"]').redraw();    
+                }               
+            }
+        }
+    );
+});
+
+$(document).ready(function() {
+    $('.addToPlaylist').dropit({
+        action: 'click',
+        triggerEl: 'span',
+        beforeShow: function(){
+            var action_url = $(this).attr("url");
+            $.ajax({
+                url: action_url, 
+                type: "GET",         
+			    contentType: false,       
+			    cache: false,             
+			    processData:false,  
+                success: function(data) { 
+                    /*var url = data['addQueueUrl'];
+                    $('.append').append('<li><a class=\"queue_clicker\" href=\"'+url+'\">Add to queue</a></li>');
+                    $('.append').append('<li><hr/></li>');*/
+                    var row;
+                    for(row of data['playlists']) {
+                        $(".append").append('<li><a class=\"async_clicker\" href=\"'+row['playlist_url']+'\">'+row['playlist_name']+'</a></li>');
+                    }
+                    $('.async_clicker').on("click",myFavHref); 
+                    //$('.queue_clicker').on("click",myAjaxAddQueueHandler);    
+                }       
+		    });  
+        },
+        afterHide: function(){
+            $('.append li').remove();
+        }
+    });
+
+    function myFavHref(e) {
+        e.preventDefault();
+        var action_url = $(this).attr("href");
+        $.ajax({
+            url: action_url, 
+            type: "GET"            
+		});  
+    }
+});  
+ $(".remove_song").off("click",removeSong);
+ $(".remove_song").on("click",removeSong);
+
+    function removeSong () {
+        var song_index = window.__QUEUE_INDEX__;
+        var el = $(this).siblings(".queue_play");
+        var clicked_index = $(el).attr("song_order");
+        if(song_index == clicked_index) {
+            return false;
+        }else if(song_index > clicked_index) {
+            window.__QUEUE_INDEX__ = song_index-1;
+        }
+
+        var remove_url = $(this).attr("href");
+		$.ajax({
+			url: remove_url, // Url to which the request is send
+			type: "POST",          // Type of request to be send, called as method
+			contentType: false,       // The content type used when sending data to the server.
+			cache: false,             // To unable request pages to be cached
+			processData:false,
+            success: function(data) { 
+                var url = $("#refreshQueue").attr("href");
+                $('#queue').load(url,function(){
+                    refreshQueueDisplay();
+                });
+			}       
+		});      
+	}
 </script>
 {/block}
 

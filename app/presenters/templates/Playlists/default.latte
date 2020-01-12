@@ -4,11 +4,14 @@
     <thead>
         <th>Playlist name</th>
         <th>Songs count</th>
+        {if $user_id == $myUserId}
         <th>Remove playlist</th>
+        {else}
+        {/if}
     </thead>
     <tbody>
         {foreach $playlists_list as $playlist}
-        {if $playlist->isfavorites == 0}
+        {if $playlist->isfavorites == 0 && $user_id == $myUserId}
         <tr>
             <td>
                 <span class="glyphicon glyphicon-play queue_fill" playlist_id="{$playlist->idplaylist}" n:href="Queue:default playlist_id=>$playlist->idplaylist, deleteQueue=>1"></span>

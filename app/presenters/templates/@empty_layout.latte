@@ -1,5 +1,4 @@
 
-
     <span id="refreshUrl" href="{$refreshUrl}"></span>
     <div style="margin:1em;">
     {include content}
@@ -9,7 +8,9 @@
         if(contentUrlElement === null) {
           window.location.replace("http://localhost:8000/main/");
         }else{
+          $('.ajax_change').off("click",myAjaxHrefHandler);
           $('.ajax_change').on("click",myAjaxHrefHandler);
+          $('.queue_fill').off("click",myAjaxQueueHandler);
           $('.queue_fill').on("click",myAjaxQueueHandler);
         }
     </script>

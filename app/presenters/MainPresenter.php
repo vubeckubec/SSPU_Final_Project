@@ -11,8 +11,6 @@ use Nette\Http\UrlScript;
 
 class MainPresenter extends Nette\Application\UI\Presenter
 {   
-    /** @var Nette\Database\Context */
-    
     private $mainManager;
     
     public function __construct(MainManager $mainManager) {
@@ -21,14 +19,23 @@ class MainPresenter extends Nette\Application\UI\Presenter
     }
  
     public function renderDefault($view) {
+        $this->template->refreshUrl = $this->getHttpRequest()->getUrl()->getAbsoluteUrl();
         $this->template->usernameIs = $this->mainManager->username_readById($this->user->getId());
+        $userRole = $this->mainManager->username_readById($this->user->getId())->role;
         $this->template->user_id = $this->user->getId();
+        $this->template->emptyQueueUrl = $this->link('Queue:default');
+        if($userRole == "admin") {
+            $this->template->dashboardUrl = $this->link('Dashboard:admin');
+        }else{
+            $this->template->dashboardUrl = $this->link('Dashboard:normal');
+        }
         $this->template->view = $view;
         //Checking if user has fav playlist if not insert it 
         $userPlaylistsCount = $this->mainManager->getFavPlaylist($this->user->getId());
         if(!$userPlaylistsCount) {
             $this->mainManager->insertUsersFavPlaylist($this->user->getId());   
         }
+        $this->template->favorites_id = $this->mainManager->getFavPlaylistId($this->user->getId());
         $paramsArr = array();
         $this->template->contentUrl = "";
         $request = $this->getRequest();

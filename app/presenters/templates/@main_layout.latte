@@ -27,8 +27,6 @@
     {block head}{/block}
   </head>
   <style>
-    
-
 #username {
     text-align: center;
     text-decoration: none;
@@ -241,42 +239,212 @@ hr {
   overflow: auto;
 }
 
-.slider {
+/*new slider myseek*/
+input[type=range].myseek {
   -webkit-appearance: none;
   width: 100%;
-  height: 15px;
-  border-radius: 5px;  
-  background: #d3d3d3;
+  margin: 4.5px 0;
+  background-color:rgba(0,0,0,0);
+}
+
+input[type=range].myseek:focus {
   outline: none;
-  opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
 }
 
-.slider::-webkit-slider-thumb {
+input[type=range].myseek::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  box-shadow: 0.7px 0.7px 3px #000000, 0px 0px 0.7px #0d0d0d;
+  background: #87c887;
+  border-radius: 2px;
+  border: 0.3px solid #004600;
+}
+
+input[type=range].myseek::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 15px;
+  width: 15px;
+  border-radius: 3px;
+  background: #004600;
+  cursor: pointer;
   -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%; 
-  background: #4CAF50;
+  margin-top: -4.8px;
+}
+
+input[type=range].myseek:focus::-webkit-slider-runnable-track {
+  background: #d4ebd4;
+}
+
+input[type=range].myseek::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  box-shadow: 0.7px 0.7px 3px #000000, 0px 0px 0.7px #0d0d0d;
+  background: #87c887;
+  border-radius: 2px;
+  border: 0.3px solid #004600;
+}
+
+input[type=range].myseek::-moz-range-thumb {
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 15px;
+  width: 15px;
+  border-radius: 3px;
+  background: #004600;
   cursor: pointer;
 }
 
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #4CAF50;
+input[type=range].myseek::-ms-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type=range].myseek::-ms-fill-lower {
+  background: #469946;
+  border: 0.3px solid #004600;
+  border-radius: 4px;
+  box-shadow: 0.7px 0.7px 3px #000000, 0px 0px 0.7px #0d0d0d;
+}
+
+input[type=range].myseek::-ms-fill-upper {
+  background: #87c887;
+  border: 0.3px solid #004600;
+  border-radius: 4px;
+  box-shadow: 0.7px 0.7px 3px #000000, 0px 0px 0.7px #0d0d0d;
+}
+
+input[type=range].myseek::-ms-thumb {
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 15px;
+  width: 15px;
+  border-radius: 3px;
+  background: #004600;
+  cursor: pointer;
+  height: 6px;
+}
+
+input[type=range].myseek:focus::-ms-fill-lower {
+  background: #87c887;
+}
+
+input[type=range].myseek:focus::-ms-fill-upper {
+  background: #d4ebd4;
+}
+
+/*new slider myvol*/
+input[type=range].myvol {
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 8.5px 0;
+  background-color:rgba(0,0,0,0);
+}
+
+input[type=range].myvol:focus {
+  outline: none;
+}
+
+input[type=range].myvol::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  background: #000000;
+  border-radius: 2px;
+  border: 0px solid #004600;
+}
+
+input[type=range].myvol::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 20px;
+  width: 7px;
+  border-radius: 1px;
+  background: #000000;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -8.5px;
+}
+
+input[type=range].myvol:focus::-webkit-slider-runnable-track {
+  background: #383838;
+}
+
+input[type=range].myvol::-moz-range-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  background: #000000;
+  border-radius: 2px;
+  border: 0px solid #004600;
+}
+
+input[type=range].myvol::-moz-range-thumb {
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 20px;
+  width: 7px;
+  border-radius: 1px;
+  background: #000000;
   cursor: pointer;
 }
 
-  </style>
+input[type=range].myvol::-ms-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type=range].myvol::-ms-fill-lower {
+  background: #000000;
+  border: 0px solid #004600;
+  border-radius: 4px;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range].myvol::-ms-fill-upper {
+  background: #000000;
+  border: 0px solid #004600;
+  border-radius: 4px;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range].myvol::-ms-thumb {
+  box-shadow: 0px 0px 0.1px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 20px;
+  width: 7px;
+  border-radius: 1px;
+  background: #000000;
+  cursor: pointer;
+  height: 3px;
+}
+
+input[type=range].myvol:focus::-ms-fill-lower {
+  background: #000000;
+}
+
+input[type=range].myvol:focus::-ms-fill-upper {
+  background: #383838;
+}
+
+</style>
   <body style="height: 100vh;margin:0;padding:0;">
     <div style="display:flex; flex-direction:column;height:100%;">
       <div style="display:flex;flex-direction: row;height:72px;">
         <div id="logo_area" style="border: 2px solid black; vertical-align: middle; flex: 0 0 152px; text-align: center;border-bottom: none;border-right: none;background-color: #3377ff;">
-           <span style="display: inline-block;height: 100%;vertical-align: middle;"></span><img src="{$basePath}/images/viktrolaW.png" alt="logo" style="vertical-align: middle;"> 
+           <a class="ajax_change" href="{$dashboardUrl}"><span style="display: inline-block;height: 100%;vertical-align: middle;"></span><img src="{$basePath}/images/viktrolaW.png" alt="logo" style="vertical-align: middle;"></a> 
         </div>
         <div id="functions_area" style="display:flex; flex-direction:row;border: 2px solid black;width: 100%;align-items:center;background-color: #3377ff;height: 102%;z-index:5;">
             <div class="search" style="border: 2px solid #5cb85c;overflow: auto;-webkit-border-radius: 9px;height:67%;left:15%;position:sticky;">
@@ -286,9 +454,9 @@ hr {
               </form>
             </div>
           <div style="position:fixed;left:35%;">  
-          <span class="glyphicon glyphicon-step-backward" aria-hidden="true" id="backward" style="font-size: 25px;"></span>
-          <span id="play" class="glyphicon glyphicon-play" aria-hidden="true" style="font-size: 25px;"></span>
-          <span class="glyphicon glyphicon-step-forward" aria-hidden="true" id="forward" style="font-size: 25px;"></span>
+          <span class="glyphicon glyphicon-step-backward" aria-hidden="true" id="backward" style="font-size: 25px;color:white;"></span>
+          <span id="play" class="glyphicon glyphicon-play" aria-hidden="true" style="font-size: 25px;color:white;"></span>
+          <span class="glyphicon glyphicon-step-forward" aria-hidden="true" id="forward" style="font-size: 25px;color:white;"></span>
           <span class="queue_pos"></span> 
           </div>            
           <div style="position:fixed;left:45%;">
@@ -296,21 +464,21 @@ hr {
               <source src="" type="audio/mpeg" id="audio_source">
             </audio>
             <div>
-              <div style="display:inline-block;position:fixed;left:45%;top:1.5%;"><div id="song_meta" style="display:inline-block;">nothing</div> · <div id="song_artist" style="display:inline-block;">nothing</div></div>
-              <div class="range_volume" style="display:inline-block;position:fixed;left:61.2%;top:1.9%;">
-                <input type="range" min="0" max="99" value="99" class="slider" id="myvol">
+              <div style="display:inline-block;position:fixed;left:45%;top:1.5%;"><div id="song_meta" style="display:inline-block;color:white;">nothing</div><span style="color:white;"> · </span><div id="song_artist" style="display:inline-block;color:white;">nothing</div></div>
+              <div class="range_volume" style="display:inline-block;position:fixed;left:66.3%;top:1%;width:65px;">
+                <input type="range" min="0" max="99" value="99" class="myvol" id="myvol">
               </div>
             </div>
             <p/>
             <div>
-              <div id="curTime" style="display:inline-block;position:fixed;left:43.5%;top:3.8%;">0:00</div>
-              <div class="range_seek" style="position:fixed;width:500px;display:inline-block;left:45%;top:4.0%;">
-                <input type="range" min="0" max="99" value="0" class="slider" id="myseek">
+              <div id="curTime" style="display:inline-block;position:fixed;left:43.5%;top:3.8%;color:white;">0:00</div>
+              <div class="range_seek" style="position:fixed;width:500px;display:inline-block;left:45%;top:3.5%;">
+                <input type="range" min="0" max="99" value="0" class="myseek" id="myseek">
               </div>
-              <div id="duration" style="display:inline-block;position:fixed;left:69.7%;top:3.8%;">0:00</div>
+              <div id="duration" style="display:inline-block;position:fixed;left:69.7%;top:4%;color:white;">0:00</div>
             </div>
           </div>
-          <div id="display_progress" style="position:fixed;left:80%;">0/0</div>   
+          <div id="display_progress" style="position:fixed;left:80%;color:white;">0/0</div>   
           <div>
             <button type="button" class="btn btn-success" id="queue_button" onclick="queueChangeFunction()" style="position:fixed;left:85%;top:1.7%;">Show queue</button>
           </div> 
@@ -321,50 +489,49 @@ hr {
         <div style="display:flex; flex-direction:column;border:2px solid black;background-color: #3377ff;">
           <div class="sidenav" style="width: 150px;">
             <div>
-              <img id="profilePicture" src="{link Profile:thumbnail user_id=>$user_id}" alt="logo" width="128" height="128" style="display: block;margin-left: auto;margin-right: auto;">
+              <img id="profilePicture" src="{link Profile:thumbnail user_id=>$user_id}" alt="logo" width="128" height="128" style="display: block;margin-left: auto;margin-right: auto;margin-top:10px;">
               <a class="ajax_change" id="username" n:href="Profile:default user_id=>$user_id">{$usernameIs->username}</a>
               <a id="role">{$usernameIs->role}</a>
             </div>
             <hr id="left_column_menu">
             <a class="ajax_change" id="artist_path" n:href="Artists:default">Browse</a>
             <div id="mymusic">My Music</div>
-            <a class="ajax_change" id="sideblock1" n:href="Spinner:default">Favorites</a>
+            <a class="ajax_change" id="sideblock1" n:href="Favorites:default favorites_id=>$favorites_id->playlist_idplaylist">Favorites</a>
             <a class="ajax_change" id="sideblock2" n:href="Playlists:default user_id=>$user_id">Playlists</a>
             <a class="ajax_change" id="users_path" n:href="UserList:default">Users</a>
-            <a class="ajax_change" id="upload_path" n:href="Upload:default">Upload</a>
+            {if $user->isInRole('admin')}<a class="ajax_change" id="upload_path" n:href="Upload:default">Upload</a>{else}{/if}
           </div>
           <div style="width:150px;margin-top: auto;">
             <a id="logout" n:href="Login:out">Logout</a>
           </div>
-        </div>    
+        </div>      
       {/if}
         <div style="width:100%; height:100%;position:relative;">
-            <div id="content" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;overflow: auto;">
-              {include content}
-            </div>
-            <div id="queue" style="z-index:0;width: 100%; height: 100%; position: absolute; top: 0; left: 0; display:none;">
-              <br>
-              <p style="text-align:center;">There is nothing in queue yet.</p>
-            </div>
+            <div id="content" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;overflow: auto;"></div>
+            <div id="queue" style="z-index:0;width: 100%; height: 100%; position: absolute; top: 0; left: 0; display:none;overflow: auto;"></div>
         </div>
       </div>
     </div>
     </body>
     <script>
-    /*$('#submit_button').on("click",function(e){
-      var content = document.getElementById("content");
-      var url = $(this).attr("url");
-      e.preventDefault();
-      $('#content').load(url);
-    });*/
-
     $(document).ready(function() {
+      //loads content div according to URL 
       var contentUrlElement = document.getElementById('contentUrl');
       var contentUrl = contentUrlElement.getAttribute("contentUrl");
       if(contentUrl) {
         contentUrlElement.setAttribute("contentUrl","");
         $('#content').load(contentUrl);
       }
+      if($("#content").is(':empty')){
+        //loadne dashboard
+        $('#content').load({$dashboardUrl});
+      }
+
+      if($("#queue").is(':empty')){
+        //alert("1" + {$emptyQueueUrl});
+        $('#queue').load({$emptyQueueUrl});
+      }
+
     }); 
 
     $('#search-form').submit(function(e){
@@ -401,16 +568,13 @@ hr {
 
     function player_stop() {
       //zruseni zvyrazneni radku podle __QUEUE_INDEX__
-      deHighlightSong();
       window.__QUEUE_INDEX__ = -1;
-      $("#audio_source").attr("src", " ");
+      $("#audio_source").attr("src","");
       $("#play").removeClass("glyphicon-pause");
       $("#play").addClass("glyphicon-play");
-
-
-      /*$("#play").attr("id","play");
-      playTrackOff();
-      playTrack();*/
+      var audio = document.getElementById("audio_control");
+      audio.pause();
+      deHighlightSong();
     }
 
     function player_play(song_index) {
@@ -421,7 +585,7 @@ hr {
       if(song_index === undefined) {
         song_index = 0;
       }
-
+      //alert("play" + song_index);
       highlightSong(song_index);
       var myJson = window.__QUEUE__;
       var audio = document.getElementById("audio_control");
@@ -499,8 +663,14 @@ hr {
         var originalColor = cur_line.attr("background-color-backup");
         if(originalColor) {
           cur_line.css("background-color",originalColor);
-        } 
+        }
       }
+      $("#curTime").text(formatTime(0));  
+        $("#duration").text(formatTime(0));
+        var myseek = document.getElementById("myseek");
+        myseek.value = 0;
+        $("#song_meta").text("none");
+        $("#song_artist").text("none");
     }
 
     $('#backward').on("click",function() {
@@ -581,6 +751,7 @@ hr {
       player_stop();          
       var url = $(this).attr("href");
       var cur_song_pos = $(this).attr("song_order");
+      //alert("myAjaxQueueHandler" + cur_song_pos);
       $('#queue').load(url,function() {
         player_play(cur_song_pos);
         $('.queue_play').on("click",myInQueuePlay);
@@ -590,14 +761,24 @@ hr {
     function myAjaxAddQueueHandler(e) {
       e.preventDefault();         
       var url = $(this).attr("href");
-       $('#queue').load(url,function() {
-        $('.queue_play').on("click",myInQueuePlay);
-        deHighlightSong();
-        var song_index = window.__QUEUE_INDEX__;
-        if(song_index >= 0){
-          highlightSong(song_index);
-        }
+      $('#queue').load(url,function() {
+        refreshQueueDisplay();  
       });
+    }
+
+    function refreshQueueDisplay() {
+      //alert("1");
+      $('.queue_play').off("click",myInQueuePlay);
+      $('.queue_play').on("click",myInQueuePlay);
+      deHighlightSong();
+      var song_index = window.__QUEUE_INDEX__;
+      if(song_index >= 0){
+        highlightSong(song_index);
+      }else{
+        var max_song = window.__QUEUE__.length;
+        var display_progress =  "0/" +max_song;
+        $("#display_progress").text(display_progress);
+      }
     }
     
     function queueChangeFunction() {

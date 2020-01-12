@@ -35,6 +35,8 @@ class QueuePresenter extends Nette\Application\UI\Presenter
         //processing queue
         $this->template->queue_list = array(); 
         $temp_queue_list = $this->queueManager->readAll($this->user->getId());
+        $this->template->empty_thumb = $this->link('Albums:thumbnail');
+        $this->template->fav_list = $this->queueManager->getUsersFavoritePlaylist($this->user->getId());
 
         preRenderSongsForQueue($this,$temp_queue_list,$this->template->queue_list);
         $jsonArray = array();
@@ -51,5 +53,24 @@ class QueuePresenter extends Nette\Application\UI\Presenter
         }
         //passing queue as JSON
         $this->template->json = json_encode($jsonArray);
+    }
+
+    public function actionLikeChange($song_id,$favorite,$fav_list) {
+        //$this->sendResponse(new JsonResponse(['klic' => 'hodnota']));
+        //favorite = 0 means we want to insert new favorite
+        //favorite = 1 means we want to delete existing
+        if($favorite){
+            $res = $this->queueManager->deleteLike($fav_list,$song_id);
+        }else{
+            $res = $this->queueManager->insertLike($fav_list,$song_id);
+        }
+        $this->sendResponse(new JsonResponse(['response' => $res]));
+    }
+
+    public function actionDeleteSong($song_id) {
+        $this->queueManager->deleteSongFromQueue($song_id,$this->user->getId());
+        $results = array();
+        $results['response'] = 1; 
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($results));
     }
 }

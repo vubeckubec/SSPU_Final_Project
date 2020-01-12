@@ -74,6 +74,49 @@ $('.inplace').inplace(
     }
 );
 
+$(document).ready(function() {
+    $('.albumsAddDropdown').dropit({
+        action: 'click',
+        triggerEl: 'span',
+        beforeShow: function(){
+            //alert("2");
+            var action_url = $(this).attr("url");
+            //alert("huhu" + action_url);
+            $.ajax({
+                url: action_url, 
+                type: "GET",         
+			    contentType: false,       
+			    cache: false,             
+			    processData:false,  
+                success: function(data) { 
+                    var url = data['album_url'];
+                    //alert(url);
+                    $('.append').append('<li><a class=\"queue_clicker\" href=\"'+url+'\">Add to queue</a></li>');
+                    //$('.append').append('<li><hr/></li>');
+                    /*var row;
+                    for(row of data['album_songs']) {
+                        $(".append").append('<li><a class=\"queue_clicker\" href=\"'+row['addAlbumUrl']+'\">Add to queue</a></li>');
+                    }
+                    $('.async_clicker').on("click",myFavHref); */
+                    $('.queue_clicker').off("click",myAjaxAddQueueHandler); 
+                    $('.queue_clicker').on("click",myAjaxAddQueueHandler);    
+                }       
+		    });  
+        },
+        afterHide: function(){
+            $('.append li').remove();
+        }
+    });
+
+    function myFavHref(e) {
+        e.preventDefault();
+        var action_url = $(this).attr("href");
+        $.ajax({
+            url: action_url, 
+            type: "GET"            
+		});  
+    }
+});  
 
 </script>
 {/block}

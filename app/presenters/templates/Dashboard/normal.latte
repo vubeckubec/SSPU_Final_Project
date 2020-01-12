@@ -1,0 +1,27 @@
+{block content}
+<style>
+.huge,.huge:hover{
+    font-size:48pt;
+    font-weight:bold;
+    text-decoration: none;
+}
+</style>
+
+<div style="font-size:36pt;">Salut {$username->username}!<p/>Welcome to my application, where you can <a class="ajax_change huge" n:href="Artists:default">Browse</a> music, 
+add music to your <a class="ajax_change huge" n:href="Playlists:default user_id=>$user_id">Playlists</a> or like them directly 
+to your <a class="ajax_change huge" n:href="Favorites:default favorites_id=>$favorites_id->playlist_idplaylist">Favorites</a>. You can see other 
+<a class="ajax_change huge" n:href="UserList:default">Users</a> and their playlists and introduce yourself by changing your 
+<a class="ajax_change huge" n:href="Profile:default user_id=>$user_id">Profile</a>.</div>
+{/block}
+
+{block scripts}
+
+{include parent}
+{/block}
+
+
+{block head}
+{/block}
+
+
+

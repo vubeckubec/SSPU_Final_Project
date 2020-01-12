@@ -1,7 +1,7 @@
 {block content}
 {if $numberOfSongs != 0 or $numberOfAlbums != 0 or $numberOfArtists !=0}
 <div id="search-Results">
-    <div class="container">
+    <div>
         <ul class="result_list">
             {if $numberOfSongs !=0}<li class="results" id="songs_res" onclick="tabVisibility(0)">Songs ({$numberOfSongs})</li>{/if}
             {if $numberOfAlbums !=0}<li class="results" id="albums_res" onclick="tabVisibility(1)">Albums ({$numberOfAlbums})</li>{/if}
@@ -10,23 +10,31 @@
     </div>
     <hr>
 
-    <div style="width:100%; height:100%;position:relative;">
-        <div id="artists_result_section" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+        <div id="artists_result_section" >
             {foreach $searchArtists as $artistsResults}
-                <div>Vyhledane interpreti: {$artistsResults->name}</div>
+                <div style="width:auto;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;text-align:center;">{$artistsResults|noescape}</div>
             {/foreach}
         </div>
-        <div id="albums_result_section" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+        <div id="albums_result_section">
             {foreach $searchAlbums as $albumResults}
-                <div>Vyhledane alba: {$albumResults->name}</div>
+                <div style="width:180px;height:auto;margin:5px;padding:10px;background:#e9e9e9;display:inline-block;border-radius:10px;vertical-align:top;">{$albumResults|noescape}</div>
             {/foreach}
         </div>
-        <div id="songs_result_section" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-            {foreach $searchSongs as $songResults}
-                <div>Vyhledane skladby: {$songResults->name}</div>
-            {/foreach}
-        </div>
-    </div>    
+        <div id="songs_result_section" style="width: 100%; height: 100%;top: 0; left: 0;">
+            <table fav_list="{$fav_list}" class="table table-striped fav_list" style="width:700px;">
+            <thead>
+                <th>Track name</th>
+                <th>Track length</th>
+                <th>Album</th>
+                <th>Artist</th>
+            </thead>
+            <tbody>
+                {foreach $searchSongs as $song}
+                    <tr>{$song|noescape}</tr>
+                {/foreach}
+            </tbody>
+        </table>
+        </div>   
 </div>
 {else}
 <div id="no-results">
@@ -64,6 +72,240 @@
             tabVisibility(2);
         }    
     });
+
+    $(document).ready(function(){
+        $('.favtoggle_artist').off("click",artistLikeChange);
+        $('.favtoggle_artist').on("click",artistLikeChange);
+    });
+
+    function artistLikeChange() {
+        var artist_id = $(this).attr("artist_id");
+        var favorite = $(this).attr("favorite");
+        $.post(
+            {link ArtistLikeChange},
+            {
+                artist_id: artist_id,
+                favorite: favorite
+            },function(data){
+                if(data.response == 1){
+                    //database function performed ok
+                    if(favorite == 1){
+                        //removing favorite  
+                        $('.favtoggle_artist[artist_id*="'+artist_id+'"]').attr("favorite","0"); 
+                        $('.favtoggle_artist[artist_id*="'+artist_id+'"]').removeClass('glyphicon-heart');
+                        $('.favtoggle_artist[artist_id*="'+artist_id+'"]').addClass('glyphicon-heart-empty');
+                        $('.favtoggle_artist[artist_id*="'+artist_id+'"]').redraw();
+                    }else{
+                        //adding favorite
+                        $('.favtoggle_artist[artist_id*="'+artist_id+'"]').attr("favorite","1");
+                        $('.favtoggle_artist[artist_id*="'+artist_id+'"]').removeClass('glyphicon-heart-empty');
+                        $('.favtoggle_artist[artist_id*="'+artist_id+'"]').addClass('glyphicon-heart');
+                        $('.favtoggle_artist[artist_id*="'+artist_id+'"]').redraw();    
+                    }               
+                }
+            }
+        );
+    }
+
+    $(document).ready(function(){
+        $('.favtoggle_album').off("click",albumLikeChange);
+        $('.favtoggle_album').on("click",albumLikeChange);
+    });
+
+    function albumLikeChange(){
+        var album_id = $(this).attr("album_id");
+        var favorite = $(this).attr("favorite");
+        $.post(
+            {link AlbumLikeChange},
+            {
+                album_id: album_id,
+                favorite: favorite
+            },function(data){
+                if(data.response == 1){
+                    //database function performed ok
+                    if(favorite == 1){
+                        //removing favorite  
+                        $('.favtoggle_album[album_id*="'+album_id+'"]').attr("favorite","0"); 
+                        $('.favtoggle_album[album_id*="'+album_id+'"]').removeClass('glyphicon-heart');
+                        $('.favtoggle_album[album_id*="'+album_id+'"]').addClass('glyphicon-heart-empty');
+                        $('.favtoggle_album[album_id*="'+album_id+'"]').redraw();
+                    }else{
+                        //adding favorite
+                        $('.favtoggle_album[album_id*="'+album_id+'"]').attr("favorite","1");
+                        $('.favtoggle_album[album_id*="'+album_id+'"]').removeClass('glyphicon-heart-empty');
+                        $('.favtoggle_album[album_id*="'+album_id+'"]').addClass('glyphicon-heart');
+                        $('.favtoggle_album[album_id*="'+album_id+'"]').redraw();    
+                    }               
+                }
+            }
+        );
+    }
+
+    $('.favtoggle_song').click(function(){
+        var song_id = $(this).attr("song_id");
+        var favorite = $(this).attr("favorite");
+        var fav_list = $(".fav_list").attr("fav_list");
+        $.post(
+            {link SongLikeChange},
+            {
+                song_id: song_id,
+                favorite: favorite,
+                fav_list: fav_list
+            },function(data){
+                if(data.response == 1){
+                    //database function performed ok
+                    if(favorite == 1){
+                        //removing favorite  
+                        $('.favtoggle_song[song_id*="'+song_id+'"]').attr("favorite","0"); 
+                        $('.favtoggle_song[song_id*="'+song_id+'"]').removeClass('glyphicon-heart');
+                        $('.favtoggle_song[song_id*="'+song_id+'"]').addClass('glyphicon-heart-empty');
+                        $('.favtoggle_song[song_id*="'+song_id+'"]').redraw();
+                    }else{
+                        //adding favorite
+                        $('.favtoggle_song[song_id*="'+song_id+'"]').attr("favorite","1");
+                        $('.favtoggle_song[song_id*="'+song_id+'"]').removeClass('glyphicon-heart-empty');
+                        $('.favtoggle_song[song_id*="'+song_id+'"]').addClass('glyphicon-heart');
+                        $('.favtoggle_song[song_id*="'+song_id+'"]').redraw();    
+                    }               
+                }
+            }
+        );
+    });
+
+    $('.inplace').inplace(
+    {
+        buttonOrder: ['save', 'cancel'],
+        cancel: true,
+        cancelClass: 'inplace__cancel btn btn-danger',
+        cancelValue: 'Cancel',
+
+        save: true,
+        saveClass: 'inplace__save btn btn-success',
+        saveValue: 'Save',
+
+        fieldClass: 'inplace__field',
+        fieldName: 'album_name',
+        fieldType: 'text',
+        
+        selectable: ['select-one', 'select-multiple'],
+        method: 'POST'
+        }
+    );
+
+    $('.inplace_song').inplace(
+    {
+        buttonOrder: ['save', 'cancel'],
+        cancel: true,
+        cancelClass: 'inplace__cancel btn btn-danger',
+        cancelValue: 'Cancel',
+
+        save: true,
+        saveClass: 'inplace__save btn btn-success',
+        saveValue: 'Save',
+
+        fieldClass: 'inplace__field',
+        fieldName: 'song_name',
+        fieldType: 'text',
+        
+        selectable: ['select-one', 'select-multiple'],
+        method: 'POST'
+        }
+    );
+
+    $(document).ready(function() {
+        $('.albumsAddDropdown').dropit({
+            action: 'click',
+            triggerEl: 'span',
+            beforeShow: function(){
+                //alert("2");
+                var action_url = $(this).attr("url");
+                //alert("huhu" + action_url);
+                $.ajax({
+                    url: action_url, 
+                    type: "GET",         
+                    contentType: false,       
+                    cache: false,             
+                    processData:false,  
+                    success: function(data) { 
+                        var url = data['album_url'];
+                        //alert(url);
+                        $('.append').append('<li><a class=\"queue_clicker\" href=\"'+url+'\">Add to queue</a></li>');
+                        //$('.append').append('<li><hr/></li>');
+                        /*var row;
+                        for(row of data['album_songs']) {
+                            $(".append").append('<li><a class=\"queue_clicker\" href=\"'+row['addAlbumUrl']+'\">Add to queue</a></li>');
+                        }
+                        $('.async_clicker').on("click",myFavHref); */
+                        $('.queue_clicker').off("click",myAjaxAddQueueHandler); 
+                        $('.queue_clicker').on("click",myAjaxAddQueueHandler);    
+                    }       
+                });  
+            },
+            afterHide: function(){
+                $('.append li').remove();
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $('.remove_album').on('click',removeAlbum);
+    });
+
+    function removeAlbum(e) {
+        e.preventDefault();
+        var remove_url = $(this).attr("href");
+        $.ajax({
+            url: remove_url,
+            type: "POST",             
+            contentType: false,       
+            cache: false,             
+            processData:false,        
+            success: function(data) { 	
+                var url = data['url'];
+                $('#content').load(url);
+            }
+        });
+    }
+
+$(document).ready(function() {
+    $('.addSearchSongToQueue').dropit({
+        action: 'click',
+        triggerEl: 'span',
+        beforeShow: function(){
+            var action_url = $(this).attr("url");
+            $.ajax({
+                url: action_url, 
+                type: "GET",         
+			    contentType: false,       
+			    cache: false,             
+			    processData:false,  
+                success: function(data) { 
+                    var url = data['addQueueUrl'];
+                    $('.append').append('<li><a class=\"queue_clicker\" href=\"'+url+'\">Add to queue</a></li>');
+                    $('.append').append('<li><hr/></li>');
+                    var row;
+                    for(row of data['playlists']) {
+                        $(".append").append('<li><a class=\"async_clicker\" href=\"'+row['playlist_url']+'\">'+row['playlist_name']+'</a></li>');
+                    }
+                    $('.async_clicker').on("click",myFavHref); 
+                    $('.queue_clicker').on("click",myAjaxAddQueueHandler);    
+                }       
+		    });  
+        },
+        afterHide: function(){
+            $('.append li').remove();
+        }
+    });
+
+    function myFavHref(e) {
+        e.preventDefault();
+        var action_url = $(this).attr("href");
+        $.ajax({
+            url: action_url, 
+            type: "GET"            
+		});  
+    }
+});  
 </script>
 {/block}
 
